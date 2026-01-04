@@ -1,37 +1,38 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   AudioWaveform,
-  BookOpen,
-  Bot,
+  BarChartHorizontal,
   Command,
   Frame,
   GalleryVerticalEnd,
+  Landmark,
   Map,
   PieChart,
   Settings2,
-  SquareTerminal,
-} from "lucide-react"
+  Toolbox,
+  Users,
+} from "lucide-react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { NavMain } from "@/components/nav-main";
+import { NavProjects } from "@/components/nav-projects";
+import { NavUser } from "@/components/nav-user";
+import { CompanyHeader } from "@/components/CompanyHeader";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Martin",
+    email: "martin@prossfora.com",
+    avatar: "/avatar/logo.png",
   },
   teams: [
     {
@@ -50,67 +51,90 @@ const data = {
       plan: "Free",
     },
   ],
+  //section titles
   navMain: [
     {
-      title: "Playground",
+      title: "Users",
       url: "#",
-      icon: SquareTerminal,
+      icon: Users,
+      items: [
+        {
+          title: "Employees",
+          url: "#",
+        },
+        {
+          title: "Contractors",
+          url: "#",
+        },
+        {
+          title: "Customer",
+          url: "#",
+        },
+        {
+          title: "Approvals",
+          url: "",
+        },
+      ],
+    },
+    {
+      title: "Jobs",
+      url: "/dashboard/jobs",
+      icon: Toolbox,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "All Jobs",
+          url: "/dashboard/jobs",
+        },
+        {
+          title: "Active Jobs",
+          url: "/dashboard/jobs/active",
+        },
+        {
+          title: "Completed Jobs",
+          url: "/dashboard/jobs/completed",
+        },
+      ],
+    },
+
+    {
+      title: "Financial",
+      url: "#",
+      icon: Landmark,
+      items: [
+        {
+          title: "Transactions",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "Payouts",
           url: "#",
         },
         {
-          title: "Settings",
+          title: "Revenue",
+          url: "#",
+        },
+        {
+          title: "Invoices",
           url: "#",
         },
       ],
     },
     {
-      title: "Models",
-      url: "#",
-      icon: Bot,
+      title: "Analytics and Reports",
+      url: "",
+      icon: BarChartHorizontal,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Platform Analytics",
+          url: "f",
         },
+        { title: "User Activity", url: "f" },
         {
-          title: "Explorer",
-          url: "#",
+          title: "Job Stats",
+          url: "f",
         },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
+        { title: "Financial Reports", url: "f" },
       ],
     },
     {
@@ -154,13 +178,13 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <CompanyHeader />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
@@ -171,5 +195,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
