@@ -1,13 +1,13 @@
 import InfoCard from "@/components/InfoCard";
 import React from "react";
 
-const DashboardHomePage = () => {
+const AdminDashboardPage = () => {
   return (
     <div>
-      DashboardHomePage
+      AdminDashboardPage
       <InfoCard />
     </div>
   );
 };
 
-export default DashboardHomePage;
+export default AdminDashboardPage;

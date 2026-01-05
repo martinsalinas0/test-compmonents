@@ -59,6 +59,10 @@ const data = {
       icon: Users,
       items: [
         {
+          title: "All Users",
+          url: "/dashboard/users",
+        },
+        {
           title: "Employees",
           url: "#",
         },
@@ -69,10 +73,6 @@ const data = {
         {
           title: "Customer",
           url: "#",
-        },
-        {
-          title: "Approvals",
-          url: "",
         },
       ],
     },
