@@ -1,8 +1,10 @@
 "use client";
 
-import UserCard from "@/components/UserCard";
+import UserCard from "@/components/cards/UserCards";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+
+const URL = process.env.NEXT_PUBLIC_API_URL_PROSS;
 
 interface User {
   id: string;
@@ -21,7 +23,7 @@ const AdminUsersPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/users/all")
+      .get(`${URL}/api/users/all`)
       .then((response) => {
         setUsers(response.data.data);
         setLoading(false);
@@ -43,7 +45,7 @@ const AdminUsersPage = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-cerulean mb-6">Dashboard Home</h1>
+      <h1 className="text-2xl font-bold text-cerulean mb-6">Users</h1>
 
       <p className="text-sm text-muted mb-4">Total jobs: {users.length}</p>
 

@@ -64,15 +64,15 @@ const data = {
         },
         {
           title: "Employees",
-          url: "#",
+          url: "/dashboard/admin/employees",
         },
         {
           title: "Contractors",
-          url: "#",
+          url: "/dashboard/admin/contractors",
         },
         {
           title: "Customer",
-          url: "#",
+          url: "/dashboard/admin/customers",
         },
       ],
     },
@@ -84,7 +84,7 @@ const data = {
       items: [
         {
           title: "All Jobs",
-          url: "/dashboard/jobs",
+          url: "/dashboard/admin/jobs",
         },
         {
           title: "Active Jobs",

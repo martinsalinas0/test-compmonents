@@ -1,6 +1,6 @@
 import React from "react";
 
-interface InfoCardProps {
+interface JobCardCompProps {
   job: {
     id: string;
     title: string;
@@ -13,7 +13,7 @@ interface InfoCardProps {
   };
 }
 
-const InfoCard = ({ job }: InfoCardProps) => {
+const JobCardComp = ({ job }: JobCardCompProps) => {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case "completed":
@@ -72,4 +72,4 @@ const InfoCard = ({ job }: InfoCardProps) => {
   );
 };
 
-export default InfoCard;
+export default JobCardComp;
