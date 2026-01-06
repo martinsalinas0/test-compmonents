@@ -68,7 +68,7 @@ const data = {
         },
         {
           title: "Contractors",
-          url: "/dashboard/admin/contractors",
+          url: "/dashboard/admin/users/contractors",
         },
         {
           title: "Customer",
