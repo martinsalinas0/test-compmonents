@@ -60,7 +60,7 @@ const data = {
       items: [
         {
           title: "All Users",
-          url: "/dashboard/users",
+          url: "/dashboard/admin/users",
         },
         {
           title: "Employees",
