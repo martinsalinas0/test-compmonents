@@ -4,6 +4,16 @@ import UserCard from "@/components/UserCard";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
+interface User {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  role: string;
+  is_active: boolean;
+}
+
 const AdminUsersPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +48,7 @@ const AdminUsersPage = () => {
       <p className="text-sm text-muted mb-4">Total jobs: {users.length}</p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {users.map((user: any) => (
+        {users.map((user: User) => (
           <UserCard key={user.id} user={user} />
         ))}
       </div>

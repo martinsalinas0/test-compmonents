@@ -13,30 +13,15 @@ interface UserCardProps {
 }
 
 const UserCard = ({ user }: UserCardProps) => {
-  const getRoleColor = (role: string) => {
-    switch (role.toLowerCase()) {
-      case "admin":
-        return "bg-yellow-500 text-yarrow";
-      case "contractor":
-        return "bg-pacific-500 text-pacific";
-      case "customer":
-        return "bg-cerulean-50 text-cerulean";
-      default:
-        return "bg-blue-300 text-gray-700";
-    }
-  };
-
   return (
-    <div className="border border-cerulean-200 bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+    <div className="border border-cerulean-200 bg-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
       <div className="space-y-3">
         <div className="flex items-start justify-between border-b border-cerulean-100 pb-2">
           <h2 className="text-lg font-semibold text-cerulean">
             {user.first_name} {user.last_name}
           </h2>
           <span
-            className={`px-2 py-1 rounded-md text-xs font-medium ${getRoleColor(
-              user.role
-            )}`}
+            className={`px-2 py-1 rounded-md text-xs font-medium ${user.role}`}
           >
             {user.role.toUpperCase()}
           </span>

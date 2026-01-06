@@ -4,6 +4,17 @@ import InfoCard from "@/components/InfoCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+interface Jobs {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  city: string;
+  state: string;
+  contractor_id: string | null;
+  customer_id: string;
+}
+
 const DashboardHomePage = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +49,7 @@ const DashboardHomePage = () => {
       <p className="text-sm text-muted mb-4">Total jobs: {jobs.length}</p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {jobs.map((job: any) => (
+        {jobs.map((job: Jobs) => (
           <InfoCard key={job.id} job={job} />
         ))}
       </div>
