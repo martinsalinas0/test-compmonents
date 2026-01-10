@@ -1,36 +1,240 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Prossfora Frontend
 
-## Getting Started
+A modern admin dashboard built with Next.js 14, TypeScript, and Tailwind CSS for the Prossfora contractor management platform.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Admin Dashboard**: Comprehensive admin panel for managing users, jobs, and platform analytics
+- **User Management**: View and manage contractors, customers, and company accounts
+- **Job Management**: Track active, completed, and flagged jobs
+- **Financial Overview**: Monitor transactions, payouts, and revenue
+- **Analytics & Reports**: Platform activity insights and user statistics
+- **Responsive Design**: Mobile-first approach with collapsible sidebar navigation
+- **Custom Branding**: Prossfora color scheme with Cerulean Blue, Pacific Blue, Muted Olive, and Yarrow Gold
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 14](https://nextjs.org/) with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **UI Components**: shadcn/ui
+- **Icons**: Lucide React & Tabler Icons
+- **HTTP Client**: Axios
+- **Animations**: tw-animate-css
+
+## 📋 Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Prossfora Backend API running on `http://localhost:5000`
+
+## 🔧 Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/prossfora-frontend.git
+   cd prossfora-frontend
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Environment Setup**
+
+   Create a `.env.local` file in the root directory:
+
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:5000
+   ```
+
+4. **Run the development server**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. **Open your browser**
+
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 📁 Project Structure
+
+```
+prossfora-frontend/
+├── app/
+│   ├── (auth)/              # Authentication pages
+│   │   ├── sign-in/
+│   │   ├── sign-up/
+│   │   └── forgot-password/
+│   ├── (dashboard)/         # Admin dashboard
+│   │   └── admin/
+│   │       ├── layout.tsx   # Dashboard layout with sidebar
+│   │       ├── page.tsx     # Dashboard home
+│   │       ├── users/       # User management pages
+│   │       ├── jobs/        # Job management pages
+│   │       ├── financial/   # Financial pages
+│   │       ├── analytics/   # Analytics pages
+│   │       ├── moderation/  # Content moderation
+│   │       ├── support/     # Support tickets
+│   │       └── settings/    # Platform settings
+│   ├── globals.css          # Global styles & Tailwind config
+│   └── layout.tsx           # Root layout
+├── components/
+│   ├── ui/                  # shadcn/ui components
+│   ├── CompanyHeader.tsx    # Dashboard header
+│   ├── InfoCard.tsx         # Job information card
+│   ├── UserCard.tsx         # User information card
+│   ├── nav-main.tsx         # Main navigation
+│   ├── nav-projects.tsx     # Projects navigation
+│   └── nav-user.tsx         # User profile dropdown
+├── lib/
+│   └── utils.ts             # Utility functions
+└── public/
+    └── assets/              # Static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 Design System
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Color Palette
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Cerulean Blue** (`#0f2143`): Primary brand color
+- **Pacific Blue** (`#354e56`): Secondary accents
+- **Muted Olive** (`#43572e`): Success states
+- **Yarrow Gold** (`#8b6212`): Highlights & warnings
 
-## Learn More
+### Typography
 
-To learn more about Next.js, take a look at the following resources:
+- **Primary Font**: Roboto
+- **Monospace Font**: Geist Mono
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔐 Authentication Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/sign-in` - User login
+- `/sign-up` - User registration
+- `/forgot-password` - Password recovery
 
-## Deploy on Vercel
+## 📊 Admin Dashboard Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `/admin` - Dashboard home
+- `/admin/users` - All users
+- `/admin/users/companies` - Company accounts
+- `/admin/users/contractors` - Contractor accounts
+- `/admin/users/pending` - Pending approvals
+- `/admin/jobs` - All jobs
+- `/admin/jobs/active` - Active jobs
+- `/admin/jobs/completed` - Completed jobs
+- `/admin/jobs/flagged` - Flagged jobs
+- `/admin/financial/*` - Financial management
+- `/admin/analytics/*` - Analytics & reports
+- `/admin/moderation/*` - Content moderation
+- `/admin/support/*` - Support & logs
+- `/admin/settings` - Platform settings
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔌 API Integration
+
+The frontend connects to the Prossfora backend API:
+
+```typescript
+// Example API call
+axios.get("http://localhost:5000/api/users/all").then((response) => {
+  // Handle response.data.data
+});
+```
+
+### API Endpoints Used
+
+- `GET /api/users/all` - Fetch all users
+- `GET /api/jobs/all` - Fetch all jobs
+- More endpoints as needed...
+
+## 🚀 Build & Deploy
+
+### Production Build
+
+```bash
+npm run build
+npm start
+```
+
+### Docker (Optional)
+
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+### Deployment Options
+
+- **Vercel**: Recommended for Next.js apps
+- **Netlify**: Easy deployment with Git integration
+- **Docker**: Containerized deployment
+- **Traditional hosting**: Build and serve static files
+
+## 🧪 Development
+
+### Code Style
+
+- ESLint for code quality
+- TypeScript for type safety
+- Prettier for code formatting (recommended)
+
+### Available Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Team
+
+- **Frontend Development**: Your Name
+- **Backend API**: [Link to backend repo]
+
+## 📞 Support
+
+For issues and questions:
+
+- Create an issue in this repository
+- Contact: support@prossfora.com
+
+## 🔄 Changelog
+
+### v1.0.0 (2025-01-10)
+
+- Initial release
+- Admin dashboard with user and job management
+- Custom Prossfora branding
+- Responsive sidebar navigation
+- API integration with backend
+
+---
+
+Made with ❤️ for Prossfora

@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 
 const AdminDashboardPage = () => {
   const [users, setUsers] = useState([]);
-  const [totalJobs, setTotalJobs] = useState([]);
 
   useEffect(() => {
     axios
