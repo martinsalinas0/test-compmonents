@@ -1,0 +1,24 @@
+"use client";
+
+interface TableHeaderProps {
+  columns: string[];
+}
+
+const TableHeader = ({ columns }: TableHeaderProps) => {
+  return (
+    <thead className="bg-cerulean-50">
+      <tr>
+        {columns.map((label) => (
+          <th
+            key={label}
+            className="border-b border-cerulean-100 px-6 py-3 text-left text-sm font-semibold text-cerulean"
+          >
+            {label}
+          </th>
+        ))}
+      </tr>
+    </thead>
+  );
+};
+
+export default TableHeader;
