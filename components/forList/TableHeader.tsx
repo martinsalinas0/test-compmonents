@@ -11,7 +11,7 @@ const TableHeader = ({ columns }: TableHeaderProps) => {
         {columns.map((label) => (
           <th
             key={label}
-            className="border-b border-cerulean-100 px-6 py-3 text-left text-sm font-semibold text-cerulean"
+            className="border-b border-cerulean-100 px-6 py-3 text-center text-sm font-semibold text-cerulean"
           >
             {label}
           </th>

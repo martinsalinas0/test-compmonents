@@ -1,5 +1,15 @@
-import TableHeader from "@/components/forList/TableHeader";
-import React from "react";
+import TableForList from "@/components/forList/TableForUsersList";
+
+export interface User {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  role: string;
+  is_active: boolean;
+  created_at: string;
+}
 
 const users: User[] = [
   {
@@ -55,13 +65,11 @@ const users: User[] = [
 ];
 
 const AdminListPage = () => {
-  const columns = ["Name", "Email", "id", "status"];
-
   return (
     <div>
       AdminListPage
       <table>
-        <TableHeader columns={columns} />
+        <TableForList data={users} />
       </table>
     </div>
   );
