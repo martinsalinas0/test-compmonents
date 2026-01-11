@@ -47,7 +47,7 @@ const AdminUsersPage = () => {
     <div className="p-6">
       <h1 className="text-2xl font-bold text-cerulean mb-6">Users</h1>
 
-      <p className="text-sm text-muted mb-4">Total jobs: {users.length}</p>
+      <p className="text-sm text-muted mb-4">Total Users: {users.length}</p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {users.map((user: User) => (

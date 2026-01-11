@@ -11,16 +11,27 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+const URL = process.env.NEXT_PUBLIC_API_URL_PROSS;
+
 const AdminDashboardPage = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/users/all`)
+      .get(`${URL}/api/users/all`)
       .then((response) => setUsers(response.data.data))
       .catch((err) => console.error(err));
   }, []);
-  console.log(users.length);
+
+  //   useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:5000/api/users/all`)
+  //     .then((response) => setUsers(response.data.data))
+  //     .catch((err) => console.error(err));
+  // }, []);
+
+  //console.log(users.length);
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold text-cerulean mb-6">Admin Dashboard</h1>
@@ -28,7 +39,7 @@ const AdminDashboardPage = () => {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle></CardTitle>
+            <CardTitle>Total Users</CardTitle>
             <CardDescription>Active users in the system</CardDescription>
           </CardHeader>
           <CardContent>
@@ -42,7 +53,7 @@ const AdminDashboardPage = () => {
         <Card>
           <CardHeader>
             <CardTitle>Active Jobs</CardTitle>
-            <CardDescription>Currently open positions</CardDescription>
+            <CardDescription>Currently open job</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold text-cerulean">56</p>
@@ -54,7 +65,7 @@ const AdminDashboardPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Applications</CardTitle>
+            <CardTitle>Monthly Revenue</CardTitle>
             <CardDescription>Pending review</CardDescription>
           </CardHeader>
           <CardContent>
