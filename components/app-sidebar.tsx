@@ -84,11 +84,11 @@ const data = {
       items: [
         {
           title: "All Jobs",
-          url: "/dashboard/admin/jobs",
+          url: "/dashboard/admin/list/jobs",
         },
         {
           title: "Active Jobs",
-          url: "/dashboard/jobs/active",
+          url: "/dashboard/jobs/list/active",
         },
         {
           title: "Completed Jobs",
