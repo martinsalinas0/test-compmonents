@@ -13,7 +13,7 @@ const ContractorsListPage = () => {
   useEffect(() => {
     const fetchContractors = async () => {
       try {
-        const response = await axios.get(`${URL}/api/contractors/all`);
+        const response = await axios.get(`${URL}/contractors`);
         setContractors(response.data.data);
       } catch (err) {
         console.error(err);
