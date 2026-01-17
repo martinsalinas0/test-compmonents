@@ -71,8 +71,8 @@ const data = {
           url: "/admin/list/contractors",
         },
         {
-          title: "Customer",
-          url: "/admin/list/contractors",
+          title: "Customers",
+          url: "/admin/list/customers",
         },
       ],
     },

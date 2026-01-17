@@ -25,7 +25,10 @@ const ContractorsListPage = () => {
 
   return (
     <div>
-      <TableForContractors data={contractors} />
+      <h1>Contractors list</h1>
+      <div className="overflow-x-auto">
+        <TableForContractors data={contractors} />
+      </div>
     </div>
   );
 };
