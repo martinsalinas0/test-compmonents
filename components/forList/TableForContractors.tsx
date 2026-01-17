@@ -2,17 +2,7 @@
 
 import React from "react";
 import TableHeader from "./TableHeader";
-
-export interface Contractor {
-  id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  phone: string;
-  company_name: string;
-  is_active: boolean;
-  created_at: string;
-}
+import { Contractor } from "@/lib/types/contractor";
 
 interface TableForContractorsProps {
   data: Contractor[];
