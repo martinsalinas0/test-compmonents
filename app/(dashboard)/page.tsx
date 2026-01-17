@@ -2,7 +2,7 @@
 
 const DashboardHomePage = () => {
   return (
-    <div className="p-6">
+    <div>
       DASHBOARD MAIN PAGE
       <h1>hi</h1>
     </div>

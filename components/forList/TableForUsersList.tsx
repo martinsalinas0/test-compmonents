@@ -16,12 +16,14 @@ export interface User {
 }
 
 // props for the component
-interface TableForListProps {
+interface TableForUsersPageListProps {
   data: User[];
 }
 
 // reusable table component
-const TableForList: React.FC<TableForListProps> = ({ data }) => {
+const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
+  data,
+}) => {
   const columns = ["Name", "Email", "Phone", "Role", "Status", "Created"];
 
   return (
@@ -65,4 +67,4 @@ const TableForList: React.FC<TableForListProps> = ({ data }) => {
   );
 };
 
-export default TableForList;
+export default TableForUsersPageList;
