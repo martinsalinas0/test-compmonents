@@ -27,43 +27,41 @@ const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
   const columns = ["Name", "Email", "Phone", "Role", "Status", "Created"];
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-background border border-cerulean-100">
-        <TableHeader columns={columns} />
-        <tbody>
-          {data.map((user) => (
-            <tr key={user.id} className="hover:bg-olive-50">
-              <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
-                {user.first_name} {user.last_name}
-              </td>
-              <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
-                {user.email}
-              </td>
-              <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
-                {user.phone}
-              </td>
-              <td className="border-b border-cerulean-50 px-6 py-4 text-sm">
-                <span
-                  className={`rounded-md px-2 py-1 text-xs font-medium ${user.role}`}
-                >
-                  {user.role.toUpperCase()}
-                </span>
-              </td>
-              <td className="border-b border-cerulean-50 px-6 py-4 text-sm">
-                <span
-                  className={`rounded-md px-2 py-1 text-xs font-medium ${user.is_active}`}
-                >
-                  {user.is_active ? "ACTIVE" : "INACTIVE"}
-                </span>
-              </td>
-              <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-pacific">
-                {user.created_at}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <table className="min-w-full bg-background border border-cerulean-100">
+      <TableHeader columns={columns} />
+      <tbody>
+        {data.map((user) => (
+          <tr key={user.id} className="hover:bg-olive-50">
+            <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
+              {user.first_name} {user.last_name}
+            </td>
+            <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
+              {user.email}
+            </td>
+            <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
+              {user.phone}
+            </td>
+            <td className="border-b border-cerulean-50 px-6 py-4 text-sm">
+              <span
+                className={`rounded-md px-2 py-1 text-xs font-medium ${user.role}`}
+              >
+                {user.role.toUpperCase()}
+              </span>
+            </td>
+            <td className="border-b border-cerulean-50 px-6 py-4 text-sm">
+              <span
+                className={`rounded-md px-2 py-1 text-xs font-medium ${user.is_active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+              >
+                {user.is_active ? "ACTIVE" : "INACTIVE"}
+              </span>
+            </td>
+            <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-pacific">
+              {new Date(user.created_at).toLocaleDateString()}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 

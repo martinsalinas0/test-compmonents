@@ -60,19 +60,19 @@ const data = {
       items: [
         {
           title: "All Users",
-          url: "/dashboard/admin/users",
+          url: "/admin/list/users",
         },
         {
           title: "Employees",
-          url: "/dashboard/admin/employees",
+          url: "/admin/list/employees",
         },
         {
           title: "Contractors",
-          url: "/dashboard/admin/users/list/contractors",
+          url: "/admin/list/contractors",
         },
         {
           title: "Customer",
-          url: "/dashboard/admin/customers",
+          url: "/admin/list/contractors",
         },
       ],
     },
@@ -80,7 +80,7 @@ const data = {
       title: "Jobs",
       url: "/dashboard/jobs",
       icon: Toolbox,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: "All Jobs",
