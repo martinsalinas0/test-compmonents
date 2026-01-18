@@ -2,6 +2,7 @@
 
 import React from "react";
 import TableHeader from "@/components/forList/TableHeader";
+import { Menu } from "lucide-react";
 
 // define a User type
 export interface User {
@@ -24,7 +25,15 @@ interface TableForUsersPageListProps {
 const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
   data,
 }) => {
-  const columns = ["Name", "Email", "Phone", "Role", "Status", "Created"];
+  const columns = [
+    "Name",
+    "Email",
+    "Phone",
+    "Role",
+    "Status",
+    "Created",
+    "...",
+  ];
 
   return (
     <table className="min-w-full bg-background border border-cerulean-100">
@@ -57,6 +66,9 @@ const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
             </td>
             <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-pacific">
               {new Date(user.created_at).toLocaleDateString()}
+            </td>
+            <td>
+              <Menu />
             </td>
           </tr>
         ))}

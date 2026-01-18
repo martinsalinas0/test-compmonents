@@ -3,9 +3,9 @@
 import TableForList from "@/components/forList/TableForUsersList";
 import { User } from "@/lib/types/user";
 import axios from "axios";
+import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
-// const users: User[] = [
 //   {
 //     id: "1",
 //     first_name: "Sarah",
@@ -76,10 +76,18 @@ const UsersListPage = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Users List</h1>
-      <div>add</div>
-      <div className="overflow-x-auto">
+    <div className="container mx-auto p-6">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold text-gray-800">Users List</h1>
+        <button
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          aria-label="Add new user"
+        >
+          <span>Add User</span>
+          <PlusCircle className="w-5 h-5" />
+        </button>
+      </div>
+      <div className="overflow-x-auto bg-white rounded-lg text-center shadow">
         <TableForList data={users} />
       </div>
     </div>
