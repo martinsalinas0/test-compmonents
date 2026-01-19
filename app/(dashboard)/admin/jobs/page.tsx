@@ -1,8 +1,11 @@
+//this is a grid view of the jobs in cards
+
 "use client";
 
 import JobCardComp from "@/components/cards/JobCards";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Link from "next/link";
 
 interface Jobs {
   id: string;
@@ -22,7 +25,7 @@ const AdminJobsPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/jobs/all")
+      .get("http://localhost:5000/api/v1/jobs/all")
       .then((response) => {
         setJobs(response.data.data);
         setLoading(false);
@@ -46,7 +49,12 @@ const AdminJobsPage = () => {
     <div className="p-6">
       <h1 className="text-2xl font-bold text-cerulean mb-6">Jobs</h1>
 
-      <p className="text-sm text-muted mb-4">Total jobs: {jobs.length}</p>
+      <p className="text-sm mb-4">Total jobs: {jobs.length}</p>
+      <p>
+        <button className="bg-amber-200 rounded-md p-1 mb-3">
+          <Link href="/admin/jobs/new">Add new job</Link>
+        </button>
+      </p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {jobs.map((job: Jobs) => (
