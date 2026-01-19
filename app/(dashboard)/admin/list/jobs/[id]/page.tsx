@@ -1,7 +1,225 @@
-import React from "react";
+"use client";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "next/navigation";
+import { Job } from "@/lib/types/jobs";
+import { Customer } from "@/lib/types/customers";
 
 const JobDetailPage = () => {
-  return <div> JobDetailPage</div>;
+  const params = useParams();
+  const jobId = params?.id as string;
+
+  const [job, setJob] = useState<Job | null>(null);
+  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!jobId) {
+      console.log("No jobId found");
+
+      return;
+    }
+
+    console.log("Fetching job:", jobId);
+
+    axios
+      .get(`http://localhost:5000/api/v1/jobs/${jobId}`)
+      .then((response) => {
+        console.log("Job Response:", response.data);
+        const jobData = response.data.data;
+        setJob(jobData);
+
+        // Fetch customer data using customer_id from job
+        if (jobData.customer_id) {
+          return axios.get(
+            `http://localhost:5000/api/v1/customers/${jobData.customer_id}`,
+          );
+        }
+      })
+      .then((customerResponse) => {
+        if (customerResponse) {
+          console.log("Customer Response:", customerResponse.data);
+          setCustomer(customerResponse.data.data);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [jobId]);
+
+  if (loading) {
+    return <div className="p-8">Loading job details...</div>;
+  }
+
+  if (error) {
+    return <div className="p-8 text-red-600">Error: {error}</div>;
+  }
+
+  if (!job) {
+    return <div className="p-8">Job not found</div>;
+  }
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  const formatDateTime = (dateString: string) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleString();
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-8">
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold mb-2">{job.title}</h1>
+        <div className="flex gap-4 items-center">
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-medium ${
+              job.status === "completed"
+                ? "bg-green-100 text-green-800"
+                : job.status === "cancelled"
+                  ? "bg-red-100 text-red-800"
+                  : job.status === "in_progress"
+                    ? "bg-blue-100 text-blue-800"
+                    : "bg-gray-100 text-gray-800"
+            }`}
+          >
+            {job.status}
+          </span>
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-medium ${
+              job.priority === "high"
+                ? "bg-red-100 text-red-800"
+                : job.priority === "medium"
+                  ? "bg-yellow-100 text-yellow-800"
+                  : "bg-green-100 text-green-800"
+            }`}
+          >
+            Priority: {job.priority}
+          </span>
+        </div>
+      </div>
+
+      {/* Customer Info */}
+      {customer && (
+        <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+          <h2 className="text-xl font-semibold mb-2">Customer Information</h2>
+          <div className="space-y-1">
+            <p className="text-gray-700">
+              <strong>Name:</strong> {customer.first_name} {customer.last_name}
+            </p>
+            <p className="text-gray-700">
+              <strong>Email:</strong> {customer.email}
+            </p>
+            <p className="text-gray-700">
+              <strong>Phone:</strong> {customer.phone}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Description */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Description</h2>
+        <p className="text-gray-700">{job.description}</p>
+      </div>
+
+      {/* Location */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Location</h2>
+        <p className="text-gray-700">{job.address}</p>
+        <p className="text-gray-700">
+          {job.city}, {job.state} {job.zip_code}
+        </p>
+      </div>
+
+      {/* Schedule */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Schedule</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-sm text-gray-600">Scheduled Date</p>
+            <p className="text-gray-900">{formatDate(job.scheduled_date)}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Scheduled Time</p>
+            <p className="text-gray-900">{job.scheduled_time || "N/A"}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Work Details */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Work Details</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-sm text-gray-600">Pay Type</p>
+            <p className="text-gray-900">{job.pay_type}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Hours Worked</p>
+            <p className="text-gray-900">{job.hours_worked || "N/A"}</p>
+          </div>
+          {job.started_at && (
+            <div>
+              <p className="text-sm text-gray-600">Started At</p>
+              <p className="text-gray-900">{formatDateTime(job.started_at)}</p>
+            </div>
+          )}
+          {job.completed_at && (
+            <div>
+              <p className="text-sm text-gray-600">Completed At</p>
+              <p className="text-gray-900">
+                {formatDateTime(job.completed_at)}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Cancellation Info */}
+      {job.cancelled_at && (
+        <div className="mb-6 p-4 bg-red-50 rounded-lg">
+          <h2 className="text-xl font-semibold mb-2 text-red-800">
+            Cancellation Details
+          </h2>
+          <div className="space-y-2">
+            <p className="text-sm text-gray-600">
+              Cancelled At:{" "}
+              <span className="text-gray-900">
+                {formatDateTime(job.cancelled_at)}
+              </span>
+            </p>
+            <p className="text-sm text-gray-600">
+              Cancelled By:{" "}
+              <span className="text-gray-900">{job.cancelled_by}</span>
+            </p>
+            {job.cancellation_reason && (
+              <p className="text-sm text-gray-600">
+                Reason:{" "}
+                <span className="text-gray-900">{job.cancellation_reason}</span>
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Metadata */}
+      <div className="mb-6 text-sm text-gray-600">
+        <p>
+          Created: {formatDateTime(job.created_at)} by {job.created_by}
+        </p>
+        <p>Last Updated: {formatDateTime(job.updated_at)}</p>
+      </div>
+    </div>
+  );
 };
 
 export default JobDetailPage;
