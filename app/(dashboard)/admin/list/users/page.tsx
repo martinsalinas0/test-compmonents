@@ -4,6 +4,7 @@ import TableForList from "@/components/forList/TableForUsersList";
 import { User } from "@/lib/types/user";
 import axios from "axios";
 import { PlusCircle } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 //   {
@@ -84,7 +85,10 @@ const UsersListPage = () => {
           aria-label="Add new user"
         >
           <span>Add User</span>
-          <PlusCircle className="w-5 h-5" />
+
+          <Link href="/admin/list/users/new/">
+            <PlusCircle className="w-5 h-5" />
+          </Link>
         </button>
       </div>
       <div className="overflow-x-auto bg-white rounded-lg text-center shadow">
