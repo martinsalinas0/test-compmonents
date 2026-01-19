@@ -3,6 +3,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { Input } from "../ui/input";
 
 const AddUserForm: React.FC = () => {
   //
@@ -74,7 +75,7 @@ const AddUserForm: React.FC = () => {
                   <label className="block text-sm font-medium text-cerulean mb-2">
                     First Name <span className="text-red-500">*</span>
                   </label>
-                  <input
+                  <Input
                     type="text"
                     className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                     value={first_name}
@@ -88,7 +89,7 @@ const AddUserForm: React.FC = () => {
                   <label className="block text-sm font-medium text-cerulean mb-2">
                     Last Name <span className="text-red-500">*</span>
                   </label>
-                  <input
+                  <Input
                     type="text"
                     className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                     value={last_name}
@@ -102,7 +103,7 @@ const AddUserForm: React.FC = () => {
                 <label className="block text-sm font-medium text-cerulean mb-2">
                   Email <span className="text-red-500">*</span>
                 </label>
-                <input
+                <Input
                   type="email"
                   className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                   value={email}
@@ -115,7 +116,7 @@ const AddUserForm: React.FC = () => {
                 <label className="block text-sm font-medium text-cerulean mb-2">
                   Password <span className="text-red-500">*</span>
                 </label>
-                <input
+                <Input
                   type="password"
                   className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                   value={password}
@@ -128,7 +129,7 @@ const AddUserForm: React.FC = () => {
                 <label className="block text-sm font-medium text-cerulean mb-2">
                   Phone
                 </label>
-                <input
+                <Input
                   type="tel"
                   className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                   value={phone}
@@ -141,7 +142,7 @@ const AddUserForm: React.FC = () => {
                 <label className="block text-sm font-medium text-cerulean mb-2">
                   Address
                 </label>
-                <input
+                <Input
                   type="text"
                   className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                   value={address}
@@ -154,7 +155,7 @@ const AddUserForm: React.FC = () => {
                   <label className="block text-sm font-medium text-cerulean mb-2">
                     City
                   </label>
-                  <input
+                  <Input
                     type="text"
                     className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                     value={city}
@@ -166,7 +167,7 @@ const AddUserForm: React.FC = () => {
                   <label className="block text-sm font-medium text-cerulean mb-2">
                     State
                   </label>
-                  <input
+                  <Input
                     type="text"
                     className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                     value={state}
@@ -180,7 +181,7 @@ const AddUserForm: React.FC = () => {
                   <label className="block text-sm font-medium text-cerulean mb-2">
                     Zip Code
                   </label>
-                  <input
+                  <Input
                     type="text"
                     className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                     value={zipCode}
@@ -193,7 +194,7 @@ const AddUserForm: React.FC = () => {
                 <label className="block text-sm font-medium text-cerulean mb-2">
                   Notes <span className="text-red-500">*</span>
                 </label>
-                <input
+                <Input
                   type="text"
                   className="w-full px-4 py-2 mb-6 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                   value={notes}
@@ -204,7 +205,7 @@ const AddUserForm: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-cerulean-100">
                 <button
                   type="button"
-                  className="px-6 py-2 bg-white border border-cerulean-100 text-cerulean rounded-md hover:bg-olive-50 transition-colors"
+                  className="px-6 py-2 bg-white border border-cerulean-100 text-cerulean rounded-md hover:bg-red-100 transition-colors hover:font-bold"
                   onClick={() => router.push("/admin/list/users")}
                   disabled={loading}
                 >
