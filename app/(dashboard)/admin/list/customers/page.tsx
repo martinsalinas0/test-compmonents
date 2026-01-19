@@ -5,8 +5,7 @@ import { Customer } from "@/lib/types/customers";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const URL = process.env.NEXT_PUBLIC_API_URL_PROSS;
-
+const URL = "http://localhost:5000/api/v1";
 const CustomersListPage = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
 
