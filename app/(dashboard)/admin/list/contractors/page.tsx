@@ -5,7 +5,7 @@ import { Contractor } from "@/lib/types/contractor";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const URL = process.env.NEXT_PUBLIC_API_URL_PROSS;
+const URL = "http://localhost:5000/api/v1";
 
 const ContractorsListPage = () => {
   const [contractors, setContractors] = useState<Contractor[]>([]);
