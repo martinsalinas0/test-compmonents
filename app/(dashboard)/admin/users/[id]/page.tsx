@@ -6,7 +6,7 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const UserDetailsPage = () => {
+const SingleUserPage = () => {
   const params = useParams();
   const userId = params?.id as string | undefined;
 
@@ -51,4 +51,4 @@ const UserDetailsPage = () => {
   );
 };
 
-export default UserDetailsPage;
+export default SingleUserPage;

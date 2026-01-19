@@ -2,7 +2,8 @@
 
 import React from "react";
 import TableHeader from "@/components/forList/TableHeader";
-import { Menu } from "lucide-react";
+import { Info } from "lucide-react";
+import Link from "next/link";
 
 // define a User type
 export interface User {
@@ -68,7 +69,9 @@ const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
               {new Date(user.created_at).toLocaleDateString()}
             </td>
             <td>
-              <Menu />
+              <Link href={`/admin/list/users/${user.id}`}>
+                <Info />
+              </Link>
             </td>
           </tr>
         ))}

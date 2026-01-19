@@ -1,19 +1,8 @@
 "use client";
 
+import { User } from "@/lib/types/user";
 import { Ellipsis } from "lucide-react";
 import React from "react";
-
-// User type definition
-export interface User {
-  id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  phone: string;
-  role: string;
-  is_active: boolean;
-  created_at: string;
-}
 
 interface UserProfileCardProps {
   user: User;
@@ -40,6 +29,10 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ user }) => {
               <p className="text-pacific text-sm mt-1">
                 {user.role.toUpperCase()}
               </p>
+
+              <p className="text-pacific font-semibold text-xs mt-1">
+                {user.is_active ? "active" : "inactive"}
+              </p>
             </div>
           </div>
 
@@ -55,6 +48,13 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ user }) => {
                     Email
                   </label>
                   <p className="text-cerulean">{user.email}</p>
+                </div>
+
+                <div>
+                  <label className="text-sm text-pacific font-medium">
+                    Password
+                  </label>
+                  <p className="text-cerulean">•••••••</p>
                 </div>
 
                 <div>
@@ -103,6 +103,33 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ user }) => {
                       day: "numeric",
                     })}
                   </p>
+                </div>
+                <div>
+                  <span>
+                    <label className="text-sm text-pacific font-medium">
+                      last updated at
+                    </label>
+                    <p>
+                      {new Date(user.updated_at).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                  </span>
+                  <span>
+                    <label className="text-sm text-pacific font-medium">
+                      last login at
+                    </label>
+                    <p>
+                      {" "}
+                      {new Date(user.last_login).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                  </span>
                 </div>
               </div>
             </div>
