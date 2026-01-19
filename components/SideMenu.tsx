@@ -2,11 +2,8 @@
 
 import * as React from "react";
 import {
-  AudioWaveform,
   BarChartHorizontal,
-  Command,
   Frame,
-  GalleryVerticalEnd,
   Landmark,
   Map,
   PieChart,
