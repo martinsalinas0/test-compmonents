@@ -44,7 +44,7 @@ const AddUserForm: React.FC = () => {
     try {
       await axios.post("http://localhost:5000/api/v1/users/new", userData);
       console.log(userData);
-      router.push("/users");
+      router.push("/admin/list/users");
     } catch (error) {
       console.error("Error creating user:", error);
       setError("Failed to create user. Please try again.");

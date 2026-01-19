@@ -80,16 +80,15 @@ const UsersListPage = () => {
     <div className="container mx-auto p-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold text-gray-800">Users List</h1>
-        <button
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          aria-label="Add new user"
-        >
-          <span>Add User</span>
 
-          <Link href="/admin/list/users/new/">
-            <PlusCircle className="w-5 h-5" />
-          </Link>
-        </button>
+        <Link href="/admin/list/users/new/">
+          <button
+            className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-900 transition-colors hover:cursor-pointer"
+            aria-label="Add new user"
+          >
+            <PlusCircle className="w-5 h-5" /> <span>Add User</span>
+          </button>
+        </Link>
       </div>
       <div className="overflow-x-auto bg-white rounded-lg text-center shadow">
         <TableForList data={users} />
