@@ -30,7 +30,6 @@ const JobDetailPage = () => {
         const jobData = response.data.data;
         setJob(jobData);
 
-        // Fetch customer data using customer_id from job
         if (jobData.customer_id) {
           return axios.get(
             `http://localhost:5000/api/v1/customers/${jobData.customer_id}`,
@@ -79,7 +78,6 @@ const JobDetailPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-8">
-      {/* Header */}
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2 text-cerulean">{job.title}</h1>
         <div className="flex gap-4 items-center">
@@ -109,8 +107,6 @@ const JobDetailPage = () => {
           </span>
         </div>
       </div>
-
-      {/* Customer Info */}
       {customer && (
         <div className="mb-6 p-4 bg-pacific-50 rounded-lg border border-pacific-200">
           <h2 className="text-xl font-semibold mb-2 text-pacific-800">
@@ -129,8 +125,6 @@ const JobDetailPage = () => {
           </div>
         </div>
       )}
-
-      {/* Description */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2 text-cerulean-800">
           Description
@@ -138,7 +132,6 @@ const JobDetailPage = () => {
         <p className="text-cerulean-700">{job.description}</p>
       </div>
 
-      {/* Location */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2 text-cerulean-800">
           Location
@@ -149,7 +142,6 @@ const JobDetailPage = () => {
         </p>
       </div>
 
-      {/* Schedule */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2 text-cerulean-800">
           Schedule
@@ -168,7 +160,6 @@ const JobDetailPage = () => {
         </div>
       </div>
 
-      {/* Work Details */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2 text-cerulean-800">
           Work Details
@@ -201,7 +192,6 @@ const JobDetailPage = () => {
         </div>
       </div>
 
-      {/* Cancellation Info */}
       {job.cancelled_at && (
         <div className="mb-6 p-4 bg-yarrow-50 rounded-lg border border-yarrow-200">
           <h2 className="text-xl font-semibold mb-2 text-yarrow-800">
@@ -230,7 +220,6 @@ const JobDetailPage = () => {
         </div>
       )}
 
-      {/* Metadata */}
       <div className="mb-6 text-sm text-pacific-600">
         <p>
           Created: {formatDateTime(job.created_at)} by {job.created_by}

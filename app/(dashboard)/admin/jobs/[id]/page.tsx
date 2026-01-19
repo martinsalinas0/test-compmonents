@@ -99,14 +99,12 @@ const SingleJobPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-8 space-y-10">
-      {/* ================= Page Action Bar ================= */}
       <div className="sticky top-0 z-10 mb-6">
         <div
           className="max-w-4xl mx-auto px-8 py-3
                   bg-card border-b border-border
                   flex items-center justify-between"
         >
-          {/* Left actions */}
           <div className="flex items-center gap-4">
             <button
               type="button"
@@ -126,9 +124,7 @@ const SingleJobPage = () => {
             <span className="text-xs text-muted-foreground">Job Details</span>
           </div>
 
-          {/* Right actions */}
           <div className="flex items-center gap-3">
-            {/* Change Status */}
             <button
               className="
           inline-flex items-center gap-2
@@ -142,7 +138,6 @@ const SingleJobPage = () => {
               Change Status
             </button>
 
-            {/* More actions */}
             <button
               className="
           inline-flex items-center gap-2
