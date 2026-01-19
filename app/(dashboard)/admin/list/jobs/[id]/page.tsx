@@ -18,7 +18,6 @@ const JobDetailPage = () => {
   useEffect(() => {
     if (!jobId) {
       console.log("No jobId found");
-
       return;
     }
 
@@ -53,15 +52,19 @@ const JobDetailPage = () => {
   }, [jobId]);
 
   if (loading) {
-    return <div className="p-8">Loading job details...</div>;
+    return (
+      <div className="p-6 text-pacific justify-center text-center font-extrabold text-4xl">
+        Loading job details...
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="p-8 text-red-600">Error: {error}</div>;
+    return <div className="p-6 text-destructive">Error: {error}</div>;
   }
 
   if (!job) {
-    return <div className="p-8">Job not found</div>;
+    return <div className="p-6 text-pacific">Job not found</div>;
   }
 
   const formatDate = (dateString: string) => {
@@ -78,17 +81,17 @@ const JobDetailPage = () => {
     <div className="max-w-4xl mx-auto p-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">{job.title}</h1>
+        <h1 className="text-3xl font-bold mb-2 text-cerulean">{job.title}</h1>
         <div className="flex gap-4 items-center">
           <span
             className={`px-3 py-1 rounded-full text-sm font-medium ${
               job.status === "completed"
-                ? "bg-green-100 text-green-800"
+                ? "bg-olive-100 text-olive-800"
                 : job.status === "cancelled"
-                  ? "bg-red-100 text-red-800"
+                  ? "bg-yarrow-100 text-yarrow-800"
                   : job.status === "in_progress"
-                    ? "bg-blue-100 text-blue-800"
-                    : "bg-gray-100 text-gray-800"
+                    ? "bg-pacific-100 text-pacific-800"
+                    : "bg-cerulean-100 text-cerulean-800"
             }`}
           >
             {job.status}
@@ -96,10 +99,10 @@ const JobDetailPage = () => {
           <span
             className={`px-3 py-1 rounded-full text-sm font-medium ${
               job.priority === "high"
-                ? "bg-red-100 text-red-800"
+                ? "bg-yarrow-200 text-yarrow-900"
                 : job.priority === "medium"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : "bg-green-100 text-green-800"
+                  ? "bg-pacific-200 text-pacific-900"
+                  : "bg-olive-200 text-olive-900"
             }`}
           >
             Priority: {job.priority}
@@ -109,16 +112,18 @@ const JobDetailPage = () => {
 
       {/* Customer Info */}
       {customer && (
-        <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-          <h2 className="text-xl font-semibold mb-2">Customer Information</h2>
+        <div className="mb-6 p-4 bg-pacific-50 rounded-lg border border-pacific-200">
+          <h2 className="text-xl font-semibold mb-2 text-pacific-800">
+            Customer Information
+          </h2>
           <div className="space-y-1">
-            <p className="text-gray-700">
+            <p className="text-pacific-700">
               <strong>Name:</strong> {customer.first_name} {customer.last_name}
             </p>
-            <p className="text-gray-700">
+            <p className="text-pacific-700">
               <strong>Email:</strong> {customer.email}
             </p>
-            <p className="text-gray-700">
+            <p className="text-pacific-700">
               <strong>Phone:</strong> {customer.phone}
             </p>
           </div>
@@ -127,56 +132,68 @@ const JobDetailPage = () => {
 
       {/* Description */}
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Description</h2>
-        <p className="text-gray-700">{job.description}</p>
+        <h2 className="text-xl font-semibold mb-2 text-cerulean-800">
+          Description
+        </h2>
+        <p className="text-cerulean-700">{job.description}</p>
       </div>
 
       {/* Location */}
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Location</h2>
-        <p className="text-gray-700">{job.address}</p>
-        <p className="text-gray-700">
+        <h2 className="text-xl font-semibold mb-2 text-cerulean-800">
+          Location
+        </h2>
+        <p className="text-cerulean-700">{job.address}</p>
+        <p className="text-cerulean-700">
           {job.city}, {job.state} {job.zip_code}
         </p>
       </div>
 
       {/* Schedule */}
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Schedule</h2>
+        <h2 className="text-xl font-semibold mb-2 text-cerulean-800">
+          Schedule
+        </h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-gray-600">Scheduled Date</p>
-            <p className="text-gray-900">{formatDate(job.scheduled_date)}</p>
+            <p className="text-sm text-pacific-600">Scheduled Date</p>
+            <p className="text-cerulean-900">
+              {formatDate(job.scheduled_date)}
+            </p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Scheduled Time</p>
-            <p className="text-gray-900">{job.scheduled_time || "N/A"}</p>
+            <p className="text-sm text-pacific-600">Scheduled Time</p>
+            <p className="text-cerulean-900">{job.scheduled_time || "N/A"}</p>
           </div>
         </div>
       </div>
 
       {/* Work Details */}
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Work Details</h2>
+        <h2 className="text-xl font-semibold mb-2 text-cerulean-800">
+          Work Details
+        </h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-gray-600">Pay Type</p>
-            <p className="text-gray-900">{job.pay_type}</p>
+            <p className="text-sm text-pacific-600">Pay Type</p>
+            <p className="text-cerulean-900">{job.pay_type}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Hours Worked</p>
-            <p className="text-gray-900">{job.hours_worked || "N/A"}</p>
+            <p className="text-sm text-pacific-600">Hours Worked</p>
+            <p className="text-cerulean-900">{job.hours_worked || "N/A"}</p>
           </div>
           {job.started_at && (
             <div>
-              <p className="text-sm text-gray-600">Started At</p>
-              <p className="text-gray-900">{formatDateTime(job.started_at)}</p>
+              <p className="text-sm text-pacific-600">Started At</p>
+              <p className="text-cerulean-900">
+                {formatDateTime(job.started_at)}
+              </p>
             </div>
           )}
           {job.completed_at && (
             <div>
-              <p className="text-sm text-gray-600">Completed At</p>
-              <p className="text-gray-900">
+              <p className="text-sm text-pacific-600">Completed At</p>
+              <p className="text-cerulean-900">
                 {formatDateTime(job.completed_at)}
               </p>
             </div>
@@ -186,25 +203,27 @@ const JobDetailPage = () => {
 
       {/* Cancellation Info */}
       {job.cancelled_at && (
-        <div className="mb-6 p-4 bg-red-50 rounded-lg">
-          <h2 className="text-xl font-semibold mb-2 text-red-800">
+        <div className="mb-6 p-4 bg-yarrow-50 rounded-lg border border-yarrow-200">
+          <h2 className="text-xl font-semibold mb-2 text-yarrow-800">
             Cancellation Details
           </h2>
           <div className="space-y-2">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-yarrow-700">
               Cancelled At:{" "}
-              <span className="text-gray-900">
+              <span className="text-yarrow-900">
                 {formatDateTime(job.cancelled_at)}
               </span>
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-yarrow-700">
               Cancelled By:{" "}
-              <span className="text-gray-900">{job.cancelled_by}</span>
+              <span className="text-yarrow-900">{job.cancelled_by}</span>
             </p>
             {job.cancellation_reason && (
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-yarrow-700">
                 Reason:{" "}
-                <span className="text-gray-900">{job.cancellation_reason}</span>
+                <span className="text-yarrow-900">
+                  {job.cancellation_reason}
+                </span>
               </p>
             )}
           </div>
@@ -212,7 +231,7 @@ const JobDetailPage = () => {
       )}
 
       {/* Metadata */}
-      <div className="mb-6 text-sm text-gray-600">
+      <div className="mb-6 text-sm text-pacific-600">
         <p>
           Created: {formatDateTime(job.created_at)} by {job.created_by}
         </p>

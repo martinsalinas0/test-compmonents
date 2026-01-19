@@ -1,5 +1,6 @@
 import React from "react";
 import TableHeader from "./TableHeader";
+import Link from "next/link";
 
 interface Job {
   id: string;
@@ -23,7 +24,7 @@ const TablesJobList: React.FC<TableJobListProps> = ({ data }) => {
           {data.map((job) => (
             <tr key={job.id} className="">
               <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
-                {job.id}
+                <Link href={`/admin/jobs/${job.id}`}>{job.id}</Link>
               </td>
               <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-center text-cerulean">
                 {job.title}
