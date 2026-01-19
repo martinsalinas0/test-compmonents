@@ -29,7 +29,8 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "test-data/contactsapi.js"
+    "test-data/contactsapi.js",
+    "app/(dashboard)/admin/list/financials/revenue/page.tsx"
   ],
   "exclude": ["node_modules"]
 }

@@ -34,28 +34,12 @@ const data = {
     email: "martin@prossfora.com",
     avatar: "/avatar/logo.png",
   },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
+
   //section titles
   navMain: [
     {
       title: "Users",
-      url: "#",
+      url: "/admin/list",
       icon: Users,
       items: [
         {
@@ -78,21 +62,21 @@ const data = {
     },
     {
       title: "Jobs",
-      url: "/dashboard/jobs",
+      url: "",
       icon: Toolbox,
       isActive: false,
       items: [
         {
           title: "All Jobs",
-          url: "/dashboard/admin/list/jobs",
+          url: "/admin/list/jobs",
         },
         {
           title: "Active Jobs",
-          url: "/dashboard/jobs/list/active",
+          url: "/admin/list/jobs/active",
         },
         {
           title: "Completed Jobs",
-          url: "/dashboard/jobs/completed",
+          url: "/admin/list/jobs/complete",
         },
       ],
     },
@@ -104,19 +88,19 @@ const data = {
       items: [
         {
           title: "Transactions",
-          url: "#",
+          url: "/admin/list/financials/transactions",
         },
         {
           title: "Payouts",
-          url: "#",
+          url: "/admin/list/financials/payouts",
         },
         {
           title: "Revenue",
-          url: "#",
+          url: "/admin/list/financials/revenue",
         },
         {
           title: "Invoices",
-          url: "#",
+          url: "/admin/list/financials/invoices",
         },
       ],
     },
