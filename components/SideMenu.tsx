@@ -23,6 +23,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { url } from "inspector";
 
 const data = {
   user: {
@@ -63,7 +64,7 @@ const data = {
       isActive: false,
       items: [
         {
-          title: "All Jobs",
+          title: "All Jobs List",
           url: "/admin/list/jobs",
         },
         {
@@ -73,6 +74,10 @@ const data = {
         {
           title: "Completed Jobs",
           url: "/admin/list/jobs/complete",
+        },
+        {
+          title: "All jobs Cards",
+          url: "/admin/jobs",
         },
       ],
     },

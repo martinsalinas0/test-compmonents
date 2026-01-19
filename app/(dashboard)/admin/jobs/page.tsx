@@ -6,17 +6,7 @@ import JobCardComp from "@/components/cards/JobCards";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-
-interface Jobs {
-  id: string;
-  title: string;
-  description: string;
-  status: string;
-  city: string;
-  state: string;
-  contractor_id: string | null;
-  customer_id: string;
-}
+import { Job } from "@/lib/types/jobs";
 
 const AdminJobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -57,7 +47,7 @@ const AdminJobsPage = () => {
       </p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {jobs.map((job: Jobs) => (
+        {jobs.map((job: Job) => (
           <JobCardComp key={job.id} job={job} />
         ))}
       </div>
