@@ -6,7 +6,7 @@ interface TableHeaderProps {
 
 const TableHeader = ({ columns }: TableHeaderProps) => {
   return (
-    <thead className="bg-cerulean-50">
+    <thead className="bg-cerulean-50 uppercase">
       <tr>
         {columns.map((label) => (
           <th
