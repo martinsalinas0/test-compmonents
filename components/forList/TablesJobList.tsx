@@ -10,27 +10,18 @@ interface TableJobsForListProps {
 }
 
 const TableJobsForList: React.FC<TableJobsForListProps> = ({ data }) => {
-  const columns = ["ID", "Title", "Status", "Customer", "City"];
+  const columns = ["Title", "Status", "Customer", "City", "ID"];
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-cerulean-200 bg-background shadow-sm">
+    <div className="overflow-x-auto rounded-xl text-center border border-cerulean-200 bg-background shadow-sm">
       <table className="min-w-full border-collapse">
         <TableHeader columns={columns} />
 
         <tbody>
           {data.map((job) => (
             <tr key={job.id} className="transition hover:bg-cerulean-50">
-              <td className="border-b border-cerulean-100 px-6 py-4 text-sm font-medium text-cerulean-900">
-                <Link
-                  href={`/admin/jobs/${job.id}`}
-                  className="hover:underline"
-                >
-                  {job.id}
-                </Link>
-              </td>
-
               <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-800">
-                {job.title}
+                <Link href={`/admin/jobs/${job.id}`}>{job.title}</Link>
               </td>
 
               <td className="border-b border-cerulean-100 px-6 py-4 text-sm uppercase tracking-wide text-cerulean-700">
@@ -49,6 +40,15 @@ const TableJobsForList: React.FC<TableJobsForListProps> = ({ data }) => {
 
               <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-700">
                 {job.city ?? "—"}
+              </td>
+
+              <td className="border-b border-cerulean-100 px-6 py-4 text-sm font-medium text-cerulean-900">
+                <Link
+                  href={`/admin/jobs/${job.id}`}
+                  className="hover:underline"
+                >
+                  {job.id}
+                </Link>
               </td>
             </tr>
           ))}
