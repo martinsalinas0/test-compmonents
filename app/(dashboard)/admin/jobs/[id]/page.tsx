@@ -3,62 +3,32 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import { Job } from "@/lib/types/jobs";
-import { Customer } from "@/lib/types/customers";
-import { Contractor } from "@/lib/types/contractor";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react";
+import { JobJoined } from "@/lib/types/jobsJoined";
+import Link from "next/link";
 
 const SingleJobPage = () => {
-  //
-  //
-  //
-
   const router = useRouter();
-
   const params = useParams();
   const jobId = params?.id as string;
 
-  const [job, setJob] = useState<Job | null>(null);
-  const [customer, setCustomer] = useState<Customer | null>(null);
-  const [contractor, setContractor] = useState<Contractor | null>(null);
+  const [job, setJob] = useState<JobJoined | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!jobId) {
-      console.log("No jobId found");
-      return;
-    }
+    if (!jobId) return;
 
-    const fetchData = async () => {
+    const fetchJob = async () => {
       try {
-        console.log("Fetching job:", jobId);
-        const jobResponse = await axios.get(
+        const res = await axios.get(
           `http://localhost:5000/api/v1/jobs/${jobId}`,
         );
-
-        const jobData = jobResponse.data.data;
-        console.log(jobData);
-        setJob(jobData);
-
-        if (jobData.customer_id) {
-          const customerResponse = await axios.get(
-            `http://localhost:5000/api/v1/customers/${jobData.customer_id}`,
-          );
-          console.log("Customer Response:", customerResponse);
-          setCustomer(customerResponse.data.data);
-        }
-
-        if (jobData.contractor_id) {
-          const contractorResponse = await axios.get(
-            `http://localhost:5000/api/v1/contractors/${jobData.contractor_id}`,
-          );
-          console.log("Contractor Response:", contractorResponse);
-          setContractor(contractorResponse.data.data);
-        }
+        setJob(res.data.data);
       } catch (err: unknown) {
-        console.error("Error fetching data:", err);
-        if (err instanceof Error) {
+        if (axios.isAxiosError(err)) {
+          setError(err.response?.data?.message ?? err.message);
+        } else if (err instanceof Error) {
           setError(err.message);
         } else {
           setError("An unexpected error occurred");
@@ -68,12 +38,12 @@ const SingleJobPage = () => {
       }
     };
 
-    fetchData();
+    fetchJob();
   }, [jobId]);
 
   if (loading) {
     return (
-      <div className="p-6 text-pacific justify-center text-center font-extrabold text-4xl">
+      <div className="p-6 text-center text-4xl font-extrabold text-pacific">
         Loading job details...
       </div>
     );
@@ -87,68 +57,34 @@ const SingleJobPage = () => {
     return <div className="p-6 text-pacific">Job not found</div>;
   }
 
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleDateString();
-  };
+  const formatDate = (date?: string | null) =>
+    date ? new Date(date).toLocaleDateString() : "N/A";
 
-  const formatDateTime = (dateString: string) => {
-    if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleString();
-  };
+  const formatDateTime = (date?: string | null) =>
+    date ? new Date(date).toLocaleString() : "N/A";
 
   return (
-    <div className="max-w-4xl mx-auto p-8 space-y-10">
+    <div className="mx-auto max-w-4xl space-y-10 p-8">
+      {/* Top bar */}
       <div className="sticky top-0 z-10 mb-6">
-        <div
-          className="max-w-4xl mx-auto px-8 py-3
-                  bg-card border-b border-border
-                  flex items-center justify-between"
-        >
+        <div className="mx-auto flex max-w-4xl items-center justify-between border-b border-border bg-card px-8 py-3">
           <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={() => router.back()}
-              className="
-          inline-flex items-center gap-2
-          text-sm font-medium
-          text-cerulean-700
-          hover:text-cerulean-900
-          transition
-        "
+              className="inline-flex items-center gap-2 text-sm font-medium text-cerulean-700 transition hover:text-cerulean-900"
             >
               <ArrowLeft className="h-4 w-4" />
               Back
             </button>
-
             <span className="text-xs text-muted-foreground">Job Details</span>
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              className="
-          inline-flex items-center gap-2
-          rounded-md border border-cerulean-300
-          px-3 py-1.5 text-sm font-medium
-          text-cerulean-800
-          hover:bg-cerulean-50
-          transition
-        "
-            >
+            <button className="rounded-md border border-cerulean-300 px-3 py-1.5 text-sm font-medium text-cerulean-800 transition hover:bg-cerulean-50">
               Change Status
             </button>
-
-            <button
-              className="
-          inline-flex items-center gap-2
-          rounded-md border border-border
-          px-3 py-1.5 text-sm font-medium
-          text-muted-foreground
-          hover:text-foreground
-          hover:bg-muted
-          transition
-        "
-            >
+            <button className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground">
               More
             </button>
           </div>
@@ -156,11 +92,17 @@ const SingleJobPage = () => {
       </div>
 
       <header className="space-y-4">
-        <h1 className="text-5xl font-bold  text-cerulean-900">{job.title}</h1>
+        <h1 className="text-5xl font-bold text-cerulean-900">{job.title}</h1>
 
         <div className="flex flex-wrap gap-4 text-sm">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-cerulean-300">
-            <span className="text-pacific-600 font-medium uppercase tracking-wide">
+          <span className="inline-flex items-center gap-2 rounded-md border border-cerulean-300 px-3 py-1">
+            <span className="font-medium uppercase tracking-wide text-pacific-600">
+              ID:
+            </span>
+            <span className="font-semibold text-cerulean-900">{job.id}</span>
+          </span>
+          <span className="inline-flex items-center gap-2 rounded-md border border-cerulean-300 px-3 py-1">
+            <span className="font-medium uppercase tracking-wide text-pacific-600">
               Status:
             </span>
             <span className="font-semibold text-cerulean-900">
@@ -168,8 +110,8 @@ const SingleJobPage = () => {
             </span>
           </span>
 
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-olive-300">
-            <span className="text-olive-600 font-medium uppercase tracking-wide">
+          <span className="inline-flex items-center gap-2 rounded-md border border-olive-300 px-3 py-1">
+            <span className="font-medium uppercase tracking-wide text-olive-600">
               Priority:
             </span>
             <span className="font-semibold text-cerulean-900">
@@ -179,69 +121,92 @@ const SingleJobPage = () => {
         </div>
       </header>
 
-      {customer && (
+      {job.customer && (
         <section className="rounded-lg border border-pacific-300 bg-card p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-pacific-800 mb-4 flex items-center gap-2">
-            {/* <span className="h-2 w-2 rounded-full bg-pacific-900" /> */}
-            -Customer Information-
+          <h2 className="mb-4 flex justify-between items-center text-xl font-semibold text-pacific-800">
+            <span>Customer Information</span>
+
+            <Link
+              href={`/admin/customers/${job.customer_id}`}
+              className=" text-cerulean-700 hover:underline"
+              aria-label="Go to customer details"
+            >
+              <Info className="h-6 w-6" />
+            </Link>
           </h2>
 
           <div className="space-y-2 text-sm text-pacific-700">
             <p>
               <span className="font-medium text-pacific-900">Name:</span>{" "}
-              {customer.first_name} {customer.last_name}
+              {job.customer.first_name} {job.customer.last_name}
             </p>
-            <p>
-              <span className="font-medium text-pacific-900">Email:</span>{" "}
-              {customer.email}
-            </p>
-            <p>
-              <span className="font-medium text-pacific-900">Phone:</span>{" "}
-              {customer.phone}
-            </p>
+            {job.customer.email && (
+              <p>
+                <span className="font-medium text-pacific-900">Email:</span>{" "}
+                {job.customer.email}
+              </p>
+            )}
+            {job.customer.phone && (
+              <p>
+                <span className="font-medium text-pacific-900">Phone:</span>{" "}
+                {job.customer.phone}
+              </p>
+            )}
           </div>
         </section>
       )}
 
-      {contractor && (
+      {job.contractor && (
         <section className="rounded-lg border border-cerulean-300 bg-card p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-cerulean-800 mb-4 flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-cerulean-500" />
-            Contractor Information
-          </h2>
+          <h2 className="mb-4 flex justify-between items-center text-xl font-semibold text-pacific-800">
+            <span>Contractor Information</span>
 
+            <Link
+              href={`/admin/contractors/${job.customer.id}`}
+              className=" text-cerulean-700 hover:underline"
+              aria-label="Go to customer details"
+            >
+              <Info className="h-6 w-6" />
+            </Link>
+          </h2>
           <div className="space-y-2 text-sm text-cerulean-700">
             <p>
               <span className="font-medium text-cerulean-900">Name:</span>{" "}
-              {contractor.first_name} {contractor.last_name}
+              {job.contractor.first_name} {job.contractor.last_name}
             </p>
-            <p>
-              <span className="font-medium text-cerulean-900">Company:</span>{" "}
-              {contractor.company_name}
-            </p>
-            <p>
-              <span className="font-medium text-cerulean-900">Email:</span>{" "}
-              {contractor.email}
-            </p>
-            <p>
-              <span className="font-medium text-cerulean-900">Phone:</span>{" "}
-              {contractor.phone}
-            </p>
+            {job.contractor.company_name && (
+              <p>
+                <span className="font-medium text-cerulean-900">Company:</span>{" "}
+                {job.contractor.company_name}
+              </p>
+            )}
+            {job.contractor.email && (
+              <p>
+                <span className="font-medium text-cerulean-900">Email:</span>{" "}
+                {job.contractor.email}
+              </p>
+            )}
+            {job.contractor.phone && (
+              <p>
+                <span className="font-medium text-cerulean-900">Phone:</span>{" "}
+                {job.contractor.phone}
+              </p>
+            )}
           </div>
         </section>
       )}
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-cerulean-800 border-b border-cerulean-200 pb-1">
+        <h2 className="border-b border-cerulean-200 pb-1 text-lg font-semibold text-cerulean-800">
           Description
         </h2>
-        <p className=" text-muted-foreground leading-relaxed">
+        <p className="leading-relaxed text-muted-foreground">
           {job.description}
         </p>
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-cerulean-800 border-b border-cerulean-200 pb-1">
+        <h2 className="border-b border-cerulean-200 pb-1 text-lg font-semibold text-cerulean-800">
           Location
         </h2>
         <p className="text-sm text-muted-foreground">{job.address}</p>
@@ -250,7 +215,7 @@ const SingleJobPage = () => {
         </p>
       </section>
 
-      <section className="grid sm:grid-cols-2 gap-8">
+      <section className="grid gap-8 sm:grid-cols-2">
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-cerulean-800">Schedule</h2>
           <div className="space-y-2 text-sm">
@@ -271,11 +236,12 @@ const SingleJobPage = () => {
           </h2>
           <div className="space-y-2 text-sm">
             <p>
-              <span className="text-pacific-600">Pay Type:</span> {job.pay_type}
+              <span className="text-pacific-600">Pay Type:</span>{" "}
+              {job.pay_type || "N/A"}
             </p>
             <p>
               <span className="text-pacific-600">Hours Worked:</span>{" "}
-              {job.hours_worked || "N/A"}
+              {job.hours_worked ?? "N/A"}
             </p>
             {job.started_at && (
               <p>
@@ -295,11 +261,9 @@ const SingleJobPage = () => {
 
       {job.cancelled_at && (
         <section className="rounded-lg border border-yarrow-300 bg-card p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-yarrow-800 mb-4 flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-yarrow-500" />
+          <h2 className="mb-4 text-lg font-semibold text-yarrow-800">
             Cancellation Details
           </h2>
-
           <div className="space-y-2 text-sm text-yarrow-700">
             <p>
               <span className="font-medium text-yarrow-900">Cancelled At:</span>{" "}
@@ -319,7 +283,7 @@ const SingleJobPage = () => {
         </section>
       )}
 
-      <footer className="pt-6 border-t border-border text-xs text-muted-foreground space-y-1">
+      <footer className="space-y-1 border-t border-border pt-6 text-xs text-muted-foreground">
         <p>
           Created {formatDateTime(job.created_at)} by {job.created_by}
         </p>

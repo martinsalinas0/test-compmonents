@@ -3,10 +3,10 @@
 import React from "react";
 import Link from "next/link";
 import TableHeader from "./TableHeader";
-import { JobsJoined } from "@/lib/types/jobsJoined";
+import { JobJoined } from "@/lib/types/jobsJoined";
 
 interface TableJobsForListProps {
-  data: JobsJoined[];
+  data: JobJoined[];
 }
 
 const TableJobsForList: React.FC<TableJobsForListProps> = ({ data }) => {
