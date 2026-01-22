@@ -25,14 +25,12 @@ const SingleContractorPage = () => {
     const fetchContractor = async () => {
       setLoading(true);
       try {
-        // FIXED: Endpoint matches the variable name
         const res = await axios.get(
           `http://localhost:5000/api/v1/contractors/${id}`,
           { signal: controller.signal },
         );
         setContractor(res.data.data);
       } catch (err: unknown) {
-        // If cancelled, return immediately so we don't process errors
         if (axios.isCancel(err)) {
           console.log("Request cancelled");
           return;
@@ -44,7 +42,6 @@ const SingleContractorPage = () => {
           setError(err.message);
         }
       } finally {
-        // FIXED: Only turn off loading if the request wasn't cancelled
         if (!controller.signal.aborted) {
           setLoading(false);
         }

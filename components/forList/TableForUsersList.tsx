@@ -43,7 +43,12 @@ const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
         {data.map((user) => (
           <tr key={user.id} className="hover:bg-olive-50">
             <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
-              {user.first_name} {user.last_name}
+              <Link
+                href={`/admin/users/${user.id}`}
+                className="hover:text-blue-500"
+              >
+                {user.first_name} {user.last_name}
+              </Link>
             </td>
             <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
               {user.email}
