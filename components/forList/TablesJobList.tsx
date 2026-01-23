@@ -3,14 +3,15 @@
 import React from "react";
 import Link from "next/link";
 import TableHeader from "./TableHeader";
-import { JobJoined } from "@/lib/types/jobsJoined";
+
+import { JobWithRelations } from "@/lib/types/jobsWithJoins";
 
 interface TableJobsForListProps {
-  data: JobJoined[];
+  data: JobWithRelations[];
 }
 
 const TableJobsForList: React.FC<TableJobsForListProps> = ({ data }) => {
-  const columns = ["Title", "Status", "Customer", "City", "ID"];
+  const columns = ["Title", "Status", "Customer", "City", "ID", "Contractor"];
 
   return (
     <div className="overflow-x-auto rounded-xl text-center border border-cerulean-200 bg-background shadow-sm">
@@ -49,6 +50,10 @@ const TableJobsForList: React.FC<TableJobsForListProps> = ({ data }) => {
                 >
                   {job.id}
                 </Link>
+              </td>
+
+              <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-700">
+                {job.contractor?.first_name ?? "—"}
               </td>
             </tr>
           ))}

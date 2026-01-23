@@ -1,5 +1,5 @@
-export type JobJoined = {
-  // jobs table
+export interface JobWithRelations {
+  // ===== jobs table (j.*) =====
   id: string;
   title: string;
   description: string;
@@ -32,22 +32,21 @@ export type JobJoined = {
   created_at: string;
   updated_at: string;
 
-  // joined customer
+  // ===== joined relations =====
   customer: {
     id: string;
     first_name: string;
     last_name: string;
-    email?: string;
-    phone?: string;
+    email: string;
+    phone: string | null;
   };
 
-  // joined contractor (LEFT JOIN)
   contractor: {
     id: string;
     first_name: string;
     last_name: string;
     email: string;
-    phone: string;
+    phone: string | null;
     company_name: string;
   } | null;
-};
+}
