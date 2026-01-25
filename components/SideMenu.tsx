@@ -75,8 +75,12 @@ const data = {
           url: "/admin/list/jobs/complete",
         },
         {
-          title: "All jobs Cards",
-          url: "/admin/jobs",
+          title: "Task Requests",
+          url: "/admin/list/jobs/task-requests",
+        },
+        {
+          title: "Completed Jobs",
+          url: "/admin/list/jobs/complete",
         },
       ],
     },
