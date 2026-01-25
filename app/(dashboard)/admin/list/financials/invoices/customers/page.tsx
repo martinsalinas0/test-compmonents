@@ -1,24 +1,22 @@
 "use client";
 
 import GenericTable, { Column } from "@/components/forList/GenericTable";
+import SearchBar from "@/components/SeachBar";
 import { CustomerInvoice } from "@/lib/types/all";
-
 import axios from "axios";
 import { Plus, AlertCircle } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 const URL = `http://localhost:5000/api/v1/customer-invoices/`;
 
 const CustomerInvoicesListPage = () => {
   const [invoices, setInvoices] = useState<CustomerInvoice[]>([]);
-  const [filteredInvoices, setFilteredInvoices] = useState<CustomerInvoice[]>(
-    [],
-  );
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const getLastSix = (str: string) => str.slice(-6);
 
   useEffect(() => {
     const fetchInvoices = async () => {
@@ -27,7 +25,6 @@ const CustomerInvoicesListPage = () => {
         setError(null);
         const response = await axios.get(URL);
         setInvoices(response.data.data);
-        setFilteredInvoices(response.data.data);
       } catch (err) {
         console.error(err);
         setError("Failed to load invoices");
@@ -39,30 +36,20 @@ const CustomerInvoicesListPage = () => {
     fetchInvoices();
   }, []);
 
-  useEffect(() => {
-    if (!searchQuery.trim()) {
-      setFilteredInvoices(invoices);
-      return;
-    }
+  const filteredInvoices = useMemo(() => {
+    if (!searchQuery.trim()) return invoices;
 
-    const query = searchQuery.toLowerCase();
-
-    const filtered = invoices.filter((invoice) => {
-      return (
-        invoice.id?.toLowerCase().includes(query) ||
-        invoice.total?.toString().includes(query) ||
-        invoice.status?.toLowerCase().includes(query)
-      );
-    });
-
-    setFilteredInvoices(filtered);
-  }, [searchQuery, invoices]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const getLastSix = (str: string) => str.slice(-6);
+    const q = searchQuery.toLowerCase();
+    return invoices.filter(
+      (inv) =>
+        inv.id.toLowerCase().includes(q) ||
+        inv.job_id.toLowerCase().includes(q) ||
+        inv.customer_id.toLowerCase().includes(q) ||
+        inv.invoice_number.toLowerCase().includes(q) ||
+        inv.status.toLowerCase().includes(q) ||
+        inv.total.toString().includes(q),
+    );
+  }, [invoices, searchQuery]);
 
   const columns: Column<CustomerInvoice>[] = [
     {
@@ -123,29 +110,20 @@ const CustomerInvoicesListPage = () => {
     },
   ];
 
-  // ---------------- RENDER ----------------
   return (
     <div className="p-6">
-      {/* HEADER */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-cerulean mb-4">
+      <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <h1 className="text-3xl font-bold text-cerulean mb-2 md:mb-0">
           Customer Invoices List
         </h1>
 
-        <div className="flex items-center justify-between gap-4">
-          {/* SEARCH */}
-          <div className="hidden md:flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-pacific-300 px-4 py-1 bg-white">
-            <Image src="/search.png" alt="Search" width={14} height={14} />
-            <input
-              type="text"
-              placeholder="Search invoices..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className="w-64 p-2 bg-transparent outline-none text-cerulean-800 placeholder:text-pacific-400"
-            />
-          </div>
+        <div className="flex items-center justify-between w-full md:w-auto gap-4">
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search invoices..."
+          />
 
-          {/* CREATE BUTTON */}
           <Link
             href="/admin/customer-invoices/new"
             className="bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
@@ -157,7 +135,6 @@ const CustomerInvoicesListPage = () => {
         </div>
       </div>
 
-      {/* CONTENT */}
       <div className="overflow-x-auto">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
@@ -176,15 +153,11 @@ const CustomerInvoicesListPage = () => {
               </button>
             </div>
           </div>
-        ) : filteredInvoices.length === 0 && searchQuery ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500">
-              No invoices found matching &quot;{searchQuery}&quot;
-            </p>
-          </div>
         ) : filteredInvoices.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">No customer invoices yet</p>
+            <p className="text-gray-500 mb-4">
+              No invoices found matching "{searchQuery}"
+            </p>
             <Link
               href="/admin/customer-invoices/new"
               className="inline-flex items-center gap-2 bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"

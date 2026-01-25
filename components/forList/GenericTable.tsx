@@ -18,6 +18,7 @@ function GenericTable<T>({
 }: DataTableProps<T>) {
   return (
     <div className="overflow-x-auto text-center">
+      <div></div>
       <table className="min-w-full bg-background border border-cerulean-100">
         <thead>
           <tr>
