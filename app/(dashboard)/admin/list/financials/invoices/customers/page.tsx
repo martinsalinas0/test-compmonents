@@ -156,7 +156,7 @@ const CustomerInvoicesListPage = () => {
         ) : filteredInvoices.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 mb-4">
-              No invoices found matching "{searchQuery}"
+              No invoices found matching &quot;{searchQuery}&quot;
             </p>
             <Link
               href="/admin/customer-invoices/new"

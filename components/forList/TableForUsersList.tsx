@@ -33,6 +33,7 @@ const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
     "Role",
     "Status",
     "Created",
+    "ID",
     "...",
   ];
 
@@ -73,8 +74,9 @@ const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
             <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-pacific">
               {new Date(user.created_at).toLocaleDateString()}
             </td>
-            <td>
+            <td className="border-b flex-row border-cerulean-50 px-6 py-4 text-sm text-pacific">
               <Link href={`/admin/list/users/${user.id}`}>
+                {user.id.slice(-6)}
                 <Info />
               </Link>
             </td>

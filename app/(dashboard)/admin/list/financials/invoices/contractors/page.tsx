@@ -3,14 +3,14 @@
 import GenericTable, { Column } from "@/components/forList/GenericTable";
 import SearchBar from "@/components/SeachBar";
 import { clientConfig } from "@/lib/config";
-import { Payment } from "@/lib/types/all";
+import { ContractorInvoice } from "@/lib/types/all";
 import axios from "axios";
 import { AlertCircle, Plus } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-const PaymentsListPage = () => {
-  const [payments, setPayments] = useState<Payment[]>([]);
+const ContractorInvoicesList = () => {
+  const [invoices, setInvoices] = useState<ContractorInvoice[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,125 +18,116 @@ const PaymentsListPage = () => {
   const getLastSix = (str: string) => str.slice(-6);
 
   useEffect(() => {
-    const fetchPayments = async () => {
+    const fetchInvoices = async () => {
       try {
-        setIsLoading(true);
-        setError(null);
-        const response = await axios.get(`${clientConfig.apiUrl}/payments/all`);
-        setPayments(response.data.data);
-        console.log(response.data.data);
+        const response = await axios.get(
+          `${clientConfig.apiUrl}/contractor-invoices/all`,
+        );
+        setInvoices(response.data.data);
       } catch (error) {
         console.error(error);
-        setError("Failed to load payments");
+        setError("Failed to load invoices");
       } finally {
         setIsLoading(false);
       }
     };
-    fetchPayments();
+
+    fetchInvoices();
   }, []);
 
-  const filteredPayments = useMemo(() => {
-    if (!searchQuery.trim()) return payments;
+  const filteredInvoices = useMemo(() => {
+    if (!searchQuery.trim()) return invoices;
 
     const q = searchQuery.toLowerCase();
-    return payments.filter((payment) => {
-      const searchFields = [
-        payment.id,
-        payment.customer_invoice_id,
-        payment.customer_id,
-        payment.amount,
-        payment.status,
-        payment.card_last_four,
-      ];
+    return invoices.filter(
+      (inv) =>
+        inv.id.toLowerCase().includes(q) ||
+        inv.job_id.toLowerCase().includes(q) ||
+        inv.contractor_id.toLowerCase().includes(q) ||
+        inv.invoice_number.toLowerCase().includes(q) ||
+        inv.status.toLowerCase().includes(q) ||
+        inv.total.toString().includes(q),
+    );
+  }, [invoices, searchQuery]);
 
-      return searchFields.some((field) =>
-        String(field || "")
-          .toLowerCase()
-          .includes(q),
-      );
-    });
-  }, [payments, searchQuery]);
-
-  const columns: Column<Payment>[] = [
+  const columns: Column<ContractorInvoice>[] = [
     {
-      header: "Payment ID",
+      header: "ID",
       accessor: "id",
-      render: (v) => `E3333333-${getLastSix(String(v))}`,
+      render: (v) => `C-${getLastSix(v as string)}`,
     },
     {
-      header: "Stripe Payment ID",
-      accessor: "stripe_payment_intent_id",
-      render: (v) => `PI-${getLastSix(String(v))}`,
-    },
-    {
-      header: "Invoice",
-      accessor: "customer_invoice_id",
-      render: (v, payment) => (
+      header: "Job ID",
+      accessor: "job_id",
+      render: (v, invoice) => (
         <Link
-          href={`/admin/financials/invoices/customers/${payment.customer_invoice_id}`}
+          href={`/admin/jobs/${invoice.job_id}`}
           className="hover:text-blue-500"
         >
-          E1111111-{getLastSix(String(v))}
+          F{getLastSix(v as string)}
         </Link>
       ),
     },
     {
-      header: "Customer",
-      accessor: "customer_id",
-      render: (v, payment) => (
+      header: "Contractor ID",
+      accessor: "contractor_id",
+      render: (v, invoice) => (
         <Link
-          href={`/admin/customers/${payment.customer_id}`}
+          href={`/admin/contractors/${invoice.contractor_id}`}
           className="hover:text-blue-500"
         >
-          C-{getLastSix(String(v))}
+          F{getLastSix(v as string)}
         </Link>
       ),
     },
     {
-      header: "Amount",
-      accessor: "amount",
-      render: (v) => `$${Number(v).toFixed(2)}`,
+      header: "Invoice Number",
+      accessor: "invoice_number",
+      render: (v, invoice) => (
+        <Link
+          href={`/admin/financials/invoices/${invoice.invoice_number}`}
+          className="hover:text-blue-500"
+        >
+          INV-20{String(v).slice(-7)}
+        </Link>
+      ),
+    },
+    {
+      header: "Total",
+      accessor: "total",
+      render: (v) => `$${v}`,
     },
     {
       header: "Status",
       accessor: "status",
-      render: (v) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-medium ${String(
-            v,
-          ).toLowerCase()}`}
-        >
-          {String(v).toUpperCase()}
-        </span>
-      ),
+      render: (v) => String(v).toUpperCase(),
     },
     {
-      header: "Card Last 4",
-      accessor: "card_last_four",
-      render: (v) => `****${v}`,
+      header: "Due Date",
+      accessor: "created_at",
+      render: (v) => new Date(v as string).toLocaleDateString(),
     },
   ];
 
   return (
     <div className="p-6">
-      <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
         <h1 className="text-3xl font-bold text-cerulean mb-2 md:mb-0">
-          Payments List
+          Contractor Invoices List
         </h1>
 
         <div className="flex items-center justify-between w-full md:w-auto gap-4">
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Search payments..."
+            placeholder="Search invoices..."
           />
-
           <Link
-            href="/admin/financials/payments/new"
+            href="/admin/customer-invoices/new"
             className="bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
           >
             <div className="flex items-center gap-2">
-              Record Payment <Plus size={18} />
+              Create Invoice <Plus size={18} />
             </div>
           </Link>
         </div>
@@ -160,27 +151,23 @@ const PaymentsListPage = () => {
               </button>
             </div>
           </div>
-        ) : filteredPayments.length === 0 && searchQuery ? (
+        ) : filteredInvoices.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 mb-4">
-              No payments found matching &quot;{searchQuery}&quot;
+              No invoices found matching &quot;{searchQuery}&quot;
             </p>
-          </div>
-        ) : filteredPayments.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">No payments yet</p>
             <Link
-              href="/admin/financials/payments/new"
+              href="/admin/customer-invoices/new"
               className="inline-flex items-center gap-2 bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
             >
-              Record Your First Payment <Plus size={18} />
+              Create Your First Invoice <Plus size={18} />
             </Link>
           </div>
         ) : (
           <GenericTable
-            data={filteredPayments}
+            data={filteredInvoices}
             columns={columns}
-            emptyMessage="No payments found"
+            emptyMessage="No invoices found"
           />
         )}
       </div>
@@ -188,4 +175,4 @@ const PaymentsListPage = () => {
   );
 };
 
-export default PaymentsListPage;
+export default ContractorInvoicesList;
