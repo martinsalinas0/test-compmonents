@@ -30,7 +30,7 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "test-data/contactsapi.js",
-    "app/(dashboard)/admin/list/financials/revenue/page.tsx"
+    "app/(dashboard)/admin/list/financials/quotes/page.tsx"
   ],
   "exclude": ["node_modules"]
 }

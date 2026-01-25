@@ -2,7 +2,7 @@
 
 import UserCard from "@/components/cards/UserCards";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const URL = process.env.NEXT_PUBLIC_API_URL_PROSS;
 

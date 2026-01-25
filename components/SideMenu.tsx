@@ -23,7 +23,6 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { url } from "inspector";
 
 const data = {
   user: {
@@ -88,20 +87,20 @@ const data = {
       icon: Landmark,
       items: [
         {
-          title: "Transactions",
-          url: "/admin/list/financials/transactions",
+          title: "Payments",
+          url: "/admin/list/financials/payments",
         },
         {
-          title: "Payouts",
-          url: "/admin/list/financials/payouts",
+          title: "Quotes",
+          url: "/admin/list/financials/quotes",
         },
         {
-          title: "Revenue",
-          url: "/admin/list/financials/revenue",
+          title: "Contractor Invoices",
+          url: "/admin/list/financials/invoices/contractors",
         },
         {
-          title: "Invoices",
-          url: "/admin/list/financials/invoices",
+          title: "Customer Invoices",
+          url: "/admin/list/financials/invoices/customers",
         },
       ],
     },
