@@ -48,7 +48,7 @@ const TableJobsForList: React.FC<TableJobsForListProps> = ({ data }) => {
                   href={`/admin/jobs/${job.id}`}
                   className="hover:underline"
                 >
-                  {job.id}
+                  {job.id.slice(-6)}
                 </Link>
               </td>
 
