@@ -1,5 +1,6 @@
 "use client";
 
+import QuickActionBar from "@/components/layouts/QuickActionBar";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Card,
@@ -20,7 +21,7 @@ const AdminDashboardPage = () => {
   const [payments, setPayments] = useState([]);
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [error, setError] = useState<string | null>(null);
-
+  console.log(error);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,8 +56,12 @@ const AdminDashboardPage = () => {
   console.log(totalPaidFunc(payments).toFixed(2));
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-cerulean mb-8">Admin Dashboard</h1>
-
+      <div className="flex flex-row items-center justify-between m-3 p-2">
+        <h1 className="text-3xl font-bold text-cerulean">Admin Dashboard</h1>
+        <div>
+          <QuickActionBar />
+        </div>
+      </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card className="shadow-md hover:shadow-lg transition-shadow">
           <CardHeader>
