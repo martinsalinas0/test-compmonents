@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Plus,
   FileText,
   Users,
   Briefcase,
@@ -17,7 +16,7 @@ const QuickActionBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const quickActions = [
-    { icon: FileText, label: "New Job", href: "/admin/jobs/new" },
+    { icon: FileText, label: "New ssssJob", href: "/admin/jobs/new" },
     { icon: Users, label: "New Customer", href: "/admin/customers/new" },
     { icon: Briefcase, label: "New Task", href: "/admin/tasks/new" },
     { icon: DollarSign, label: "New Invoice", href: "/admin/invoices/new" },
