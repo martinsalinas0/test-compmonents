@@ -1,6 +1,6 @@
 "use client";
 
-import TablesJobList from "@/components/forList/TablesJobList";
+import TablesJobList from "@/components/forList/JobTable";
 import Image from "next/image";
 import axios from "axios";
 import Link from "next/link";
@@ -16,7 +16,6 @@ const AdminJobsListPage = () => {
       .get(`http://localhost:5000/api/v1/jobs/all`)
       .then((response) => {
         setJobs(response.data.data);
-        setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching data: ", err);

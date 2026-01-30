@@ -1,5 +1,5 @@
 "use client";
-import TableForContractors from "@/components/forList/TableForContractors";
+import TableForContractors from "@/components/forList/ContractorTable";
 import { Contractor } from "@/lib/types/contractor";
 
 import axios from "axios";

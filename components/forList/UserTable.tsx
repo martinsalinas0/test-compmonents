@@ -26,16 +26,7 @@ interface TableForUsersPageListProps {
 const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
   data,
 }) => {
-  const columns = [
-    "Name",
-    "Email",
-    "Phone",
-    "Role",
-    "Status",
-    "Created",
-    "ID",
-    "...",
-  ];
+  const columns = ["Name", "Email", "Phone", "Role", "Status", "ID"];
 
   return (
     <table className="min-w-full bg-background border border-cerulean-100">
@@ -71,13 +62,11 @@ const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
                 {user.is_active ? "ACTIVE" : "INACTIVE"}
               </span>
             </td>
-            <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-pacific">
-              {new Date(user.created_at).toLocaleDateString()}
-            </td>
-            <td className="border-b flex-row border-cerulean-50 px-6 py-4 text-sm text-pacific">
+
+            <td className="border-b border-cerulean-50 flex px-6 py-4 text-sm text-cerulean justify-center">
+              {user.id.slice(-6)}
               <Link href={`/admin/list/users/${user.id}`}>
-                {user.id.slice(-6)}
-                <Info />
+                <Info className="ml-2" />
               </Link>
             </td>
           </tr>

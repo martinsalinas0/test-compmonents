@@ -2,7 +2,7 @@
 
 "use client";
 
-import JobCardComp from "@/components/cards/JobCards";
+import JobCardComp from "@/components/cards/JobCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
