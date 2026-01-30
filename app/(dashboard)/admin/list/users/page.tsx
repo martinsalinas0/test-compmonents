@@ -1,6 +1,6 @@
 "use client";
 
-import TableForList from "@/components/forList/TableForUsersList";
+import TableForList from "@/components/forList/UserTable";
 import QuickActionBar from "@/components/layouts/QuickActionBar";
 import SearchBar from "@/components/SeachBar";
 import { User } from "@/lib/types/user";
@@ -38,7 +38,7 @@ const UsersListPage = () => {
         user.email.toLowerCase().includes(q) ||
         user.phone.toLowerCase().includes(q) ||
         user.role.toLowerCase().includes(q) ||
-        (user.is_active ? "active" : "inactive").includes(q),
+        (user.is_active ? "active" : "inactive").includes(q)
     );
   }, [users, searchQuery]);
 

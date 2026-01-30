@@ -1,6 +1,6 @@
 "use client";
 
-import TableForList from "@/components/forList/TableForUsersList";
+import TableForList from "@/components/forList/UserTable";
 import { User } from "@/lib/types/user";
 import axios from "axios";
 import { useEffect, useState } from "react";
