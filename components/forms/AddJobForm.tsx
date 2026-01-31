@@ -8,6 +8,7 @@ import { z } from "zod";
 import axios from "axios";
 import { clientConfig } from "@/lib/config";
 
+//this is using react hook form and zod
 const jobSchema = z.object({
   title: z.string().min(5, "Job title is required"),
   description: z.string().min(1, "Description is required"),
@@ -66,7 +67,7 @@ const AddJobForm = () => {
     try {
       const response = await axios.post(
         `${clientConfig.apiUrl}/jobs/new`,
-        jobData,
+        jobData
       );
       console.log("Success:", response.data);
       router.push("/admin/list/jobs");

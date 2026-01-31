@@ -4,52 +4,60 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const AddUserForm: React.FC = () => {
-  //
-  //
-  //
+const userSchema = z.object({
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
+  email: z.email().min(1, "Email is required"),
+  password: z
+    .string()
+    .min(8, "At least 8 characters")
+    .max(15, "No more than 15 characters")
+    .toLowerCase(),
+  phone: z.string().length(10),
+  address: z.string().min(1, "Address is required").max(50),
+  city: z.string().min(1, "City is required").max(50),
+  state: z.string().min(1, "State is required").max(50),
+  zip_code: z.string().min(1, "Zip Code is required").max(50),
+  notes: z.string().max(50),
+});
 
-  const [first_name, setFirstName] = useState("");
-  const [last_name, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [notes, setNotes] = useState("");
+type UserFormData = z.infer<typeof userSchema>;
+
+const AddUserForm = () => {
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+  } = useForm<UserFormData>({
+    resolver: zodResolver(userSchema),
+    defaultValues: {
+      first_name: "Jacob",
+      last_name: "huh",
+    },
+  });
 
+  const onSubmit = async (data: UserFormData) => {
     const userData = {
-      first_name,
-      last_name,
-      email,
-      password,
-      phone,
-      address,
-      city,
-      state,
-      zipCode,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      password: data.password,
+      phone: data.phone,
+      address: data.address,
+      city: data.city,
+      state: data.state,
+      zip_code: data.zip_code,
+      notes: data.notes,
     };
 
-    try {
-      await axios.post("http://localhost:5000/api/v1/users/new", userData);
-      console.log(userData);
-      router.push("/admin/list/users");
-    } catch (error) {
-      console.error("Error creating user:", error);
-      setError("Failed to create user. Please try again.");
-      setLoading(false);
-    }
+    console.log("Sending to api", userData);
   };
 
   return (
