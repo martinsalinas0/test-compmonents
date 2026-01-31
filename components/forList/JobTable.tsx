@@ -6,11 +6,11 @@ import TableHeader from "./TableHeader";
 
 import { JobWithRelations } from "@/lib/types/jobsWithJoins";
 
-interface TableJobsForListProps {
+interface JobTableProps {
   data: JobWithRelations[];
 }
 
-const TableJobsForList: React.FC<TableJobsForListProps> = ({ data }) => {
+const JobTable: React.FC<JobTableProps> = ({ data }) => {
   const columns = ["Title", "Status", "Customer", "City", "ID", "Contractor"];
 
   return (
@@ -74,4 +74,4 @@ const TableJobsForList: React.FC<TableJobsForListProps> = ({ data }) => {
   );
 };
 
-export default TableJobsForList;
+export default JobTable;

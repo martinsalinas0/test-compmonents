@@ -8,13 +8,10 @@ import {
   Calendar,
   Settings,
 } from "lucide-react";
-import SearchBar from "../SeachBar";
-import { useState } from "react";
+
 import Link from "next/link";
 
 const QuickActionBar = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
   const quickActions = [
     { icon: FileText, label: "New ssssJob", href: "/admin/jobs/new" },
     { icon: Users, label: "New Customer", href: "/admin/customers/new" },
@@ -26,12 +23,6 @@ const QuickActionBar = () => {
 
   return (
     <div className="flex items-center gap-3 ml-3 mr-3 p-1">
-      <SearchBar
-        value={searchQuery}
-        onChange={setSearchQuery}
-        placeholder="Quick search..."
-      />
-
       {quickActions.map((action, index) => (
         <Link
           key={index}
