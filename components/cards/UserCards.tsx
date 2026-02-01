@@ -2,6 +2,7 @@
 
 import { User } from "@/lib/types/user";
 import { Ellipsis } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 interface UserProfileCardProps {
@@ -134,9 +135,11 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ user }) => {
           </div>
 
           <div className="flex flex-wrap gap-3 mt-8 pt-6 border-t border-cerulean-100">
-            <button className="px-6 py-2 bg-cerulean text-white rounded-md hover:bg-pacific transition-colors">
-              Edit Profile
-            </button>
+            <Link href={`/admin/users/update/${user.id}`}>
+              <button className="px-6 py-2 bg-cerulean text-white rounded-md hover:bg-pacific transition-colors">
+                Edit Profile
+              </button>
+            </Link>
             <button className="px-6 py-2 bg-white border border-cerulean-100 text-cerulean rounded-md hover:bg-olive-50 transition-colors">
               Reset Password
             </button>

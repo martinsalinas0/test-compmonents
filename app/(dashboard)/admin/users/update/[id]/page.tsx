@@ -10,14 +10,10 @@ import { clientConfig } from "@/lib/config";
 import { Input } from "@/components/ui/input";
 
 const userSchema = z.object({
-  first_name: z.string().min(1, "First name is required"),
-  last_name: z.string().min(1, "Last name is required"),
-  email: z.email("Invalid email"),
-  phone: z.string().length(10, "Phone must be 10 digits"),
-  address: z.string().min(1, "Address is required").max(50),
-  city: z.string().min(1, "City is required").max(50),
-  state: z.string().min(1, "State is required").max(2, "Must be 2 characters"),
-  zip_code: z.string().min(1, "Zip Code is required").max(10),
+  first_name: z.string().min(1, "First name is required").optional(),
+  last_name: z.string().min(1, "Last name is required").optional(),
+  email: z.email("Invalid email").optional(),
+  phone: z.string().length(10, "Phone must be 10 digits").optional(),
   notes: z.string().max(50).optional(),
 });
 
@@ -42,6 +38,7 @@ const UserUpdatePage = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`${clientConfig.apiUrl}/users/${id}`);
+        console.log(response.data.data);
         reset(response.data.data);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -62,7 +59,7 @@ const UserUpdatePage = () => {
     try {
       const response = await axios.patch(
         `${clientConfig.apiUrl}/users/${id}`,
-        data
+        data,
       );
       console.log("success: true", response.data);
       router.push("/admin/list/users");
@@ -170,77 +167,6 @@ const UserUpdatePage = () => {
                     {errors.phone.message}
                   </p>
                 )}
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-cerulean mb-2">
-                  Address <span className="text-red-500">*</span>
-                </label>
-                <Input
-                  type="text"
-                  placeholder="123 Main St."
-                  {...register("address")}
-                  className={errors.address ? "border-red-300" : ""}
-                />
-                {errors.address && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.address.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium text-cerulean mb-2">
-                    City <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="Austin"
-                    {...register("city")}
-                    className={errors.city ? "border-red-300" : ""}
-                  />
-                  {errors.city && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.city.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-cerulean mb-2">
-                    State <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="TX"
-                    maxLength={2}
-                    {...register("state")}
-                    className={errors.state ? "border-red-300" : ""}
-                  />
-                  {errors.state && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.state.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-cerulean mb-2">
-                    Zip Code <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="78701"
-                    {...register("zip_code")}
-                    className={errors.zip_code ? "border-red-300" : ""}
-                  />
-                  {errors.zip_code && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.zip_code.message}
-                    </p>
-                  )}
-                </div>
               </div>
 
               <div className="mb-6">
