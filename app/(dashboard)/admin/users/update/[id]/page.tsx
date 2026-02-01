@@ -1,21 +1,18 @@
 "use client";
 
 import axios from "axios";
-import { useRouter } from "next/navigation";
-import { Input } from "../ui/input";
+import { useRouter, useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { clientConfig } from "@/lib/config";
+import { Input } from "@/components/ui/input";
 
 const userSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email").min(1, "Email is required"),
-  password: z
-    .string()
-    .min(8, "At least 8 characters")
-    .max(15, "No more than 15 characters"),
+  email: z.email("Invalid email"),
   phone: z.string().length(10, "Phone must be 10 digits"),
   address: z.string().min(1, "Address is required").max(50),
   city: z.string().min(1, "City is required").max(50),
@@ -26,40 +23,66 @@ const userSchema = z.object({
 
 type UserFormData = z.infer<typeof userSchema>;
 
-const AddUserForm = () => {
+const UserUpdatePage = () => {
   const router = useRouter();
+  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting, isDirty },
     setError,
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
-    defaultValues: {
-      notes: "",
-    },
   });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`${clientConfig.apiUrl}/users/${id}`);
+        reset(response.data.data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        setError("root", {
+          message: "Failed to load user data",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [id, reset, setError]);
 
   const onSubmit = async (data: UserFormData) => {
     console.log("Sending to api", data);
 
     try {
-      const response = await axios.post(
-        `${clientConfig.apiUrl}/users/new`,
+      const response = await axios.patch(
+        `${clientConfig.apiUrl}/users/${id}`,
         data
       );
       console.log("success: true", response.data);
       router.push("/admin/list/users");
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Error updating user:", error);
       if (axios.isAxiosError(error)) {
         setError("root", {
-          message: error.response?.data?.message || "Failed to create user",
+          message: error.response?.data?.message || "Failed to update user",
         });
       }
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cerulean"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-linear-to-br from-cerulean-50 to-olive-50 py-8 px-4">
@@ -67,7 +90,7 @@ const AddUserForm = () => {
         <div className="bg-white rounded-lg shadow-lg border border-cerulean-100 overflow-hidden">
           <div className="bg-linear-to-r from-cerulean to-pacific px-6 py-8">
             <h1 className="text-3xl font-bold text-white text-center">
-              Add New User
+              Edit User
             </h1>
           </div>
 
@@ -128,23 +151,6 @@ const AddUserForm = () => {
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.email.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-cerulean mb-2">
-                  Password <span className="text-red-500">*</span>
-                </label>
-                <Input
-                  type="password"
-                  placeholder="••••••••"
-                  {...register("password")}
-                  className={errors.password ? "border-red-300" : ""}
-                />
-                {errors.password && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.password.message}
                   </p>
                 )}
               </div>
@@ -261,9 +267,9 @@ const AddUserForm = () => {
                 <button
                   type="submit"
                   className="px-6 py-2 bg-cerulean text-white rounded-md hover:bg-pacific transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !isDirty}
                 >
-                  {isSubmitting ? "Creating..." : "Create User"}
+                  {isSubmitting ? "Saving..." : "Save Changes"}
                 </button>
               </div>
             </form>
@@ -274,4 +280,4 @@ const AddUserForm = () => {
   );
 };
 
-export default AddUserForm;
+export default UserUpdatePage;
