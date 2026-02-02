@@ -11,7 +11,7 @@ import { clientConfig } from "@/lib/config";
 const userSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email").min(1, "Email is required"),
+  email: z.email("Invalid email").min(1, "Email is required"),
   password: z
     .string()
     .min(8, "At least 8 characters")
@@ -47,7 +47,7 @@ const AddUserForm = () => {
     try {
       const response = await axios.post(
         `${clientConfig.apiUrl}/users/new`,
-        data
+        data,
       );
       console.log("success: true", response.data);
       router.push("/admin/list/users");

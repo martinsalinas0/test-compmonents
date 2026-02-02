@@ -44,7 +44,7 @@ const ContractorsListPage = () => {
           </div>
 
           <Link
-            href="/admin/contractors/new"
+            href="/admin/users/contractors/new"
             className="bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
           >
             <div className="flex items-center gap-2">
