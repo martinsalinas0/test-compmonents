@@ -11,14 +11,13 @@ interface DataTableProps<T> {
   columns: Column<T>[];
   emptyMessage?: string;
 }
-function GenericTable<T>({
+function GenericTable<T extends object>({
   data,
   columns,
   emptyMessage = "No records found",
 }: DataTableProps<T>) {
   return (
     <div className="overflow-x-auto text-center">
-      <div></div>
       <table className="min-w-full bg-background border border-cerulean-100">
         <thead>
           <tr>
@@ -45,7 +44,14 @@ function GenericTable<T>({
             </tr>
           ) : (
             data.map((row, i) => (
-              <tr key={i} className="hover:bg-olive-50">
+              <tr
+                key={
+                  "id" in row && (row as { id?: unknown }).id != null
+                    ? String((row as { id: unknown }).id)
+                    : i
+                }
+                className="hover:bg-olive-50"
+              >
                 {columns.map((col) => {
                   const value = row[col.accessor];
 

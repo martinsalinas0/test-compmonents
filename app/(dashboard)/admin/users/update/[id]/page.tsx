@@ -38,7 +38,6 @@ const UserUpdatePage = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`${clientConfig.apiUrl}/users/${id}`);
-        console.log(response.data.data);
         reset(response.data.data);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -54,14 +53,11 @@ const UserUpdatePage = () => {
   }, [id, reset, setError]);
 
   const onSubmit = async (data: UserFormData) => {
-    console.log("Sending to api", data);
-
     try {
-      const response = await axios.patch(
+      await axios.patch(
         `${clientConfig.apiUrl}/users/${id}`,
         data,
       );
-      console.log("success: true", response.data);
       router.push("/admin/list/users");
     } catch (error) {
       console.error("Error updating user:", error);
@@ -82,10 +78,10 @@ const UserUpdatePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-cerulean-50 to-olive-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-cerulean-50 to-olive-50 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg border border-cerulean-100 overflow-hidden">
-          <div className="bg-linear-to-r from-cerulean to-pacific px-6 py-8">
+          <div className="bg-gradient-to-r from-cerulean to-pacific px-6 py-8">
             <h1 className="text-3xl font-bold text-white text-center">
               Edit User
             </h1>

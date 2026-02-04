@@ -13,7 +13,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ user }) => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="bg-white rounded-lg shadow-md border border-cerulean-100 overflow-hidden">
-        <div className="bg-linear-to-r from-cerulean to-pacific h-32 text-white"></div>
+        <div className="bg-gradient-to-r from-cerulean to-pacific h-32 text-white"></div>
 
         <div className="px-6 pb-6">
           <div className="flex items-center gap-4 -mt-16 mb-6">
@@ -60,7 +60,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ user }) => {
                   <label className="text-sm text-pacific font-medium">
                     Phone
                   </label>
-                  <p className="text-cerulean">{user.phone}</p>
+                  <p className="text-cerulean">{user.phone ?? "—"}</p>
                 </div>
               </div>
             </div>
@@ -122,11 +122,13 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ user }) => {
                     </label>
                     <p>
                       {" "}
-                      {new Date(user.last_login).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      {user.last_login
+                      ? new Date(user.last_login).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })
+                      : "Never"}
                     </p>
                   </span>
                 </div>

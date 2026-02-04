@@ -1,18 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams, useRouter } from "next/navigation";
+import { clientConfig } from "@/lib/config";
+import { JobWithRelations } from "@/lib/types/jobsWithJoins";
 import { ArrowLeft, Info } from "lucide-react";
-import { JobJoined } from "@/lib/types/jobsJoined";
+import axios from "axios";
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const SingleJobPage = () => {
   const router = useRouter();
   const params = useParams();
   const jobId = params?.id as string;
 
-  const [job, setJob] = useState<JobJoined | null>(null);
+  const [job, setJob] = useState<JobWithRelations | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +23,7 @@ const SingleJobPage = () => {
     const fetchJob = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/v1/jobs/${jobId}`,
+          `${clientConfig.apiUrl}/jobs/${jobId}`,
         );
         setJob(res.data.data);
       } catch (err: unknown) {

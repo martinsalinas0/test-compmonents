@@ -11,17 +11,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { clientConfig } from "@/lib/config";
-import { Payment } from "@/lib/types/all";
+import type { Customer, Job, Payment } from "@/lib/types/all";
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const AdminDashboardPage = () => {
-  const [users, setUsers] = useState([]);
-  const [jobs, setJobs] = useState([]);
-  const [payments, setPayments] = useState([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [error, setError] = useState<string | null>(null);
-  console.log(error);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,30 +31,21 @@ const AdminDashboardPage = () => {
           axios.get(`${clientConfig.apiUrl}/jobs/status/open`),
           axios.get(`${clientConfig.apiUrl}/payments/successful`),
         ]);
-        setUsers(response1.data.data);
-        console.log(response1.data.data);
-        setJobs(response2.data.data);
-        console.log(response2.data.data);
-        setPayments(response3.data.data);
-        console.log(response3.data.data);
+        setCustomers(response1.data.data ?? []);
+        setJobs(response2.data.data ?? []);
+        setPayments(response3.data.data ?? []);
       } catch (err) {
         console.error(err);
-        setError("error fetching users");
+        setError("Error loading dashboard data");
       }
     };
     fetchData();
   }, []);
 
-  const totalPaidFunc = (payments: Payment[]) => {
-    let count = 0;
-    for (let i = 0; i < payments.length; i++) {
-      count += Number(payments[i].amount);
-    }
-    return count;
-  };
-
-  console.log(totalPaidFunc(payments));
-  console.log(totalPaidFunc(payments).toFixed(2));
+  const totalPaid = payments.reduce(
+    (sum, p) => sum + Number(p.amount),
+    0
+  );
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="flex flex-row items-center justify-between m-3 p-2">
@@ -71,7 +63,7 @@ const AdminDashboardPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-5xl font-bold text-cerulean">{users.length}</p>
+            <p className="text-5xl font-bold text-cerulean">{customers.length}</p>
           </CardContent>
           <CardFooter className="bg-gray-50">
             <p className="text-sm text-green-600 font-medium">
@@ -104,7 +96,7 @@ const AdminDashboardPage = () => {
           </CardHeader>
           <CardContent>
             <p className="text-5xl font-bold text-cerulean">
-              ${totalPaidFunc(payments).toFixed(2)}
+              ${totalPaid.toFixed(2)}
             </p>
           </CardContent>
           <CardFooter className="bg-gray-50">
@@ -141,15 +133,24 @@ const AdminDashboardPage = () => {
           </CardHeader>
           <CardContent className="pt-6">
             <div className="space-y-3">
-              <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-cerulean hover:text-white transition-colors border border-cerulean-200 font-medium">
+              <Link
+                href="/admin/users/new"
+                className="block w-full text-left px-4 py-3 rounded-lg hover:bg-cerulean hover:text-white transition-colors border border-cerulean-200 font-medium"
+              >
                 Add New User
-              </button>
-              <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-cerulean hover:text-white transition-colors border border-cerulean-200 font-medium">
+              </Link>
+              <Link
+                href="/admin/jobs/new"
+                className="block w-full text-left px-4 py-3 rounded-lg hover:bg-cerulean hover:text-white transition-colors border border-cerulean-200 font-medium"
+              >
                 Post New Job
-              </button>
-              <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-cerulean hover:text-white transition-colors border border-cerulean-200 font-medium">
+              </Link>
+              <Link
+                href="/admin/list/jobs/task-requests"
+                className="block w-full text-left px-4 py-3 rounded-lg hover:bg-cerulean hover:text-white transition-colors border border-cerulean-200 font-medium"
+              >
                 Review Applications
-              </button>
+              </Link>
             </div>
           </CardContent>
         </Card>

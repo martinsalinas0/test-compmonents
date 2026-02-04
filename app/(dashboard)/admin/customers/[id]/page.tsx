@@ -1,19 +1,14 @@
 "use client";
 
+import { clientConfig } from "@/lib/config";
+import { Customer } from "@/lib/types/customers";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type Customer = {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  role: string;
-  address: string;
-  state: string;
+type CustomerWithExtras = Customer & {
   activities?: string[];
   transactions?: {
     id: string;
@@ -28,11 +23,10 @@ const SingleCustomerPage = () => {
   const params = useParams();
   const customerID = params?.id as string;
 
-  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [customer, setCustomer] = useState<CustomerWithExtras | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const skills = ["hands", "computers", "CNC machine"];
   const avatarUrl = "https://randomuser.me/api/portraits/men/17.jpg";
 
   useEffect(() => {
@@ -42,7 +36,7 @@ const SingleCustomerPage = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/v1/customers/${customerID}`,
+          `${clientConfig.apiUrl}/customers/${customerID}`,
         );
         setCustomer(res.data.data);
       } catch (err: unknown) {
@@ -77,9 +71,9 @@ const SingleCustomerPage = () => {
               alt="profile pic"
               className="rounded-full"
             />
-            <h2 className="text-xl font-bold">{customer.first_name}</h2>
+            <h2 className="text-xl font-bold">{customer.first_name} {customer.last_name}</h2>
             <span className="text-sm text-muted-foreground">
-              {customer.role}
+              {customer.city}, {customer.state}
             </span>
 
             <div className="mt-4 flex justify-between w-full text-center text-sm font-medium">
@@ -99,10 +93,9 @@ const SingleCustomerPage = () => {
 
             <div className="mt-4 space-y-1 text-sm text-muted-foreground">
               <p>{customer.email}</p>
-              <p>{customer.phone}</p>
-              <p>{customer.last_name}</p>
+              <p>{customer.phone ?? "—"}</p>
               <a
-                href={`tel:${customer.phone}`}
+                href={customer.phone ? `tel:${customer.phone}` : "#"}
                 className="text-cerulean-700 hover:underline block"
               >
                 Call {customer.first_name}
@@ -112,16 +105,15 @@ const SingleCustomerPage = () => {
         </div>
 
         <div className="rounded-lg border bg-card p-4">
-          <h3 className="mb-2 font-semibold text-cerulean-900">Skills</h3>
+          <h3 className="mb-2 font-semibold text-cerulean-900">Notes</h3>
           <div className="flex flex-wrap gap-2">
-            {skills.map((skill) => (
-              <span
-                key={skill}
-                className="rounded-md bg-cerulean-100 px-2 py-1 text-xs font-medium text-cerulean-700"
-              >
-                {skill}
+            {customer.notes ? (
+              <span className="rounded-md bg-cerulean-100 px-2 py-1 text-xs font-medium text-cerulean-700">
+                {customer.notes}
               </span>
-            ))}
+            ) : (
+              <span className="text-pacific-500 text-sm">No notes</span>
+            )}
           </div>
         </div>
       </div>

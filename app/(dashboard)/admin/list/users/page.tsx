@@ -2,14 +2,13 @@
 
 import TableForList from "@/components/forList/UserTable";
 import QuickActionBar from "@/components/layouts/QuickActionBar";
-import SearchBar from "@/components/SeachBar";
+import SearchBar from "@/components/SearchBar";
+import { clientConfig } from "@/lib/config";
 import { User } from "@/lib/types/user";
 import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState, useMemo } from "react";
-
-const URL = "http://localhost:5000/api/v1";
 
 const UsersListPage = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -18,8 +17,8 @@ const UsersListPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${URL}/users`);
-        setUsers(response.data.data);
+        const response = await axios.get(`${clientConfig.apiUrl}/users`);
+        setUsers(response.data.data ?? []);
       } catch (err) {
         console.error(err);
       }
@@ -36,7 +35,7 @@ const UsersListPage = () => {
         user.first_name.toLowerCase().includes(q) ||
         user.last_name.toLowerCase().includes(q) ||
         user.email.toLowerCase().includes(q) ||
-        user.phone.toLowerCase().includes(q) ||
+        (user.phone ?? "").toLowerCase().includes(q) ||
         user.role.toLowerCase().includes(q) ||
         (user.is_active ? "active" : "inactive").includes(q)
     );

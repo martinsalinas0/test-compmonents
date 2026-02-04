@@ -1,6 +1,7 @@
 "use client";
 
 import UserProfileCard from "@/components/cards/UserCards";
+import { clientConfig } from "@/lib/config";
 import { User } from "@/lib/types/user";
 import axios from "axios";
 import { useParams } from "next/navigation";
@@ -20,7 +21,7 @@ const SingleUserPage = () => {
     }
 
     axios
-      .get(`http://localhost:5000/api/v1/users/${userId}`)
+      .get(`${clientConfig.apiUrl}/users/${userId}`)
       .then((response) => {
         const userData = response.data?.data;
 

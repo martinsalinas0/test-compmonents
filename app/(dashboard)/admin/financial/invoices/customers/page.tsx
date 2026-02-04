@@ -1,5 +1,5 @@
 import React from "react";
 
-export const CustomerInvoicesPage = () => {
+export default function CustomerInvoicesPage() {
   return <div>CustomerInvoicesPage</div>;
-};
+}

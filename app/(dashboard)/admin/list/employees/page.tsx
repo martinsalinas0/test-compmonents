@@ -1,11 +1,10 @@
 "use client";
 
 import TableForList from "@/components/forList/UserTable";
+import { clientConfig } from "@/lib/config";
 import { User } from "@/lib/types/user";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-const URL = "http://localhost:5000/api/v1";
 
 const UsersListPage = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -13,7 +12,7 @@ const UsersListPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${URL}/users/role/employee`);
+        const response = await axios.get(`${clientConfig.apiUrl}/users/role/employee`);
         setUsers(response.data.data);
       } catch (err) {
         console.error(err);

@@ -15,7 +15,7 @@ const userSchema = z.object({
   password: z
     .string()
     .min(8, "At least 8 characters")
-    .max(15, "No more than 15 characters"),
+    .max(128, "Password must be 128 characters or fewer"),
   phone: z.string().length(10, "Phone must be 10 digits"),
   address: z.string().min(1, "Address is required").max(50),
   city: z.string().min(1, "City is required").max(50),
@@ -62,10 +62,10 @@ const AddUserForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-cerulean-50 to-olive-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-cerulean-50 to-olive-50 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg border border-cerulean-100 overflow-hidden">
-          <div className="bg-linear-to-r from-cerulean to-pacific px-6 py-8">
+          <div className="bg-gradient-to-r from-cerulean to-pacific px-6 py-8">
             <h1 className="text-3xl font-bold text-white text-center">
               Add New User
             </h1>

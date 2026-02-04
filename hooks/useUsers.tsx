@@ -1,24 +1,31 @@
+import { clientConfig } from "@/lib/config";
+import { User } from "@/lib/types/all";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 export const useUsers = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/users/all`);
-        setUsers(response.data.data);
+        const response = await axios.get(`${clientConfig.apiUrl}/users`);
+        if (!cancelled) setUsers(response.data.data ?? []);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "An error occurred");
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
-
     fetchUsers();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return { users, loading, error };

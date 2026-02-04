@@ -1,7 +1,7 @@
 "use client";
 
 import GenericTable, { Column } from "@/components/forList/GenericTable";
-import SearchBar from "@/components/SeachBar";
+import SearchBar from "@/components/SearchBar";
 import { clientConfig } from "@/lib/config";
 import { TaskRequest } from "@/lib/types/all";
 import axios from "axios";
@@ -26,8 +26,7 @@ const TaskRequestListPage = () => {
         const response = await axios.get(
           `${clientConfig.apiUrl}/task-requests/all`,
         );
-        setRequests(response.data.data);
-        console.log(response.data.data);
+        setRequests(response.data.data ?? []);
       } catch (error) {
         console.error(error);
         setError("Failed to load task requests");
@@ -72,7 +71,7 @@ const TaskRequestListPage = () => {
       accessor: "title",
       render: (v, request) => (
         <Link
-          href={`/admin/task-requests/${request.id}`}
+          href={`/admin/jobs/task-request/${request.id}`}
           className="hover:text-blue-500 font-medium"
         >
           {String(v)}
@@ -159,7 +158,7 @@ const TaskRequestListPage = () => {
           />
 
           <Link
-            href="/admin/task-requests/new"
+            href="/admin/jobs/new"
             className="bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
           >
             <div className="flex items-center gap-2">
@@ -197,7 +196,7 @@ const TaskRequestListPage = () => {
           <div className="text-center py-12">
             <p className="text-gray-500 mb-4">No task requests yet</p>
             <Link
-              href="/admin/task-requests/new"
+              href="/admin/jobs/new"
               className="inline-flex items-center gap-2 bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
             >
               Create Your First Request <Plus size={18} />

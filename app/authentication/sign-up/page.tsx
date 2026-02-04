@@ -2,10 +2,13 @@
 
 import FooterLink from "@/components/layouts/FooterLink";
 import { Button } from "@/components/ui/button";
+import { clientConfig } from "@/lib/config";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 const SignUpPage = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -67,14 +70,22 @@ const SignUpPage = () => {
     setIsLoading(true);
 
     try {
-      // TODO: Replace with your actual API call
-      console.log("Signing up with:", formData);
-
-      // Simulated API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // Handle successful signup (redirect, show success message, etc.)
-      // router.push("/dashboard");
+      const res = await fetch(`${clientConfig.apiUrl}/auth/sign-up`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          invite_code: formData.inviteCode,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.message || "Sign up failed");
+      }
+      router.push("/authentication/sign-in");
     } catch (error) {
       console.error("Signup error:", error);
       setErrors({ submit: "Signup failed. Please try again." });
@@ -229,7 +240,7 @@ const SignUpPage = () => {
         <FooterLink
           text="Already have an account?"
           linkText="Sign into Account"
-          href="/sign-in"
+          href="/authentication/sign-in"
         />
       </div>
     </div>

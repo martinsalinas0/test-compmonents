@@ -1,5 +1,6 @@
 "use client";
 
+import { clientConfig } from "@/lib/config";
 import { Contractor } from "@/lib/types/contractor";
 import axios from "axios";
 import Image from "next/image";
@@ -26,7 +27,7 @@ const SingleContractorPage = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/v1/contractors/${id}`,
+          `${clientConfig.apiUrl}/contractors/${id}`,
           { signal: controller.signal },
         );
         setContractor(res.data.data);

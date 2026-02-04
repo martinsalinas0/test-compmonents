@@ -1,22 +1,23 @@
 "use client";
 
 import CustomerTableList from "@/components/forList/CustomerTableList";
+import SearchBar from "@/components/SearchBar";
+import { clientConfig } from "@/lib/config";
 import { Customer } from "@/lib/types/customers";
 import axios from "axios";
 import { Plus } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-const URL = "http://localhost:5000/api/v1";
 const CustomersListPage = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get(`${URL}/customers`);
-        setCustomers(response.data.data);
+        const response = await axios.get(`${clientConfig.apiUrl}/customers`);
+        setCustomers(response.data.data ?? []);
       } catch (error) {
         console.error(error);
       }
@@ -24,19 +25,29 @@ const CustomersListPage = () => {
     fetchCustomers();
   }, []);
 
+  const filteredCustomers = useMemo(() => {
+    if (!searchQuery.trim()) return customers;
+    const q = searchQuery.toLowerCase();
+    return customers.filter(
+      (c) =>
+        c.first_name?.toLowerCase().includes(q) ||
+        c.last_name?.toLowerCase().includes(q) ||
+        c.email?.toLowerCase().includes(q) ||
+        c.city?.toLowerCase().includes(q)
+    );
+  }, [customers, searchQuery]);
+
   return (
     <div className="p-6">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-cerulean mb-4">Customer List</h1>
-        <div className="flex items-center justify-between gap-4">
-          <div className="hidden md:flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-pacific-300 px-4 py-1 bg-white">
-            <Image src="/search.png" alt="Search" width={14} height={14} />
-            <input
-              type="text"
-              placeholder="Search contractors..."
-              className="w-64 p-2 bg-transparent outline-none text-cerulean-800 placeholder:text-pacific-400"
-            />
-          </div>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search customers..."
+            className="md:w-64"
+          />
 
           <Link
             href="/admin/users/customers/new"
@@ -50,7 +61,7 @@ const CustomersListPage = () => {
       </div>
 
       <div className="overflow-x-auto">
-        <CustomerTableList data={customers} />
+        <CustomerTableList data={filteredCustomers} />
       </div>
     </div>
   );

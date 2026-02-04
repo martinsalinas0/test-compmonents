@@ -13,11 +13,11 @@ import Link from "next/link";
 
 const QuickActionBar = () => {
   const quickActions = [
-    { icon: FileText, label: "New ssssJob", href: "/admin/jobs/new" },
-    { icon: Users, label: "New Customer", href: "/admin/customers/new" },
-    { icon: Briefcase, label: "New Task", href: "/admin/tasks/new" },
-    { icon: DollarSign, label: "New Invoice", href: "/admin/invoices/new" },
-    { icon: Calendar, label: "Schedule", href: "/admin/schedule" },
+    { icon: FileText, label: "New Job", href: "/admin/jobs/new" },
+    { icon: Users, label: "New Customer", href: "/admin/users/customers/new" },
+    { icon: Briefcase, label: "Task Requests", href: "/admin/list/jobs/task-requests" },
+    { icon: DollarSign, label: "Invoices", href: "/admin/list/financials/invoices" },
+    { icon: Calendar, label: "Calendar", href: "/admin" },
     { icon: Settings, label: "Settings", href: "/admin/settings" },
   ];
 

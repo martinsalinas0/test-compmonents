@@ -78,16 +78,12 @@ const data = {
           title: "Task Requests",
           url: "/admin/list/jobs/task-requests",
         },
-        {
-          title: "Completed Jobs",
-          url: "/admin/list/jobs/complete",
-        },
       ],
     },
 
     {
       title: "Financial",
-      url: "#",
+      url: "/admin/list/financials",
       icon: Landmark,
       items: [
         {
@@ -110,41 +106,41 @@ const data = {
     },
     {
       title: "Analytics and Reports",
-      url: "",
+      url: "/admin/analytics",
       icon: BarChartHorizontal,
       items: [
         {
           title: "Platform Analytics",
-          url: "f",
+          url: "/admin/analytics",
         },
-        { title: "User Activity", url: "f" },
+        { title: "User Activity", url: "/admin/analytics" },
         {
           title: "Job Stats",
-          url: "f",
+          url: "/admin/analytics",
         },
-        { title: "Financial Reports", url: "f" },
+        { title: "Financial Reports", url: "/admin/analytics" },
       ],
     },
     {
       title: "Settings",
-      url: "#",
+      url: "/admin/settings",
       icon: Settings2,
       items: [
         {
           title: "General",
-          url: "#",
+          url: "/admin/settings",
         },
         {
           title: "Team",
-          url: "#",
+          url: "/admin/settings",
         },
         {
           title: "Billing",
-          url: "#",
+          url: "/admin/settings",
         },
         {
           title: "Limits",
-          url: "#",
+          url: "/admin/settings",
         },
       ],
     },

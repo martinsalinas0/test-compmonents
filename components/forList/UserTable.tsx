@@ -1,23 +1,11 @@
 "use client";
 
-import React from "react";
-import TableHeader from "@/components/forList/TableHeader";
+import { User } from "@/lib/types/user";
 import { Info } from "lucide-react";
 import Link from "next/link";
+import React from "react";
+import TableHeader from "@/components/forList/TableHeader";
 
-// define a User type
-export interface User {
-  id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  phone: string;
-  role: string;
-  is_active: boolean;
-  created_at: string;
-}
-
-// props for the component
 interface TableForUsersPageListProps {
   data: User[];
 }
@@ -46,7 +34,7 @@ const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
               {user.email}
             </td>
             <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
-              {user.phone}
+              {user.phone ?? "—"}
             </td>
             <td className="border-b border-cerulean-50 px-6 py-4 text-sm">
               <span

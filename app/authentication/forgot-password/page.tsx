@@ -1,57 +1,69 @@
 "use client";
 
 import FooterLink from "@/components/layouts/FooterLink";
-import { clientConfig } from "@/lib/config";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { clientConfig } from "@/lib/config";
 import axios from "axios";
 
-export default function SignInPage() {
-  const router = useRouter();
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!email.trim() || !password) {
-      setError("Please enter email and password.");
+    if (!email.trim()) {
+      setError("Please enter your email.");
       return;
     }
     setIsLoading(true);
     try {
-      const res = await axios.post(`${clientConfig.apiUrl}/auth/sign-in`, {
+      await axios.post(`${clientConfig.apiUrl}/auth/forgot-password`, {
         email: email.trim(),
-        password,
       });
-      if (res.data?.token || res.data?.data?.token) {
-        router.push("/admin");
-        return;
-      }
-      router.push("/admin");
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 401) {
-        setError("Invalid email or password.");
-      } else {
-        setError("Sign in failed. Please try again.");
-      }
+      setSent(true);
+    } catch {
+      setError("Something went wrong. Please try again or contact support.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  if (sent) {
+    return (
+      <div className="w-full max-w-md">
+        <div className="mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-cerulean">
+            Check your email
+          </h1>
+          <p className="text-pacific mt-2">
+            If an account exists for {email}, we’ve sent instructions to reset your password.
+          </p>
+        </div>
+        <Link
+          href="/authentication/sign-in"
+          className="inline-block w-full text-center px-4 py-3 rounded-lg bg-cerulean text-white font-medium hover:bg-pacific transition-colors"
+        >
+          Back to Sign In
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-md">
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-cerulean">
-          Welcome Back
+          Forgot password?
         </h1>
-        <p className="text-pacific mt-2">Sign in to continue to Prossfora</p>
+        <p className="text-pacific mt-2">
+          Enter your email and we’ll send you a link to reset your password.
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -73,41 +85,20 @@ export default function SignInPage() {
           />
         </div>
 
-        <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-sm font-medium text-cerulean">
-              Password
-            </label>
-            <Link
-              href="/authentication/forgot-password"
-              className="text-sm text-pacific hover:text-pacific-500 transition-colors"
-            >
-              Forgot password?
-            </Link>
-          </div>
-          <Input
-            type="password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border-cerulean-200 focus:ring-pacific"
-          />
-        </div>
-
         <Button
           type="submit"
           disabled={isLoading}
           className="w-full bg-yarrow hover:bg-yarrow-500 text-white font-semibold py-3 rounded-lg transition-all disabled:opacity-50"
         >
-          {isLoading ? "Signing in..." : "Sign In"}
+          {isLoading ? "Sending..." : "Send reset link"}
         </Button>
       </form>
 
       <div className="mt-6">
         <FooterLink
-          text="Don't have an account?"
-          linkText="Create an Account"
-          href="/authentication/sign-up"
+          text="Remember your password?"
+          linkText="Sign In"
+          href="/authentication/sign-in"
         />
       </div>
     </div>

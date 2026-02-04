@@ -1,7 +1,7 @@
 "use client";
 
 import GenericTable, { Column } from "@/components/forList/GenericTable";
-import SearchBar from "@/components/SeachBar";
+import SearchBar from "@/components/SearchBar";
 import { clientConfig } from "@/lib/config";
 import { Payment } from "@/lib/types/all";
 import axios from "axios";
