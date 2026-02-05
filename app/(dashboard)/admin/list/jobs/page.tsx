@@ -16,6 +16,8 @@ const AdminJobsListPage = () => {
       .get(`http://localhost:5000/api/v1/jobs/all`)
       .then((response) => {
         setJobs(response.data.data);
+        console.log(response.data.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching data: ", err);

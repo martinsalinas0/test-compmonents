@@ -21,7 +21,7 @@ const JobTable: React.FC<JobTableProps> = ({ data }) => {
         <tbody>
           {data.map((job) => (
             <tr key={job.id} className="transition hover:bg-cerulean-50">
-              <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-800">
+              <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-800 hover:text-blue-500">
                 <Link href={`/admin/jobs/${job.id}`}>{job.title}</Link>
               </td>
 

@@ -107,7 +107,7 @@ export default function SignInPage() {
         <FooterLink
           text="Don't have an account?"
           linkText="Create an Account"
-          href="/authentication/sign-up"
+          href="/auth/sign-up"
         />
       </div>
     </div>

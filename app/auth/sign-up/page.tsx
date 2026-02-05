@@ -23,7 +23,7 @@ const SignUpPage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
+
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -96,7 +96,6 @@ const SignUpPage = () => {
 
   return (
     <div className="w-full max-w-md">
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-cerulean">
           Sign Up
@@ -104,9 +103,7 @@ const SignUpPage = () => {
         <p className="text-pacific mt-2">Sign up to use ProssFora</p>
       </div>
 
-      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Global Error */}
         {errors.submit && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-sm text-red-600">{errors.submit}</p>
@@ -240,7 +237,7 @@ const SignUpPage = () => {
         <FooterLink
           text="Already have an account?"
           linkText="Sign into Account"
-          href="/authentication/sign-in"
+          href="/auth/sign-in"
         />
       </div>
     </div>
