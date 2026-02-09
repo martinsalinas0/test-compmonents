@@ -2,11 +2,11 @@
 
 import {
   FileText,
-  Users,
-  Briefcase,
   DollarSign,
   Calendar,
   Settings,
+  ListTodo,
+  UserRoundPen,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -14,9 +14,21 @@ import Link from "next/link";
 const QuickActionBar = () => {
   const quickActions = [
     { icon: FileText, label: "New Job", href: "/admin/jobs/new" },
-    { icon: Users, label: "New Customer", href: "/admin/users/customers/new" },
-    { icon: Briefcase, label: "Task Requests", href: "/admin/list/jobs/task-requests" },
-    { icon: DollarSign, label: "Invoices", href: "/admin/list/financials/invoices" },
+    {
+      icon: UserRoundPen,
+      label: "New Customer",
+      href: "/admin/users/customers/new",
+    },
+    {
+      icon: ListTodo,
+      label: "Task Requests",
+      href: "/admin/list/jobs/task-requests",
+    },
+    {
+      icon: DollarSign,
+      label: "Invoices",
+      href: "/admin/list/financials/invoices",
+    },
     { icon: Calendar, label: "Calendar", href: "/admin" },
     { icon: Settings, label: "Settings", href: "/admin/settings" },
   ];
