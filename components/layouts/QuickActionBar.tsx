@@ -19,6 +19,7 @@ const QuickActionBar = () => {
       label: "New Customer",
       href: "/admin/users/customers/new",
     },
+
     {
       icon: ListTodo,
       label: "Task Requests",
@@ -27,7 +28,7 @@ const QuickActionBar = () => {
     {
       icon: DollarSign,
       label: "Invoices",
-      href: "/admin/list/financials/invoices",
+      href: "/admin/list/financials/invoices/customers",
     },
     { icon: Calendar, label: "Calendar", href: "/admin" },
     { icon: Settings, label: "Settings", href: "/admin/settings" },

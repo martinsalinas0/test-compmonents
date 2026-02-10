@@ -4,7 +4,6 @@ import React from "react";
 const NewCustomerPage = () => {
   return (
     <div>
-      NewCustomerPage
       <AddCustomerForm />
     </div>
   );

@@ -22,9 +22,7 @@ const SingleJobPage = () => {
 
     const fetchJob = async () => {
       try {
-        const res = await axios.get(
-          `${clientConfig.apiUrl}/jobs/${jobId}`,
-        );
+        const res = await axios.get(`${clientConfig.apiUrl}/jobs/${jobId}`);
         setJob(res.data.data);
       } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
@@ -66,7 +64,6 @@ const SingleJobPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-10 p-8">
-      {/* Top bar */}
       <div className="sticky top-0 z-10 mb-6">
         <div className="mx-auto flex max-w-4xl items-center justify-between border-b border-border bg-card px-8 py-3">
           <div className="flex items-center gap-4">
@@ -106,9 +103,7 @@ const SingleJobPage = () => {
             <span className="font-medium uppercase tracking-wide text-pacific-600">
               Status:
             </span>
-            <span className="font-semibold text-primary-900">
-              {job.status}
-            </span>
+            <span className="font-semibold text-primary-900">{job.status}</span>
           </span>
 
           <span className="inline-flex items-center gap-2 rounded-md border border-olive-300 px-3 py-1">
@@ -128,7 +123,7 @@ const SingleJobPage = () => {
             <span>Customer Information</span>
 
             <Link
-              href={`/admin/customers/${job.customer_id}`}
+              href={`/admin/users/customers/${job.customer_id}`}
               className=" text-primary-700 hover:underline"
               aria-label="Go to customer details"
             >
