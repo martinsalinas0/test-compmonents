@@ -42,7 +42,7 @@ const AdminJobsListPage = () => {
     <div className="p-6">
       <div className="mb-6">
         <div className="flex items-center justify-between gap-4">
-          <div className="hidden md:flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-pacific-300 px-4 py-1 bg-white">
+          <div className="hidden md:flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-input px-4 py-1 bg-card">
             <Image src="/search.png" alt="Search" width={14} height={14} />
             <input
               type="text"

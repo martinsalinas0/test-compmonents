@@ -14,14 +14,14 @@ export function CompanyHeader() {
           {/* Logo */}
           <div>
             <div className="flex flex-row items-center gap-2">
-              <div className="bg-[#0f2143] text-white flex aspect-square size-8 items-center justify-center rounded-lg">
+              <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                 <p className="font-bold">P</p>
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold text-[#0f2143]">
+                <span className="truncate font-semibold text-sidebar-foreground">
                   Prossfora
                 </span>
-                <span className="truncate text-xs text-[#354e56]">
+                <span className="truncate text-xs text-muted-foreground">
                   Admin Panel
                 </span>
               </div>

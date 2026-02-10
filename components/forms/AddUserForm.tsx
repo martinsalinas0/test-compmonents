@@ -64,7 +64,7 @@ const AddUserForm = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cerulean-50 to-olive-50 py-8 px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg border border-cerulean-100 overflow-hidden">
+        <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
           <div className="bg-gradient-to-r from-cerulean to-pacific px-6 py-8">
             <h1 className="text-3xl font-bold text-white text-center">
               Add New User
@@ -248,10 +248,10 @@ const AddUserForm = () => {
                 />
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-cerulean-100">
+              <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-border">
                 <button
                   type="button"
-                  className="px-6 py-2 bg-white border border-cerulean-100 text-cerulean rounded-md hover:bg-red-100 transition-colors hover:font-bold"
+                  className="px-6 py-2 bg-card border border-border text-foreground rounded-md hover:bg-muted transition-colors hover:font-bold"
                   onClick={() => router.push("/admin/list/users")}
                   disabled={isSubmitting}
                 >
@@ -260,7 +260,7 @@ const AddUserForm = () => {
 
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-cerulean text-white rounded-md hover:bg-pacific transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:bg-muted disabled:cursor-not-allowed"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Creating..." : "Create User"}

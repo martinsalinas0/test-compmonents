@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cerulean-50 via-white to-olive-50 flex flex-col">
-      <header className="border-b border-cerulean-100 bg-white/80 backdrop-blur">
+      <header className="border-b border-border bg-card/80 backdrop-blur">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <span className="text-xl font-bold text-cerulean">Prossfora</span>
           <nav className="flex items-center gap-4">
@@ -15,7 +15,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/authentication/sign-up"
-              className="px-4 py-2 rounded-lg bg-cerulean text-white font-medium hover:bg-pacific transition-colors"
+              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
             >
               Sign Up
             </Link>
@@ -39,14 +39,14 @@ export default function HomePage() {
           </Link>
           <Link
             href="/authentication/sign-in"
-            className="px-8 py-3 rounded-lg border-2 border-cerulean text-cerulean font-semibold hover:bg-cerulean-50 transition-colors"
+            className="px-8 py-3 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-muted transition-colors"
           >
             Sign In
           </Link>
         </div>
       </main>
 
-      <footer className="border-t border-cerulean-100 py-4 text-center text-sm text-pacific-500">
+      <footer className="border-t border-border py-4 text-center text-sm text-muted-foreground">
         © Prossfora. All rights reserved.
       </footer>
     </div>

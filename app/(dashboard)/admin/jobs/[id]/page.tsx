@@ -73,7 +73,7 @@ const SingleJobPage = () => {
             <button
               type="button"
               onClick={() => router.back()}
-              className="inline-flex items-center gap-2 text-sm font-medium text-cerulean-700 transition hover:text-cerulean-900"
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary-700 transition hover:text-primary-900"
             >
               <ArrowLeft className="h-4 w-4" />
               Back
@@ -82,7 +82,7 @@ const SingleJobPage = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="rounded-md border border-cerulean-300 px-3 py-1.5 text-sm font-medium text-cerulean-800 transition hover:bg-cerulean-50">
+            <button className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition hover:bg-muted">
               Change Status
             </button>
             <button className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground">
@@ -93,20 +93,20 @@ const SingleJobPage = () => {
       </div>
 
       <header className="space-y-4">
-        <h1 className="text-5xl font-bold text-cerulean-900">{job.title}</h1>
+        <h1 className="text-5xl font-bold text-primary-900">{job.title}</h1>
 
         <div className="flex flex-wrap gap-4 text-sm">
-          <span className="inline-flex items-center gap-2 rounded-md border border-cerulean-300 px-3 py-1">
+          <span className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-1">
             <span className="font-medium uppercase tracking-wide text-pacific-600">
               ID:
             </span>
-            <span className="font-semibold text-cerulean-900">{job.id}</span>
+            <span className="font-semibold text-primary-900">{job.id}</span>
           </span>
-          <span className="inline-flex items-center gap-2 rounded-md border border-cerulean-300 px-3 py-1">
+          <span className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-1">
             <span className="font-medium uppercase tracking-wide text-pacific-600">
               Status:
             </span>
-            <span className="font-semibold text-cerulean-900">
+            <span className="font-semibold text-primary-900">
               {job.status}
             </span>
           </span>
@@ -115,7 +115,7 @@ const SingleJobPage = () => {
             <span className="font-medium uppercase tracking-wide text-olive-600">
               Priority:
             </span>
-            <span className="font-semibold text-cerulean-900">
+            <span className="font-semibold text-primary-900">
               {job.priority}
             </span>
           </span>
@@ -129,7 +129,7 @@ const SingleJobPage = () => {
 
             <Link
               href={`/admin/customers/${job.customer_id}`}
-              className=" text-cerulean-700 hover:underline"
+              className=" text-primary-700 hover:underline"
               aria-label="Go to customer details"
             >
               <Info className="h-6 w-6" />
@@ -158,38 +158,38 @@ const SingleJobPage = () => {
       )}
 
       {job.contractor && (
-        <section className="rounded-lg border border-cerulean-300 bg-card p-6 shadow-sm">
+        <section className="rounded-lg border border-border bg-card p-6 shadow-sm">
           <h2 className="mb-4 flex justify-between items-center text-xl font-semibold text-pacific-800">
             <span>Contractor Information</span>
 
             <Link
               href={`/admin/contractors/${job.customer.id}`}
-              className=" text-cerulean-700 hover:underline"
+              className=" text-primary-700 hover:underline"
               aria-label="Go to customer details"
             >
               <Info className="h-6 w-6" />
             </Link>
           </h2>
-          <div className="space-y-2 text-sm text-cerulean-700">
+          <div className="space-y-2 text-sm text-primary-700">
             <p>
-              <span className="font-medium text-cerulean-900">Name:</span>{" "}
+              <span className="font-medium text-primary-900">Name:</span>{" "}
               {job.contractor.first_name} {job.contractor.last_name}
             </p>
             {job.contractor.company_name && (
               <p>
-                <span className="font-medium text-cerulean-900">Company:</span>{" "}
+                <span className="font-medium text-primary-900">Company:</span>{" "}
                 {job.contractor.company_name}
               </p>
             )}
             {job.contractor.email && (
               <p>
-                <span className="font-medium text-cerulean-900">Email:</span>{" "}
+                <span className="font-medium text-primary-900">Email:</span>{" "}
                 {job.contractor.email}
               </p>
             )}
             {job.contractor.phone && (
               <p>
-                <span className="font-medium text-cerulean-900">Phone:</span>{" "}
+                <span className="font-medium text-primary-900">Phone:</span>{" "}
                 {job.contractor.phone}
               </p>
             )}
@@ -198,7 +198,7 @@ const SingleJobPage = () => {
       )}
 
       <section className="space-y-3">
-        <h2 className="border-b border-cerulean-200 pb-1 text-lg font-semibold text-cerulean-800">
+        <h2 className="border-b border-border pb-1 text-lg font-semibold text-foreground">
           Description
         </h2>
         <p className="leading-relaxed text-muted-foreground">
@@ -207,7 +207,7 @@ const SingleJobPage = () => {
       </section>
 
       <section className="space-y-3">
-        <h2 className="border-b border-cerulean-200 pb-1 text-lg font-semibold text-cerulean-800">
+        <h2 className="border-b border-border pb-1 text-lg font-semibold text-foreground">
           Location
         </h2>
         <p className="text-sm text-muted-foreground">{job.address}</p>
@@ -218,7 +218,7 @@ const SingleJobPage = () => {
 
       <section className="grid gap-8 sm:grid-cols-2">
         <div className="space-y-3">
-          <h2 className="text-lg font-semibold text-cerulean-800">Schedule</h2>
+          <h2 className="text-lg font-semibold text-foreground">Schedule</h2>
           <div className="space-y-2 text-sm">
             <p>
               <span className="text-pacific-600">Date:</span>{" "}
@@ -232,7 +232,7 @@ const SingleJobPage = () => {
         </div>
 
         <div className="space-y-3">
-          <h2 className="text-lg font-semibold text-cerulean-800">
+          <h2 className="text-lg font-semibold text-foreground">
             Work Details
           </h2>
           <div className="space-y-2 text-sm">

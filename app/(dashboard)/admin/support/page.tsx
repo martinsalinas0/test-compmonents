@@ -22,13 +22,13 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="p-6 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-cerulean flex items-center gap-2">
+    <div className="max-w-4xl space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
           <HelpCircle size={32} />
           Support
         </h1>
-        <p className="text-pacific-600 mt-1">
+        <p className="text-muted-foreground mt-1">
           Get help and contact support
         </p>
       </div>
@@ -46,13 +46,13 @@ export default function SupportPage() {
           </CardHeader>
           <CardContent>
             {submitted ? (
-              <p className="text-green-600 font-medium">
+              <p className="text-olive-600 font-medium">
                 Thank you. Your message has been sent. We’ll respond within 1–2 business days.
               </p>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-cerulean mb-1">
+                  <label className="block text-sm font-medium text-foreground mb-1">
                     Name
                   </label>
                   <Input
@@ -61,12 +61,12 @@ export default function SupportPage() {
                       setForm((prev) => ({ ...prev, name: e.target.value }))
                     }
                     placeholder="Your name"
-                    className="border-cerulean-200"
+                    className="border-border"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-cerulean mb-1">
+                  <label className="block text-sm font-medium text-foreground mb-1">
                     Email
                   </label>
                   <Input
@@ -76,12 +76,12 @@ export default function SupportPage() {
                       setForm((prev) => ({ ...prev, email: e.target.value }))
                     }
                     placeholder="you@example.com"
-                    className="border-cerulean-200"
+                    className="border-border"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-cerulean mb-1">
+                  <label className="block text-sm font-medium text-foreground mb-1">
                     Message
                   </label>
                   <textarea
@@ -90,11 +90,11 @@ export default function SupportPage() {
                       setForm((prev) => ({ ...prev, message: e.target.value }))
                     }
                     placeholder="How can we help?"
-                    className="w-full min-h-[100px] px-3 py-2 border border-cerulean-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-pacific"
+                    className="w-full min-h-[100px] px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                     required
                   />
                 </div>
-                <Button type="submit" className="bg-cerulean hover:bg-pacific text-white">
+                <Button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground">
                   Send message
                 </Button>
               </form>
@@ -115,23 +115,23 @@ export default function SupportPage() {
           <CardContent className="space-y-4">
             <a
               href="#"
-              className="block p-3 rounded-lg border border-cerulean-100 hover:bg-cerulean-50 text-cerulean font-medium transition-colors"
+              className="block p-3 rounded-lg border border-border hover:bg-accent text-primary font-medium transition-colors"
             >
               Getting started guide
             </a>
             <a
               href="#"
-              className="block p-3 rounded-lg border border-cerulean-100 hover:bg-cerulean-50 text-cerulean font-medium transition-colors"
+              className="block p-3 rounded-lg border border-border hover:bg-accent text-primary font-medium transition-colors"
             >
               Jobs and task requests
             </a>
             <a
               href="#"
-              className="block p-3 rounded-lg border border-cerulean-100 hover:bg-cerulean-50 text-cerulean font-medium transition-colors"
+              className="block p-3 rounded-lg border border-border hover:bg-accent text-primary font-medium transition-colors"
             >
               Billing and invoices
             </a>
-            <p className="text-sm text-pacific-600 pt-2">
+            <p className="text-sm text-muted-foreground pt-2">
               Email: support@prossfora.com
             </p>
           </CardContent>

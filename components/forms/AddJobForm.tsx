@@ -84,7 +84,7 @@ const AddJobForm = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-cerulean-50 to-olive-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg border border-cerulean-100 overflow-hidden">
+        <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
           <div className="bg-linear-to-r from-cerulean to-pacific px-6 py-8">
             <h1 className="text-3xl font-bold text-white text-center">
               Add New Job
@@ -121,10 +121,10 @@ const AddJobForm = () => {
                   Description <span className="text-red-500">*</span>
                 </label>
                 <textarea
-                  className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent ${
                     errors.description
                       ? "border-red-300"
-                      : "border-cerulean-100"
+                      : "border-border"
                   }`}
                   placeholder="Enter detailed job description..."
                   rows={4}
@@ -143,10 +143,10 @@ const AddJobForm = () => {
                     For Customer <span className="text-red-500">*</span>
                   </label>
                   <select
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent ${
+                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent ${
                       errors.customerId
                         ? "border-red-300"
-                        : "border-cerulean-100"
+                        : "border-border"
                     }`}
                     {...register("customerId")}
                   >
@@ -170,7 +170,7 @@ const AddJobForm = () => {
                     Pay Type
                   </label>
                   <select
-                    className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
+                    className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
                     {...register("payType")}
                   >
                     <option value="">Select Pay Type</option>
@@ -186,7 +186,7 @@ const AddJobForm = () => {
                     Priority <span className="text-red-500">*</span>
                   </label>
                   <select
-                    className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
+                    className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
                     {...register("priority")}
                   >
                     <option value="low">Low</option>
@@ -201,7 +201,7 @@ const AddJobForm = () => {
                     Status <span className="text-red-500">*</span>
                   </label>
                   <select
-                    className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
+                    className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
                     {...register("status")}
                   >
                     <option value="open">Open</option>
@@ -229,7 +229,7 @@ const AddJobForm = () => {
               </div>
 
               <div className="mt-6 mb-4">
-                <h3 className="text-lg font-semibold text-cerulean border-b border-cerulean-100 pb-2">
+                <h3 className="text-lg font-semibold text-primary border-b border-border pb-2">
                   Job Location
                 </h3>
               </div>
@@ -308,10 +308,10 @@ const AddJobForm = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-cerulean-100">
+              <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-border">
                 <button
                   type="button"
-                  className="px-6 py-2 bg-white border border-cerulean-100 text-cerulean rounded-md hover:bg-olive-50 transition-colors"
+                  className="px-6 py-2 bg-card border border-border text-foreground rounded-md hover:bg-muted transition-colors"
                   onClick={() => router.push("/admin/list/jobs")}
                   disabled={isSubmitting}
                 >
@@ -320,7 +320,7 @@ const AddJobForm = () => {
 
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-cerulean text-white rounded-md hover:bg-pacific transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:bg-muted disabled:cursor-not-allowed"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Creating..." : "Create Job"}

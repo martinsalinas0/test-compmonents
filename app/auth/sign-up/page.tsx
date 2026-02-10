@@ -120,10 +120,10 @@ const SignUpPage = () => {
             value={formData.firstName}
             onChange={handleChange}
             placeholder="John"
-            className={`w-full px-4 py-2.5 border rounded-lg bg-white focus:outline-none focus:ring-2 transition-all ${
+            className={`w-full px-4 py-2.5 border rounded-lg bg-card focus:outline-none focus:ring-2 transition-all ${
               errors.firstName
                 ? "border-red-300 focus:ring-red-200"
-                : "border-cerulean-200 focus:ring-pacific focus:border-transparent"
+                : "border-border focus:ring-ring focus:border-transparent"
             }`}
           />
           {errors.firstName && (
@@ -141,10 +141,10 @@ const SignUpPage = () => {
             value={formData.lastName}
             onChange={handleChange}
             placeholder="Doe"
-            className={`w-full px-4 py-2.5 border rounded-lg bg-white focus:outline-none focus:ring-2 transition-all ${
+            className={`w-full px-4 py-2.5 border rounded-lg bg-card focus:outline-none focus:ring-2 transition-all ${
               errors.lastName
                 ? "border-red-300 focus:ring-red-200"
-                : "border-cerulean-200 focus:ring-pacific focus:border-transparent"
+                : "border-border focus:ring-ring focus:border-transparent"
             }`}
           />
           {errors.lastName && (
@@ -162,10 +162,10 @@ const SignUpPage = () => {
             value={formData.email}
             onChange={handleChange}
             placeholder="you@example.com"
-            className={`w-full px-4 py-2.5 border rounded-lg bg-white focus:outline-none focus:ring-2 transition-all ${
+            className={`w-full px-4 py-2.5 border rounded-lg bg-card focus:outline-none focus:ring-2 transition-all ${
               errors.email
                 ? "border-red-300 focus:ring-red-200"
-                : "border-cerulean-200 focus:ring-pacific focus:border-transparent"
+                : "border-border focus:ring-ring focus:border-transparent"
             }`}
           />
           {errors.email && (
@@ -184,10 +184,10 @@ const SignUpPage = () => {
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
-              className={`w-full px-4 py-2.5 pr-12 border rounded-lg bg-white focus:outline-none focus:ring-2 transition-all ${
+              className={`w-full px-4 py-2.5 pr-12 border rounded-lg bg-card focus:outline-none focus:ring-2 transition-all ${
                 errors.password
                   ? "border-red-300 focus:ring-red-200"
-                  : "border-cerulean-200 focus:ring-pacific focus:border-transparent"
+                  : "border-border focus:ring-ring focus:border-transparent"
               }`}
             />
             <button
@@ -213,10 +213,10 @@ const SignUpPage = () => {
             value={formData.inviteCode}
             onChange={handleChange}
             placeholder="xxx-xxx-0000"
-            className={`w-full px-4 py-2.5 border rounded-lg bg-white focus:outline-none focus:ring-2 transition-all ${
+            className={`w-full px-4 py-2.5 border rounded-lg bg-card focus:outline-none focus:ring-2 transition-all ${
               errors.inviteCode
                 ? "border-red-300 focus:ring-red-200"
-                : "border-cerulean-200 focus:ring-pacific focus:border-transparent"
+                : "border-border focus:ring-ring focus:border-transparent"
             }`}
           />
           {errors.inviteCode && (

@@ -14,14 +14,14 @@ const TableForContractors: React.FC<TableForContractorsProps> = ({ data }) => {
 
   return (
     <div className="overflow-x-auto text-center">
-      <table className="min-w-full bg-background border border-cerulean-100">
+      <table className="min-w-full bg-card border border-border">
         <TableHeader columns={columns} />
         <tbody>
           {data.length === 0 ? (
             <tr>
               <td
                 colSpan={columns.length}
-                className="text-center py-4 text-sm text-cerulean"
+                className="text-center py-4 text-sm text-foreground"
               >
                 No contractors found
               </td>
@@ -29,24 +29,24 @@ const TableForContractors: React.FC<TableForContractorsProps> = ({ data }) => {
           ) : (
             data.map((c) => (
               <tr key={c.id} className="hover:bg-olive-50 text-center">
-                <td className="border-b border-cerulean-200 px-6 py-4 text-sm text-cerulean ">
+                <td className="border-b border-border px-6 py-4 text-sm text-foreground ">
                   <Link
                     href={`/admin/contractors/${c.id}`}
-                    className="hover:text-blue-400"
+                    className="hover:text-primary"
                   >
                     {c.first_name} {c.last_name}{" "}
                   </Link>
                 </td>
-                <td className="border-b  border-cerulean-200 px-6 py-4 text-sm text-cerulean">
+                <td className="border-b  border-border px-6 py-4 text-sm text-foreground">
                   {c.email}
                 </td>
-                <td className="border-b border-cerulean-200 px-6 py-4 text-sm text-cerulean">
+                <td className="border-b border-border px-6 py-4 text-sm text-foreground">
                   {c.phone}
                 </td>
-                <td className="border-b border-cerulean-200 px-6 py-4 text-sm text-cerulean">
+                <td className="border-b border-border px-6 py-4 text-sm text-foreground">
                   {c.company_name}
                 </td>
-                <td className="border-b border-cerulean-200 px-6 py-4 text-sm text-cerulean">
+                <td className="border-b border-border px-6 py-4 text-sm text-foreground">
                   {c.is_active ? "ACTIVE" : "INACTIVE"}
                 </td>
               </tr>

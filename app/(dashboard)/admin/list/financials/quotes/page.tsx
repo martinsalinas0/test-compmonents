@@ -63,7 +63,7 @@ const QuotesListPage = () => {
       render: (v, quote) => (
         <Link
           href={`/admin/jobs/${quote.job_id}`}
-          className="hover:text-blue-500"
+          className="hover:text-primary"
         >
           F-{getLastSix(v as string)}
         </Link>
@@ -75,7 +75,7 @@ const QuotesListPage = () => {
       render: (v, quote) => (
         <Link
           href={`/admin/customers/${quote.customer_id}`}
-          className="hover:text-blue-500"
+          className="hover:text-primary"
         >
           C-{getLastSix(v as string)}
         </Link>
@@ -87,7 +87,7 @@ const QuotesListPage = () => {
       render: (v, quote) => (
         <Link
           href={`/admin/financials/quotes/${quote.quote_number}`}
-          className="hover:text-blue-500"
+          className="hover:text-primary"
         >
           QT-20{String(v).slice(-7)}
         </Link>
@@ -138,7 +138,7 @@ const QuotesListPage = () => {
       <div className="overflow-x-auto">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cerulean"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center py-12">
@@ -147,7 +147,7 @@ const QuotesListPage = () => {
               <p className="text-red-600 font-medium">{error}</p>
               <button
                 onClick={() => window.location.reload()}
-                className="mt-4 px-4 py-2 bg-cerulean text-white rounded-lg hover:bg-cerulean-600 transition-colors"
+                className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
               >
                 Retry
               </button>
@@ -155,7 +155,7 @@ const QuotesListPage = () => {
           </div>
         ) : filteredQuotes.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">
+            <p className="text-muted-foreground mb-4">
               No quotes found matching &quot;{searchQuery}&quot;
             </p>
             <Link

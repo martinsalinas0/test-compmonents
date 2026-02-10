@@ -72,7 +72,7 @@ const TaskRequestListPage = () => {
       render: (v, request) => (
         <Link
           href={`/admin/jobs/task-request/${request.id}`}
-          className="hover:text-blue-500 font-medium"
+          className="hover:text-primary font-medium"
         >
           {String(v)}
         </Link>
@@ -84,7 +84,7 @@ const TaskRequestListPage = () => {
       render: (v, request) => (
         <Link
           href={`/admin/customers/${request.customer_id}`}
-          className="hover:text-blue-500"
+          className="hover:text-primary"
         >
           C-{getLastSix(String(v))}
         </Link>
@@ -97,12 +97,12 @@ const TaskRequestListPage = () => {
         v ? (
           <Link
             href={`/admin/jobs/${request.job_id}`}
-            className="hover:text-blue-500"
+            className="hover:text-primary"
           >
             F-{getLastSix(String(v))}
           </Link>
         ) : (
-          <span className="text-gray-400">Not assigned</span>
+          <span className="text-muted-foreground">Not assigned</span>
         ),
     },
     {
@@ -114,8 +114,8 @@ const TaskRequestListPage = () => {
             String(v).toLowerCase() === "high"
               ? "bg-red-100 text-red-800"
               : String(v).toLowerCase() === "medium"
-                ? "bg-yellow-100 text-yellow-800"
-                : "bg-green-100 text-green-800"
+                ? "bg-yarrow-100 text-yarrow-800"
+                : "bg-olive-100 text-olive-800"
           }`}
         >
           {String(v).toUpperCase()}
@@ -129,12 +129,12 @@ const TaskRequestListPage = () => {
         <span
           className={`px-2 py-1 rounded-full text-xs font-medium ${
             String(v).toLowerCase() === "completed"
-              ? "bg-green-100 text-green-800"
+              ? "bg-olive-100 text-olive-800"
               : String(v).toLowerCase() === "in_progress"
-                ? "bg-blue-100 text-blue-800"
+                ? "bg-cerulean-100 text-cerulean-800"
                 : String(v).toLowerCase() === "pending"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : "bg-gray-100 text-gray-800"
+                  ? "bg-yarrow-100 text-yarrow-800"
+                  : "bg-muted text-muted-foreground"
           }`}
         >
           {String(v).replace("_", " ").toUpperCase()}
@@ -171,7 +171,7 @@ const TaskRequestListPage = () => {
       <div className="overflow-x-auto">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cerulean"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center py-12">
@@ -180,7 +180,7 @@ const TaskRequestListPage = () => {
               <p className="text-red-600 font-medium">{error}</p>
               <button
                 onClick={() => window.location.reload()}
-                className="mt-4 px-4 py-2 bg-cerulean text-white rounded-lg hover:bg-cerulean-600 transition-colors"
+                className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
               >
                 Retry
               </button>
@@ -188,13 +188,13 @@ const TaskRequestListPage = () => {
           </div>
         ) : filteredRequests.length === 0 && searchQuery ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">
+            <p className="text-muted-foreground mb-4">
               No task requests found matching &quot;{searchQuery}&quot;
             </p>
           </div>
         ) : filteredRequests.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">No task requests yet</p>
+            <p className="text-muted-foreground mb-4">No task requests yet</p>
             <Link
               href="/admin/jobs/new"
               className="inline-flex items-center gap-2 bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"

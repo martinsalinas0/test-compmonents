@@ -47,7 +47,7 @@ export default function ForgotPasswordPage() {
         </div>
         <Link
           href="/authentication/sign-in"
-          className="inline-block w-full text-center px-4 py-3 rounded-lg bg-cerulean text-white font-medium hover:bg-pacific transition-colors"
+          className="inline-block w-full text-center px-4 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
         >
           Back to Sign In
         </Link>
@@ -81,7 +81,7 @@ export default function ForgotPasswordPage() {
             placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border-cerulean-200 focus:ring-pacific"
+            className="w-full border-border focus:ring-ring"
           />
         </div>
 

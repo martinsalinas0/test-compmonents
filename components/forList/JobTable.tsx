@@ -14,22 +14,22 @@ const JobTable: React.FC<JobTableProps> = ({ data }) => {
   const columns = ["Title", "Status", "Customer", "City", "ID", "Contractor"];
 
   return (
-    <div className="overflow-x-auto rounded-xl text-center border border-cerulean-200 bg-background shadow-sm">
+    <div className="overflow-x-auto rounded-xl text-center border border-border bg-card shadow-sm">
       <table className="min-w-full border-collapse">
         <TableHeader columns={columns} />
 
         <tbody>
           {data.map((job) => (
-            <tr key={job.id} className="transition hover:bg-cerulean-50">
-              <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-800 hover:text-blue-500">
+            <tr key={job.id} className="transition hover:bg-muted/50">
+              <td className="border-b border-border px-6 py-4 text-sm text-foreground hover:text-primary">
                 <Link href={`/admin/jobs/${job.id}`}>{job.title}</Link>
               </td>
 
-              <td className="border-b border-cerulean-100 px-6 py-4 text-sm uppercase tracking-wide text-cerulean-700">
+              <td className="border-b border-border px-6 py-4 text-sm uppercase tracking-wide text-muted-foreground">
                 {job.status}
               </td>
 
-              <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-800">
+              <td className="border-b border-border px-6 py-4 text-sm text-cerulean-800">
                 {job.customer ? (
                   <>
                     {job.customer.first_name} {job.customer.last_name}
@@ -39,11 +39,11 @@ const JobTable: React.FC<JobTableProps> = ({ data }) => {
                 )}
               </td>
 
-              <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-700">
+              <td className="border-b border-border px-6 py-4 text-sm text-muted-foreground">
                 {job.city ?? "—"}
               </td>
 
-              <td className="border-b border-cerulean-100 px-6 py-4 text-sm font-medium text-cerulean-900">
+              <td className="border-b border-border px-6 py-4 text-sm font-medium text-foreground">
                 <Link
                   href={`/admin/jobs/${job.id}`}
                   className="hover:underline"
@@ -52,7 +52,7 @@ const JobTable: React.FC<JobTableProps> = ({ data }) => {
                 </Link>
               </td>
 
-              <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-700">
+              <td className="border-b border-border px-6 py-4 text-sm text-muted-foreground">
                 {job.contractor?.first_name ?? "—"}
               </td>
             </tr>

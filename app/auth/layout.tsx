@@ -9,7 +9,7 @@ function Layout({
   return (
     <main className="min-h-screen flex flex-col lg:flex-row">
       {/* Left - Form Section */}
-      <section className="w-full lg:w-1/2 flex flex-col px-6 py-8 lg:px-16 lg:py-10 bg-white">
+      <section className="w-full lg:w-1/2 flex flex-col px-6 py-8 lg:px-16 lg:py-10 bg-card">
         <Link href="/">
           <Image
             src="/avatar/logo.png"
@@ -26,7 +26,7 @@ function Layout({
       </section>
 
       {/* Right - Testimonial Section */}
-      <section className="hidden lg:flex lg:w-1/2 flex-col justify-between bg-cerulean p-10">
+      <section className="hidden lg:flex lg:w-1/2 flex-col justify-between bg-primary p-10">
         <div>
           <blockquote className="text-xl lg:text-2xl font-medium leading-relaxed mb-6 text-white">
             ProssFora streamlined our entire workflow. From job posting to
@@ -37,7 +37,7 @@ function Layout({
             <cite className="text-white font-semibold not-italic">
               - John D.
             </cite>
-            <p className="text-cerulean-200">Property Manager</p>
+            <p className="text-primary-foreground/80">Property Manager</p>
             <div className="flex items-center gap-0.5" aria-hidden>
               {[1, 2, 3, 4, 5].map((i) => (
                 <svg key={i} className="w-5 h-5 text-yarrow-400 fill-current" viewBox="0 0 20 20" aria-hidden>

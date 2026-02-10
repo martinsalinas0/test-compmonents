@@ -34,7 +34,7 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className="text-[#354e56] font-semibold">
+      <SidebarGroupLabel className="text-muted-foreground font-semibold">
         Platform
       </SidebarGroupLabel>
       <SidebarMenu>
@@ -49,11 +49,11 @@ export function NavMain({
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  className="hover:bg-[#f0f3ec] hover:text-[#0f2143]"
+                  className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 >
-                  {item.icon && <item.icon className="text-[#354e56]" />}
-                  <span className="text-[#0f2143]">{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 text-[#354e56]" />
+                  {item.icon && <item.icon className="text-muted-foreground" />}
+                  <span className="text-sidebar-foreground">{item.title}</span>
+                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 text-muted-foreground" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               <CollapsibleContent>
@@ -62,10 +62,10 @@ export function NavMain({
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton
                         asChild
-                        className="hover:bg-[#f0f3ec] hover:text-[#0f2143]"
+                        className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                       >
                         <a href={subItem.url}>
-                          <span className="text-[#354e56]">
+                          <span className="text-muted-foreground">
                             {subItem.title}
                           </span>
                         </a>

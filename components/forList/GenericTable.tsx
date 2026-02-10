@@ -18,13 +18,13 @@ function GenericTable<T extends object>({
 }: DataTableProps<T>) {
   return (
     <div className="overflow-x-auto text-center">
-      <table className="min-w-full bg-background border border-cerulean-100">
+      <table className="min-w-full bg-card border border-border">
         <thead>
           <tr>
             {columns.map((col) => (
               <th
                 key={String(col.accessor)}
-                className="border-b border-cerulean-200 px-6 py-3 text-sm font-medium text-cerulean"
+                className="border-b border-border px-6 py-3 text-sm font-medium text-foreground"
               >
                 {col.header}
               </th>
@@ -37,7 +37,7 @@ function GenericTable<T extends object>({
             <tr>
               <td
                 colSpan={columns.length}
-                className="py-4 text-sm text-cerulean"
+                className="py-4 text-sm text-foreground"
               >
                 {emptyMessage}
               </td>
@@ -58,7 +58,7 @@ function GenericTable<T extends object>({
                   return (
                     <td
                       key={String(col.accessor)}
-                      className="border-b border-cerulean-200 px-6 py-4 text-sm text-cerulean"
+                      className="border-b border-border px-6 py-4 text-sm text-foreground"
                     >
                       {col.render ? col.render(value, row) : String(value)}
                     </td>

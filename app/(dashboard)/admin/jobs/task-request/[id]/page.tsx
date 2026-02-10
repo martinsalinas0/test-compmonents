@@ -40,7 +40,7 @@ export default function SingleTaskRequestPage() {
   if (loading) {
     return (
       <div className="p-6 flex items-center justify-center min-h-[200px]">
-        <div className="animate-spin rounded-full h-10 w-10 border-2 border-cerulean border-t-transparent" />
+        <div className="animate-spin rounded-full h-10 w-10 border-2 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -61,10 +61,10 @@ export default function SingleTaskRequestPage() {
 
   const statusClass =
     request.status === "approved"
-      ? "bg-green-100 text-green-800"
+      ? "bg-olive-100 text-olive-800"
       : request.status === "rejected"
         ? "bg-red-100 text-red-800"
-        : "bg-yellow-100 text-yellow-800";
+        : "bg-yarrow-100 text-yarrow-800";
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -72,7 +72,7 @@ export default function SingleTaskRequestPage() {
         <button
           type="button"
           onClick={() => router.back()}
-          className="p-2 rounded-lg hover:bg-cerulean-100 text-cerulean transition-colors"
+          className="p-2 rounded-lg hover:bg-muted text-primary transition-colors"
           aria-label="Go back"
         >
           <ArrowLeft size={20} />
@@ -80,8 +80,8 @@ export default function SingleTaskRequestPage() {
         <h1 className="text-2xl font-bold text-cerulean">Task Request</h1>
       </div>
 
-      <div className="bg-white rounded-lg border border-cerulean-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-cerulean-100 bg-cerulean-50">
+      <div className="bg-card rounded-lg border border-border shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-border bg-muted/50">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <h2 className="text-xl font-semibold text-cerulean">
               {request.title}
@@ -157,17 +157,17 @@ export default function SingleTaskRequestPage() {
           </div>
         </div>
 
-        <div className="px-6 py-4 border-t border-cerulean-100 bg-gray-50 flex flex-wrap gap-3">
+        <div className="px-6 py-4 border-t border-border bg-muted/50 flex flex-wrap gap-3">
           <Link
             href="/admin/list/jobs/task-requests"
-            className="px-4 py-2 rounded-lg border border-cerulean-200 text-cerulean font-medium hover:bg-cerulean-50 transition-colors"
+            className="px-4 py-2 rounded-lg border border-border text-primary font-medium hover:bg-muted transition-colors"
           >
             Back to list
           </Link>
           {request.job_id && (
             <Link
               href={`/admin/jobs/${request.job_id}`}
-              className="px-4 py-2 rounded-lg bg-cerulean text-white font-medium hover:bg-pacific transition-colors"
+              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
             >
               View Job
             </Link>

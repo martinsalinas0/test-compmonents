@@ -44,36 +44,36 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-[#f0f3ec] data-[state=open]:text-[#0f2143] hover:bg-[#f0f3ec]"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground hover:bg-sidebar-accent"
             >
-              <Avatar className="h-8 w-8 rounded-lg border-2 border-[#c5cfe0]">
+              <Avatar className="h-8 w-8 rounded-lg border-2 border-sidebar-border">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg bg-[#0f2143] text-white">
+                <AvatarFallback className="rounded-lg bg-primary text-primary-foreground">
                   {user.name.substring(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold text-[#0f2143]">
+                <span className="truncate font-semibold text-sidebar-foreground">
                   {user.name}
                 </span>
-                <span className="truncate text-xs text-[#354e56]">
+                <span className="truncate text-xs text-muted-foreground">
                   {user.email}
                 </span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4 text-[#354e56]" />
+              <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg border-[#c5cfe0] bg-white"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg border-border bg-popover"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg border-2 border-[#c5cfe0]">
+                <Avatar className="h-8 w-8 rounded-lg border-2 border-sidebar-border">
                   <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg bg-[#0f2143] text-white">
+                  <AvatarFallback className="rounded-lg bg-primary text-primary-foreground">
                     {user.name.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>

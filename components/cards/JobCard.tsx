@@ -25,14 +25,14 @@ const JobCardComp = ({ job }: JobCardCompProps) => {
       case "approved":
         return "bg-pacific-50 text-pacific";
       default:
-        return "bg-gray-100 text-gray-700";
+        return "bg-muted text-muted-foreground";
     }
   };
 
   return (
-    <div className="border border-cerulean-200 bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+    <div className="border border-border bg-card rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
       <div className="space-y-3">
-        <h2 className="text-lg font-semibold text-cerulean border-b border-cerulean-100 pb-2">
+        <h2 className="text-lg font-semibold text-primary border-b border-border pb-2">
           {job.title}
         </h2>
 

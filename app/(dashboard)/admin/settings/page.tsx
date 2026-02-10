@@ -18,7 +18,7 @@ export default function SettingsPage() {
   return (
     <div className="p-6 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-cerulean flex items-center gap-2">
+        <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
           <Settings size={32} />
           Settings
         </h1>
@@ -40,26 +40,26 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-cerulean mb-1">
+              <label className="block text-sm font-medium text-primary mb-1">
                 Company name
               </label>
               <Input
                 placeholder="Prossfora"
-                className="max-w-md border-cerulean-200"
+                className="max-w-md border-border"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-cerulean mb-1">
+              <label className="block text-sm font-medium text-primary mb-1">
                 Time zone
               </label>
               <Input
                 placeholder="America/Chicago"
-                className="max-w-md border-cerulean-200"
+                className="max-w-md border-border"
               />
             </div>
             <Button
               onClick={() => setSaved(true)}
-              className="bg-cerulean hover:bg-pacific text-white"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               Save general
             </Button>
@@ -83,9 +83,9 @@ export default function SettingsPage() {
             <Input
               placeholder="email@example.com"
               type="email"
-              className="max-w-md border-cerulean-200 mb-2"
+              className="max-w-md border-border mb-2"
             />
-            <Button variant="outline" className="border-cerulean-200 text-cerulean">
+            <Button variant="outline" className="border-border text-primary">
               Send invite
             </Button>
           </CardContent>
@@ -105,7 +105,7 @@ export default function SettingsPage() {
             <p className="text-sm text-pacific-600">
               Manage your subscription and payment details. Stripe can be connected here.
             </p>
-            <Button variant="outline" className="mt-4 border-cerulean-200 text-cerulean">
+            <Button variant="outline" className="mt-4 border-border text-primary">
               Manage billing
             </Button>
           </CardContent>
@@ -130,7 +130,7 @@ export default function SettingsPage() {
       </div>
 
       {saved && (
-        <p className="mt-4 text-sm text-green-600 font-medium">
+        <p className="mt-4 text-sm text-olive-600 font-medium">
           Settings saved.
         </p>
       )}

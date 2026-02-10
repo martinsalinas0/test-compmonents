@@ -53,7 +53,7 @@ export function DashboardBreadcrumb() {
           <BreadcrumbLink asChild>
             <Link
               href="/admin"
-              className="text-pacific hover:text-cerulean"
+              className="text-muted-foreground hover:text-primary"
             >
               Admin
             </Link>
@@ -68,17 +68,17 @@ export function DashboardBreadcrumb() {
               : formatSegment(segment);
           return (
             <span key={href} className="contents">
-              <BreadcrumbSeparator className="hidden md:block text-cerulean-100" />
+              <BreadcrumbSeparator className="hidden md:block text-border" />
               <BreadcrumbItem>
                 {isLast ? (
-                  <BreadcrumbPage className="text-cerulean font-medium">
+                  <BreadcrumbPage className="text-primary font-medium">
                     {label}
                   </BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink asChild>
                     <Link
                       href={href}
-                      className="text-pacific hover:text-cerulean"
+                      className="text-muted-foreground hover:text-primary"
                     >
                       {label}
                     </Link>

@@ -38,7 +38,7 @@ export function NavProjects({
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel className="text-[#354e56] font-semibold">
+      <SidebarGroupLabel className="text-muted-foreground font-semibold">
         Projects
       </SidebarGroupLabel>
       <SidebarMenu>
@@ -46,37 +46,37 @@ export function NavProjects({
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton
               asChild
-              className="hover:bg-[#f0f3ec] hover:text-[#0f2143]"
+              className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             >
               <a href={item.url}>
-                <item.icon className="text-[#354e56]" />
-                <span className="text-[#0f2143]">{item.name}</span>
+                <item.icon className="text-muted-foreground" />
+                <span className="text-sidebar-foreground">{item.name}</span>
               </a>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuAction showOnHover>
-                  <MoreHorizontal className="text-[#354e56]" />
+                  <MoreHorizontal className="text-muted-foreground" />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-48 rounded-lg border-[#c5cfe0] bg-white"
+                className="w-48 rounded-lg border-border bg-popover"
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
-                <DropdownMenuItem className="hover:bg-[#f0f3ec]">
-                  <Folder className="text-[#354e56]" />
-                  <span className="text-[#0f2143]">View Project</span>
+                <DropdownMenuItem className="hover:bg-accent">
+                  <Folder className="text-muted-foreground" />
+                  <span className="text-foreground">View Project</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-[#f0f3ec]">
-                  <Forward className="text-[#354e56]" />
-                  <span className="text-[#0f2143]">Share Project</span>
+                <DropdownMenuItem className="hover:bg-accent">
+                  <Forward className="text-muted-foreground" />
+                  <span className="text-foreground">Share Project</span>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-[#c5cfe0]" />
-                <DropdownMenuItem className="hover:bg-[#f0f3ec]">
-                  <Trash2 className="text-red-500" />
-                  <span className="text-red-600">Delete Project</span>
+                <DropdownMenuSeparator className="bg-border" />
+                <DropdownMenuItem className="hover:bg-accent">
+                  <Trash2 className="text-destructive" />
+                  <span className="text-destructive">Delete Project</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

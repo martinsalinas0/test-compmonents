@@ -74,7 +74,7 @@ const PaymentsListPage = () => {
       render: (v, payment) => (
         <Link
           href={`/admin/financials/invoices/customers/${payment.customer_invoice_id}`}
-          className="hover:text-blue-500"
+          className="hover:text-primary"
         >
           E1111111-{getLastSix(String(v))}
         </Link>
@@ -86,7 +86,7 @@ const PaymentsListPage = () => {
       render: (v, payment) => (
         <Link
           href={`/admin/customers/${payment.customer_id}`}
-          className="hover:text-blue-500"
+          className="hover:text-primary"
         >
           C-{getLastSix(String(v))}
         </Link>
@@ -145,7 +145,7 @@ const PaymentsListPage = () => {
       <div className="overflow-x-auto">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cerulean"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center py-12">
@@ -154,7 +154,7 @@ const PaymentsListPage = () => {
               <p className="text-red-600 font-medium">{error}</p>
               <button
                 onClick={() => window.location.reload()}
-                className="mt-4 px-4 py-2 bg-cerulean text-white rounded-lg hover:bg-cerulean-600 transition-colors"
+                className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
               >
                 Retry
               </button>
@@ -162,13 +162,13 @@ const PaymentsListPage = () => {
           </div>
         ) : filteredPayments.length === 0 && searchQuery ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">
+            <p className="text-muted-foreground mb-4">
               No payments found matching &quot;{searchQuery}&quot;
             </p>
           </div>
         ) : filteredPayments.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">No payments yet</p>
+            <p className="text-muted-foreground mb-4">No payments yet</p>
             <Link
               href="/admin/financials/payments/new"
               className="inline-flex items-center gap-2 bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"

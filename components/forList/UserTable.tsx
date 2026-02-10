@@ -17,41 +17,41 @@ const TableForUsersPageList: React.FC<TableForUsersPageListProps> = ({
   const columns = ["Name", "Email", "Phone", "Role", "Status", "ID"];
 
   return (
-    <table className="min-w-full bg-background border border-cerulean-100">
+    <table className="min-w-full bg-card border border-border">
       <TableHeader columns={columns} />
       <tbody>
         {data.map((user) => (
-          <tr key={user.id} className="hover:bg-olive-50">
-            <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
+          <tr key={user.id} className="hover:bg-muted/50">
+            <td className="border-b border-border px-6 py-4 text-sm text-foreground">
               <Link
                 href={`/admin/users/${user.id}`}
-                className="hover:text-blue-500"
+                className="hover:text-primary"
               >
                 {user.first_name} {user.last_name}
               </Link>
             </td>
-            <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
+            <td className="border-b border-border px-6 py-4 text-sm text-foreground">
               {user.email}
             </td>
-            <td className="border-b border-cerulean-50 px-6 py-4 text-sm text-cerulean">
+            <td className="border-b border-border px-6 py-4 text-sm text-foreground">
               {user.phone ?? "—"}
             </td>
-            <td className="border-b border-cerulean-50 px-6 py-4 text-sm">
+            <td className="border-b border-border px-6 py-4 text-sm">
               <span
                 className={`rounded-md px-2 py-1 text-xs font-medium ${user.role}`}
               >
                 {user.role.toUpperCase()}
               </span>
             </td>
-            <td className="border-b border-cerulean-50 px-6 py-4 text-sm">
+            <td className="border-b border-border px-6 py-4 text-sm">
               <span
-                className={`rounded-md px-2 py-1 text-xs font-medium ${user.is_active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+                className={`rounded-md px-2 py-1 text-xs font-medium ${user.is_active ? "bg-olive-100 text-olive-800" : "bg-red-100 text-red-800"}`}
               >
                 {user.is_active ? "ACTIVE" : "INACTIVE"}
               </span>
             </td>
 
-            <td className="border-b border-cerulean-50 flex px-6 py-4 text-sm text-cerulean justify-center">
+            <td className="border-b border-border flex px-6 py-4 text-sm text-foreground justify-center">
               {user.id.slice(-6)}
               <Link href={`/admin/list/users/${user.id}`}>
                 <Info className="ml-2" />

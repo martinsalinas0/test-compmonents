@@ -69,7 +69,7 @@ export default function SignInPage() {
             placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border-cerulean-200 focus:ring-pacific"
+            className="w-full border-border focus:ring-ring"
           />
         </div>
 
@@ -90,7 +90,7 @@ export default function SignInPage() {
             placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border-cerulean-200 focus:ring-pacific"
+            className="w-full border-border focus:ring-ring"
           />
         </div>
 

@@ -39,7 +39,7 @@ const QuickActionBar = () => {
         <Link
           key={index}
           href={action.href}
-          className="p-2 rounded-lg bg-cerulean hover:bg-pacific text-white transition-colors"
+          className="p-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground transition-colors"
           title={action.label}
         >
           <action.icon size={20} />

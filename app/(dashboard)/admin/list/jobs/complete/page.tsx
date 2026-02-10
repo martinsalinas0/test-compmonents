@@ -50,7 +50,7 @@ const JobsCompletedListPage = () => {
           Completed Jobs
         </h1>
         <div className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cerulean"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
       </div>
     );
@@ -68,7 +68,7 @@ const JobsCompletedListPage = () => {
             <p className="text-red-600 font-medium">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="mt-4 px-4 py-2 bg-cerulean text-white rounded-lg hover:bg-cerulean-600 transition-colors"
+              className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
             >
               Retry
             </button>
@@ -85,33 +85,33 @@ const JobsCompletedListPage = () => {
         <QuickActionBar />
       </div>
 
-      <div className="overflow-x-auto rounded-xl text-center border border-cerulean-200 bg-background shadow-sm">
+      <div className="overflow-x-auto rounded-xl text-center border border-border bg-card shadow-sm">
         <table className="min-w-full border-collapse">
           <TableHeader columns={columns} />
 
           <tbody>
             {jobs.map((job) => (
-              <tr key={job.id} className="transition hover:bg-cerulean-50">
-                <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-800">
+              <tr key={job.id} className="transition hover:bg-muted/50">
+                <td className="border-b border-border px-6 py-4 text-sm text-foreground">
                   <Link
                     href={`/admin/jobs/${job.id}`}
-                    className="hover:text-blue-600 hover:underline font-medium"
+                    className="hover:text-primary hover:underline font-medium"
                   >
                     {job.title}
                   </Link>
                 </td>
 
-                <td className="border-b border-cerulean-100 px-6 py-4 text-sm">
-                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <td className="border-b border-border px-6 py-4 text-sm">
+                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-olive-100 text-olive-800">
                     {job.status?.toUpperCase()}
                   </span>
                 </td>
 
-                <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-800">
+                <td className="border-b border-border px-6 py-4 text-sm text-foreground">
                   {job.customer_id ? (
                     <Link
                       href={`/admin/customers/${job.customer_id}`}
-                      className="hover:text-blue-600 hover:underline"
+                      className="hover:text-primary hover:underline"
                     >
                       C-{job.customer_id.slice(-6)}
                     </Link>
@@ -120,11 +120,11 @@ const JobsCompletedListPage = () => {
                   )}
                 </td>
 
-                <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-700">
+                <td className="border-b border-border px-6 py-4 text-sm text-cerulean-700">
                   {job.city ?? "—"}
                 </td>
 
-                <td className="border-b border-cerulean-100 px-6 py-4 text-sm font-medium text-cerulean-900">
+                <td className="border-b border-border px-6 py-4 text-sm font-medium text-cerulean-900">
                   <Link
                     href={`/admin/jobs/${job.id}`}
                     className="hover:underline"
@@ -133,11 +133,11 @@ const JobsCompletedListPage = () => {
                   </Link>
                 </td>
 
-                <td className="border-b border-cerulean-100 px-6 py-4 text-sm text-cerulean-700">
+                <td className="border-b border-border px-6 py-4 text-sm text-cerulean-700">
                   {job.contractor_id ? (
                     <Link
                       href={`/admin/contractors/${job.contractor_id}`}
-                      className="hover:text-blue-600 hover:underline"
+                      className="hover:text-primary hover:underline"
                     >
                       CT-{job.contractor_id.slice(-6)}
                     </Link>
