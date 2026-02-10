@@ -7,19 +7,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import axios from "axios";
 import { clientConfig } from "@/lib/config";
+import { useEffect, useState } from "react";
+import { User } from "@/lib/types/all";
 
-//this is using react hook form and zod
+interface Customer {
+  id: string;
+  first_name: string;
+  last_name: string;
+}
+
+interface Contractor {
+  id: string;
+  first_name: string;
+  last_name: string;
+}
+
 const jobSchema = z.object({
   title: z.string().min(5, "Job title is required"),
   description: z.string().min(1, "Description is required"),
   customerId: z.string().min(1, "Customer is required"),
+  contractorId: z.string(),
   address: z.string().min(1, "Address is required"),
   city: z.string().min(1, "City is required"),
-  state: z.string().length(2, "State must be 2 characters").toUpperCase(),
+  state: z.string().length(2, "State must be 2 characters"),
   zipCode: z.string().length(5, "Zip code is required"),
   status: z.enum(["open", "assigned", "in_progress", "completed"]),
   priority: z.enum(["low", "medium", "high", "urgent"]),
-  payType: z.enum(["hourly", "fixed", ""]).optional(),
+  payType: z.enum(["hourly", "flat", ""]).optional(),
   scheduledDate: z.string().optional(),
   scheduledTime: z.string().optional(),
 });
@@ -28,6 +42,39 @@ type JobFormData = z.infer<typeof jobSchema>;
 
 const AddJobForm = () => {
   const router = useRouter();
+
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [contractors, setContractors] = useState<Contractor[]>([]);
+  const [employees, setEmployees] = useState<User[]>([]);
+  const [isLoadingDropdowns, setIsLoadingDropdowns] = useState(true);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        setIsLoadingDropdowns(true);
+
+        const [customerRes, contractorRes, employeeRes] = await Promise.all([
+          axios.get(`${clientConfig.apiUrl}/customers`),
+          axios.get(`${clientConfig.apiUrl}/contractors`),
+          axios.get(`${clientConfig.apiUrl}/users/role/employee`),
+        ]);
+
+        const customerData = customerRes.data.data;
+        const contractorData = contractorRes.data.data;
+        const employeeData = employeeRes.data.data;
+
+        setCustomers(customerData);
+        setContractors(contractorData);
+        setEmployees(employeeData);
+      } catch (err) {
+        console.error("Error fetching dropdown data:", err);
+        setCustomers([]);
+      } finally {
+        setIsLoadingDropdowns(false);
+      }
+    };
+    fetchAll();
+  }, []);
 
   const {
     register,
@@ -50,9 +97,10 @@ const AddJobForm = () => {
       title: data.title,
       description: data.description,
       customer_id: data.customerId,
+      contractor_id: data.contractorId,
       address: data.address,
       city: data.city,
-      state: data.state,
+      state: data.state.toUpperCase(),
       zip_code: data.zipCode,
       status: data.status,
       priority: data.priority,
@@ -67,7 +115,7 @@ const AddJobForm = () => {
     try {
       const response = await axios.post(
         `${clientConfig.apiUrl}/jobs/new`,
-        jobData
+        jobData,
       );
       console.log("Success:", response.data);
       router.push("/admin/list/jobs");
@@ -84,7 +132,7 @@ const AddJobForm = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-cerulean-50 to-olive-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
+        <div className="bg-white rounded-lg shadow-lg border border-cerulean-100 overflow-hidden">
           <div className="bg-linear-to-r from-cerulean to-pacific px-6 py-8">
             <h1 className="text-3xl font-bold text-white text-center">
               Add New Job
@@ -121,10 +169,10 @@ const AddJobForm = () => {
                   Description <span className="text-red-500">*</span>
                 </label>
                 <textarea
-                  className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent ${
                     errors.description
                       ? "border-red-300"
-                      : "border-border"
+                      : "border-cerulean-100"
                   }`}
                   placeholder="Enter detailed job description..."
                   rows={4}
@@ -143,20 +191,28 @@ const AddJobForm = () => {
                     For Customer <span className="text-red-500">*</span>
                   </label>
                   <select
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent ${
+                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent ${
                       errors.customerId
                         ? "border-red-300"
-                        : "border-border"
+                        : "border-cerulean-100"
                     }`}
                     {...register("customerId")}
+                    disabled={isLoadingDropdowns}
                   >
-                    <option value="">Select Customer</option>
-                    <option value="c03d41c2-5675-49bd-8838-a538d54b2c8d">
-                      John Doe
-                    </option>
-                    <option value="0c4de721-77a4-4e48-b8b2-059075a7c283">
-                      Robert Chen
-                    </option>
+                    {isLoadingDropdowns ? (
+                      <option>Loading customers...</option>
+                    ) : customers.length === 0 ? (
+                      <option>No customers found</option>
+                    ) : (
+                      <>
+                        <option value="">Select Customer</option>
+                        {customers.map((customer) => (
+                          <option key={customer.id} value={customer.id}>
+                            {customer.first_name} {customer.last_name}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </select>
                   {errors.customerId && (
                     <p className="text-red-500 text-sm mt-1">
@@ -167,10 +223,45 @@ const AddJobForm = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-cerulean mb-2">
+                    Assign To: <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent ${
+                      errors.contractorId
+                        ? "border-red-300"
+                        : "border-cerulean-100"
+                    }`}
+                    {...register("contractorId")}
+                    disabled={isLoadingDropdowns}
+                  >
+                    {isLoadingDropdowns ? (
+                      <option>Loading contractors...</option>
+                    ) : contractors.length === 0 ? (
+                      <option>No contractors found</option>
+                    ) : (
+                      <>
+                        <option value="">Select Contractor</option>
+                        {contractors.map((contractor) => (
+                          <option key={contractor.id} value={contractor.id}>
+                            {contractor.first_name} {contractor.last_name}
+                          </option>
+                        ))}
+                      </>
+                    )}
+                  </select>
+                  {errors.contractorId && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.contractorId.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-cerulean mb-2">
                     Pay Type
                   </label>
                   <select
-                    className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                    className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                     {...register("payType")}
                   >
                     <option value="">Select Pay Type</option>
@@ -186,7 +277,7 @@ const AddJobForm = () => {
                     Priority <span className="text-red-500">*</span>
                   </label>
                   <select
-                    className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                    className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                     {...register("priority")}
                   >
                     <option value="low">Low</option>
@@ -201,7 +292,7 @@ const AddJobForm = () => {
                     Status <span className="text-red-500">*</span>
                   </label>
                   <select
-                    className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                    className="w-full px-4 py-2 border border-cerulean-100 rounded-md focus:outline-none focus:ring-2 focus:ring-cerulean focus:border-transparent"
                     {...register("status")}
                   >
                     <option value="open">Open</option>
@@ -229,7 +320,7 @@ const AddJobForm = () => {
               </div>
 
               <div className="mt-6 mb-4">
-                <h3 className="text-lg font-semibold text-primary border-b border-border pb-2">
+                <h3 className="text-lg font-semibold text-cerulean border-b border-cerulean-100 pb-2">
                   Job Location
                 </h3>
               </div>
@@ -279,9 +370,7 @@ const AddJobForm = () => {
                     maxLength={2}
                     {...register("state")}
                     className={errors.state ? "border-red-300" : ""}
-                    onChange={(e) => {
-                      e.target.value = e.target.value.toUpperCase();
-                    }}
+                    style={{ textTransform: "uppercase" }}
                   />
                   {errors.state && (
                     <p className="text-red-500 text-sm mt-1">
@@ -308,10 +397,10 @@ const AddJobForm = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-border">
+              <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-cerulean-100">
                 <button
                   type="button"
-                  className="px-6 py-2 bg-card border border-border text-foreground rounded-md hover:bg-muted transition-colors"
+                  className="px-6 py-2 bg-white border border-cerulean-100 text-cerulean rounded-md hover:bg-olive-50 transition-colors"
                   onClick={() => router.push("/admin/list/jobs")}
                   disabled={isSubmitting}
                 >
@@ -320,7 +409,7 @@ const AddJobForm = () => {
 
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:bg-muted disabled:cursor-not-allowed"
+                  className="px-6 py-2 bg-cerulean text-white rounded-md hover:bg-pacific transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Creating..." : "Create Job"}
