@@ -1,45 +1,124 @@
 "use client";
 
-import TableForList from "@/components/forList/UserTable";
+import TableHeader from "@/components/forList/TableHeader";
 import QuickActionBar from "@/components/layouts/QuickActionBar";
 import SearchBar from "@/components/SearchBar";
 import { clientConfig } from "@/lib/config";
-import { User } from "@/lib/types/user";
+import type { Contractor } from "@/lib/types/contractor";
+import type { Customer } from "@/lib/types/customers";
+import type { User } from "@/lib/types/user";
 import axios from "axios";
-import { PlusCircle } from "lucide-react";
+import { Info, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState, useMemo } from "react";
 
+export type ListPersonRow = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+  roleOrType: string;
+  is_active: boolean;
+  detailUrl: string;
+};
+
+function normalizeUser(u: User): ListPersonRow {
+  return {
+    id: u.id,
+    first_name: u.first_name,
+    last_name: u.last_name,
+    email: u.email,
+    phone: u.phone ?? null,
+    roleOrType: u.role,
+    is_active: u.is_active,
+    detailUrl: `/admin/users/${u.id}`,
+  };
+}
+
+function normalizeCustomer(c: Customer): ListPersonRow {
+  return {
+    id: c.id,
+    first_name: c.first_name,
+    last_name: c.last_name,
+    email: c.email,
+    phone: c.phone ?? null,
+    roleOrType: "customer",
+    is_active: c.is_active,
+    detailUrl: `/admin/customers/${c.id}`,
+  };
+}
+
+function normalizeContractor(c: Contractor): ListPersonRow {
+  return {
+    id: c.id,
+    first_name: c.first_name,
+    last_name: c.last_name,
+    email: c.email,
+    phone: c.phone ?? null,
+    roleOrType: "contractor",
+    is_active: c.is_active,
+    detailUrl: `/admin/contractors/${c.id}`,
+  };
+}
+
 const UsersListPage = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [allPeople, setAllPeople] = useState<ListPersonRow[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchAll = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(`${clientConfig.apiUrl}/users`);
-        setUsers(response.data.data ?? []);
+        const [usersRes, employeesRes, customersRes, contractorsRes] =
+          await Promise.all([
+            axios.get(`${clientConfig.apiUrl}/users`),
+            axios.get(`${clientConfig.apiUrl}/users/role/employee`),
+            axios.get(`${clientConfig.apiUrl}/customers`),
+            axios.get(`${clientConfig.apiUrl}/contractors`),
+          ]);
+
+        const users: User[] = usersRes.data.data ?? [];
+        const employees: User[] = employeesRes.data.data ?? [];
+        const customers: Customer[] = customersRes.data.data ?? [];
+        const contractors: Contractor[] = contractorsRes.data.data ?? [];
+
+        const userById = new Map<string, User>();
+        users.forEach((u) => userById.set(u.id, u));
+        employees.forEach((e) => userById.set(e.id, e));
+        const mergedUsers = [...userById.values()];
+
+        const rows: ListPersonRow[] = [
+          ...mergedUsers.map(normalizeUser),
+          ...customers.map(normalizeCustomer),
+          ...contractors.map(normalizeContractor),
+        ];
+        setAllPeople(rows);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchUsers();
+    fetchAll();
   }, []);
 
-  const filteredUsers = useMemo(() => {
-    if (!searchQuery.trim()) return users;
-
+  const filteredPeople = useMemo(() => {
+    if (!searchQuery.trim()) return allPeople;
     const q = searchQuery.toLowerCase();
-    return users.filter(
-      (user) =>
-        user.first_name.toLowerCase().includes(q) ||
-        user.last_name.toLowerCase().includes(q) ||
-        user.email.toLowerCase().includes(q) ||
-        (user.phone ?? "").toLowerCase().includes(q) ||
-        user.role.toLowerCase().includes(q) ||
-        (user.is_active ? "active" : "inactive").includes(q)
+    return allPeople.filter(
+      (p) =>
+        p.first_name.toLowerCase().includes(q) ||
+        p.last_name.toLowerCase().includes(q) ||
+        p.email.toLowerCase().includes(q) ||
+        (p.phone ?? "").toLowerCase().includes(q) ||
+        p.roleOrType.toLowerCase().includes(q) ||
+        (p.is_active ? "active" : "inactive").includes(q)
     );
-  }, [users, searchQuery]);
+  }, [allPeople, searchQuery]);
+
+  const columns = ["Name", "Email", "Phone", "Role / Type", "Status", "ID"];
 
   return (
     <div className="space-y-6">
@@ -50,7 +129,7 @@ const UsersListPage = () => {
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Search users..."
+            placeholder="Search users, customers, contractors..."
             className="md:w-64"
           />
           <QuickActionBar />
@@ -63,7 +142,56 @@ const UsersListPage = () => {
       </div>
 
       <div className="overflow-x-auto bg-card rounded-lg border border-border shadow-sm">
-        <TableForList data={filteredUsers} />
+        {loading ? (
+          <div className="p-6 text-muted-foreground">Loading...</div>
+        ) : (
+          <table className="min-w-full bg-card border border-border">
+            <TableHeader columns={columns} />
+            <tbody>
+              {filteredPeople.map((person) => (
+                <tr
+                  key={`${person.roleOrType}-${person.id}`}
+                  className="hover:bg-muted/50"
+                >
+                  <td className="border-b border-border px-6 py-4 text-sm text-foreground">
+                    <Link
+                      href={person.detailUrl}
+                      className="hover:text-primary"
+                    >
+                      {person.first_name} {person.last_name}
+                    </Link>
+                  </td>
+                  <td className="border-b border-border px-6 py-4 text-sm text-foreground">
+                    {person.email}
+                  </td>
+                  <td className="border-b border-border px-6 py-4 text-sm text-foreground">
+                    {person.phone ?? "—"}
+                  </td>
+                  <td className="border-b border-border px-6 py-4 text-sm">
+                    <span
+                      className={`rounded-md px-2 py-1 text-xs font-medium ${person.roleOrType}`}
+                    >
+                      {person.roleOrType.toUpperCase()}
+                    </span>
+                  </td>
+                  <td className="border-b border-border px-6 py-4 text-sm">
+                    <span
+                      className={`rounded-md px-2 py-1 text-xs font-medium ${person.is_active ? "bg-olive-100 text-olive-800" : "bg-red-100 text-red-800"}`}
+                    >
+                      {person.is_active ? "ACTIVE" : "INACTIVE"}
+                    </span>
+                  </td>
+                  <td className="border-b border-border flex px-6 py-4 text-sm text-foreground justify-center">
+                    {person.id.slice(-6)}
+                    <Link href={person.detailUrl}>
+                      <Info className="ml-2" />
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
