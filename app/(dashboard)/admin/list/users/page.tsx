@@ -8,9 +8,20 @@ import type { Contractor } from "@/lib/types/contractor";
 import type { Customer } from "@/lib/types/customers";
 import type { User } from "@/lib/types/user";
 import axios from "axios";
-import { Info, PlusCircle } from "lucide-react";
+import { ChevronDown, Info, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState, useMemo } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import { Button } from "@/components/ui/button"
 
 export type ListPersonRow = {
   id: string;
@@ -133,8 +144,24 @@ const UsersListPage = () => {
             className="md:w-64"
           />
           <div>
-            filter options
-            <span> active status</span>
+          <DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Open <ChevronDown /> </Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuGroup>
+      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+      <DropdownMenuItem>Profile</DropdownMenuItem>
+      <DropdownMenuItem>Billing</DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>Team</DropdownMenuItem>
+      <DropdownMenuItem>Subscription</DropdownMenuItem>
+    </DropdownMenuGroup>
+  </DropdownMenuContent>
+</DropdownMenu>
+      
           </div>
           <QuickActionBar />
 
