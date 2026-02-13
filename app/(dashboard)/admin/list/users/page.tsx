@@ -114,7 +114,7 @@ const UsersListPage = () => {
         p.email.toLowerCase().includes(q) ||
         (p.phone ?? "").toLowerCase().includes(q) ||
         p.roleOrType.toLowerCase().includes(q) ||
-        (p.is_active ? "active" : "inactive").includes(q)
+        (p.is_active ? "active" : "inactive").includes(q),
     );
   }, [allPeople, searchQuery]);
 
@@ -132,7 +132,12 @@ const UsersListPage = () => {
             placeholder="Search users, customers, contractors..."
             className="md:w-64"
           />
+          <div>
+            filter options
+            <span> active status</span>
+          </div>
           <QuickActionBar />
+
           <Link href="/admin/users/new/">
             <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors w-full md:w-auto justify-center md:justify-start">
               <PlusCircle className="w-5 h-5" /> <span>Add User</span>

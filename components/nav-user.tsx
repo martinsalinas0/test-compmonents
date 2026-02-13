@@ -87,7 +87,7 @@ export function NavUser({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-[#c5cfe0]" />
+            <DropdownMenuSeparator className="bg-cerulean-100" />
             <DropdownMenuGroup>
               <DropdownMenuItem className="hover:bg-[#f0f3ec] text-[#0f2143]">
                 <Sparkles className="text-[#8b6212]" />
