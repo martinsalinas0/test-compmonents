@@ -103,10 +103,13 @@ const JobDetailPage = () => {
                   : "bg-olive-200 text-olive-900"
             }`}
           >
-            Priority: {job.priority}
+            Prioritffy: {job.priority}
           </span>
         </div>
       </div>
+      <div>Customer:</div>
+
+    <p>ss</p>
       {customer && (
         <div className="mb-6 p-4 bg-pacific-50 rounded-lg border border-pacific-200">
           <h2 className="text-xl font-semibold mb-2 text-pacific-800">

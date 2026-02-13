@@ -9,7 +9,7 @@ export const serverConfig = {
 } as const;
 
 // Client-side accessible variables (warn on client if missing so app can still build)
-const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000/api/v1";
 const stripePublishableKey =
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "";
 
@@ -26,6 +26,8 @@ if (!stripePublishableKey) {
     "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not defined - Stripe features may not work"
   );
 }
+
+
 
 export const clientConfig = {
   apiUrl,

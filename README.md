@@ -52,6 +52,8 @@ A modern admin dashboard built with Next.js 14, TypeScript, and Tailwind CSS for
    ```env
    NEXT_PUBLIC_API_URL=http://localhost:5000
    ```
+   If your backend serves routes under `/api/v1` (e.g. `http://localhost:5000/api/v1/jobs`), use:
+   `NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1` to avoid 404s on job and contractor requests.
 
 4. **Run the development server**
 

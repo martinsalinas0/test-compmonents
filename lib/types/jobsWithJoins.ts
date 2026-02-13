@@ -39,6 +39,10 @@ export interface JobWithRelations {
     last_name: string;
     email: string;
     phone: string | null;
+    address: string;
+    city: string;
+    state: string;
+    zip_code: string;
   };
 
   contractor: {

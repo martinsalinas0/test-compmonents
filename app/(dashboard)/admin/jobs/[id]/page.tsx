@@ -1,12 +1,35 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { clientConfig } from "@/lib/config";
+import type { Contractor } from "@/lib/types/contractor";
+import { JobStatus } from "@/lib/types/enums";
 import { JobWithRelations } from "@/lib/types/jobsWithJoins";
-import { ArrowLeft, Info } from "lucide-react";
+import { ChevronDown, Info, Pencil, UserPlus } from "lucide-react";
 import axios from "axios";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+const JOB_STATUSES: JobStatus[] = [
+  "open",
+  "needs_quote",
+  "quote_pending",
+  "quote_rejected",
+  "approved",
+  "in_progress",
+  "completed",
+  "paid",
+  "cancelled",
+];
 
 const SingleJobPage = () => {
   const router = useRouter();
@@ -14,46 +37,128 @@ const SingleJobPage = () => {
   const jobId = params?.id as string;
 
   const [job, setJob] = useState<JobWithRelations | null>(null);
+  const [contractors, setContractors] = useState<Contractor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [updating, setUpdating] = useState(false);
+
+  const apiBase = clientConfig.apiUrl;
+
+  const fetchJob = useCallback(async () => {
+    if (!jobId) return;
+    try {
+      const res = await axios.get(`${apiBase}/jobs/${jobId}`);
+      setJob(res.data.data);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message ?? err.message);
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [jobId, apiBase]);
 
   useEffect(() => {
     if (!jobId) return;
+    setLoading(true);
+    setError(null);
+    fetchJob();
+  }, [jobId, fetchJob]);
 
-    const fetchJob = async () => {
+  useEffect(() => {
+    const fetchContractors = async () => {
       try {
-        const res = await axios.get(`${clientConfig.apiUrl}/jobs/${jobId}`);
-        setJob(res.data.data);
-      } catch (err: unknown) {
-        if (axios.isAxiosError(err)) {
-          setError(err.response?.data?.message ?? err.message);
-        } else if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unexpected error occurred");
-        }
-      } finally {
-        setLoading(false);
+        const res = await axios.get(`${apiBase}/contractors`);
+        setContractors(res.data.data ?? []);
+      } catch {
+        setContractors([]);
       }
     };
+    fetchContractors();
+  }, [apiBase]);
 
-    fetchJob();
-  }, [jobId]);
+  const handleStatusChange = async (newStatus: JobStatus) => {
+    if (!jobId || !job) return;
+    setUpdating(true);
+    try {
+      await axios.patch(`${clientConfig.apiUrl}/jobs/update/${jobId}`, {
+        status: newStatus,
+      });
+      setJob((prev) => (prev ? { ...prev, status: newStatus } : null));
+    } catch (err) {
+      console.error("Failed to update status:", err);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const handleContractorChange = async (contractorId: string | null) => {
+    if (!jobId || !job) return;
+    setUpdating(true);
+    try {
+      await axios.patch(`${apiBase}/jobs/update/${jobId}`, {
+        contractor_id: contractorId,
+      });
+      if (contractorId) {
+        const contractor = contractors.find((c) => c.id === contractorId);
+        setJob((prev) =>
+          prev && contractor
+            ? {
+              ...prev,
+              contractor_id: contractorId,
+              contractor: {
+                id: contractor.id,
+                first_name: contractor.first_name,
+                last_name: contractor.last_name,
+                email: contractor.email,
+                phone: contractor.phone ?? null,
+                company_name: contractor.company_name ?? "",
+              },
+            }
+            : prev
+        );
+      } else {
+        setJob((prev) =>
+          prev ? { ...prev, contractor_id: null, contractor: null } : null
+        );
+      }
+    } catch (err) {
+      console.error("Failed to assign contractor:", err);
+    } finally {
+      setUpdating(false);
+    }
+  };
 
   if (loading) {
     return (
-      <div className="p-6 text-center text-4xl font-extrabold text-pacific">
-        Loading job details...
+      <div className="flex min-h-[40vh] items-center justify-center bg-muted/30 px-4">
+        <p className="text-lg font-medium text-muted-foreground">
+          Loading job details…
+        </p>
       </div>
     );
   }
 
   if (error) {
-    return <div className="p-6 text-destructive">Error: {error}</div>;
+    return (
+      <div className="flex min-h-[40vh] items-center justify-center bg-muted/30 px-4">
+        <div className="text-center">
+          <p className="text-lg font-medium text-destructive">Error: {error}</p>
+        </div>
+      </div>
+    );
   }
 
   if (!job) {
-    return <div className="p-6 text-pacific">Job not found</div>;
+    return (
+      <div className="flex min-h-[40vh] items-center justify-center bg-muted/30 px-4">
+        <p className="text-lg font-medium text-muted-foreground">Job not found</p>
+      </div>
+    );
   }
 
   const formatDate = (date?: string | null) =>
@@ -63,228 +168,371 @@ const SingleJobPage = () => {
     date ? new Date(date).toLocaleString() : "N/A";
 
   return (
-    <div className="mx-auto max-w-4xl space-y-10 p-8">
-      <div className="sticky top-0 z-10 mb-6">
-        <div className="mx-auto flex max-w-4xl items-center justify-between border-b border-border bg-card px-8 py-3">
-          <div className="flex items-center gap-4">
-            <button
-              type="button"
-              onClick={() => router.back()}
-              className="inline-flex items-center gap-2 text-sm font-medium text-primary-700 transition hover:text-primary-900"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back
-            </button>
-            <span className="text-xs text-muted-foreground">Job Details</span>
-          </div>
+    <div className="min-h-screen bg-muted/30">
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
+        {/* Sticky toolbar */}
+        <div className="sticky top-0 z-10 -mx-4 border-b border-border bg-card px-4 py-3 shadow-sm sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            {/* Left side - Breadcrumb */}
+            <div className="flex items-center gap-3">
+              <Link
+                href="/admin/list/jobs"
+                className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                All Jobs
+              </Link>
 
-          <div className="flex items-center gap-3">
-            <button className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition hover:bg-muted">
-              Change Status
-            </button>
-            <button className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground">
-              More
-            </button>
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="inline-flex items-center gap-2 text-sm font-medium bg-cerulean-100 rounded px-2 py-1 text-cerulean-800 transition-colors hover:bg-cerulean-200"
+              >
+                Back
+              </button>
+
+              <span className="text-muted-foreground">/</span>
+              <span className="text-sm text-foreground font-medium">{job.title}</span>
+            </div>
+
+            {/* Right side - Actions */}
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Status Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={updating}
+                    className="min-w-[9rem] justify-between font-medium"
+                  >
+                    <span className="capitalize">
+                      {job.status.replace(/_/g, " ")}
+                    </span>
+                    <ChevronDown className="h-4 w-4 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="min-w-[11rem]">
+                  <DropdownMenuLabel>Change status</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {JOB_STATUSES.map((status) => (
+                    <DropdownMenuItem
+                      key={status}
+                      onClick={() => handleStatusChange(status)}
+                    >
+                      <span className="capitalize">
+                        {status.replace(/_/g, " ")}
+                      </span>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Contractor Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={updating}
+                    className="min-w-[9rem] justify-between font-medium"
+                  >
+                    {job.contractor ? (
+                      <span className="truncate">
+                        {job.contractor.first_name} {job.contractor.last_name}
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2 text-muted-foreground">
+                        <UserPlus className="h-4 w-4 shrink-0" />
+                        Assign contractor
+                      </span>
+                    )}
+                    <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="max-h-[18rem] min-w-[14rem] overflow-y-auto"
+                >
+                  <DropdownMenuLabel>Assign contractor</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => handleContractorChange(null)}>
+                    <span className="text-muted-foreground">Unassign</span>
+                  </DropdownMenuItem>
+                  {contractors.map((c) => (
+                    <DropdownMenuItem
+                      key={c.id}
+                      onClick={() => handleContractorChange(c.id)}
+                    >
+                      <span className="truncate">
+                        {c.first_name} {c.last_name}
+                        {c.company_name ? ` · ${c.company_name}` : ""}
+                      </span>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Edit Button */}
+              <Link
+                href={`/admin/jobs/${jobId}/edit`}
+                className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              >
+                <Pencil className="h-4 w-4" />
+                Edit
+              </Link>
+            </div>
           </div>
         </div>
+
+        {/* Title and meta */}
+        <header className="mt-8 space-y-4">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            {job.title}
+          </h1>
+          <div className="flex flex-wrap gap-2 text-sm">
+            <span className="inline-flex items-center gap-2 border border-border bg-card px-3 py-1.5 rounded">
+              <span className="font-medium uppercase tracking-wider text-muted-foreground">
+                ID
+              </span>
+              <span className="font-mono text-foreground">{job.id.slice(-8)}</span>
+            </span>
+            <span className="inline-flex items-center gap-2 border border-border bg-card px-3 py-1.5 rounded">
+              <span className="font-medium uppercase tracking-wider text-muted-foreground">
+                Status
+              </span>
+              <span className="capitalize text-foreground">
+                {job.status.replace(/_/g, " ")}
+              </span>
+            </span>
+            <span className="inline-flex items-center gap-2 border border-border bg-card px-3 py-1.5 rounded">
+              <span className="font-medium uppercase tracking-wider text-muted-foreground">
+                Priority
+              </span>
+              <span className="capitalize text-foreground">{job.priority}</span>
+            </span>
+          </div>
+        </header>
+
+        {/* Customer & Contractor side by side */}
+        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          <section>
+            <h2 className="mb-3 border-l-4 border-pacific-500 pl-3 text-lg font-semibold text-foreground">
+              Customer
+            </h2>
+            <div className="border border-border bg-card p-5 rounded-lg relative">
+              <Link
+                href={`/admin/customers/${job.customer_id}`}
+                className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-foreground"
+                aria-label="Go to customer details"
+              >
+                <Info className="h-5 w-5" />
+              </Link>
+              <dl className="space-y-2.5 text-sm pr-8">
+                <div>
+                  <dt className="font-medium text-muted-foreground">Name</dt>
+                  <dd className="mt-0.5 text-foreground">
+                    {job.customer.first_name} {job.customer.last_name}
+                  </dd>
+                </div>
+                {job.customer.email && (
+                  <div>
+                    <dt className="font-medium text-muted-foreground">Email</dt>
+                    <dd className="mt-0.5 text-foreground">{job.customer.email}</dd>
+                  </div>
+                )}
+                <div>
+                  <dt className="font-medium text-muted-foreground">Phone</dt>
+                  <dd className="mt-0.5 text-foreground">
+                    {job.customer.phone ?? "—"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-muted-foreground">Address</dt>
+                  <dd className="mt-0.5 text-foreground">
+                    {job.customer.address}, {job.customer.city}, {job.customer.state}{" "}
+                    {job.customer.zip_code}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="mb-3 border-l-4 border-pacific-500 pl-3 text-lg font-semibold text-foreground">
+              Contractor
+            </h2>
+            {job.contractor ? (
+              <div className="border border-border bg-card p-5 rounded-lg relative">
+                <Link
+                  href={`/admin/contractors/${job.contractor.id}`}
+                  className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label="Go to contractor details"
+                >
+                  <Info className="h-5 w-5" />
+                </Link>
+                <dl className="space-y-2.5 text-sm pr-8">
+                  <div>
+                    <dt className="font-medium text-muted-foreground">Name</dt>
+                    <dd className="mt-0.5 text-foreground">
+                      {job.contractor.first_name} {job.contractor.last_name}
+                    </dd>
+                  </div>
+                  {job.contractor.company_name && (
+                    <div>
+                      <dt className="font-medium text-muted-foreground">Company</dt>
+                      <dd className="mt-0.5 text-foreground">
+                        {job.contractor.company_name}
+                      </dd>
+                    </div>
+                  )}
+                  {job.contractor.email && (
+                    <div>
+                      <dt className="font-medium text-muted-foreground">Email</dt>
+                      <dd className="mt-0.5 text-foreground">
+                        {job.contractor.email}
+                      </dd>
+                    </div>
+                  )}
+                  {job.contractor.phone && (
+                    <div>
+                      <dt className="font-medium text-muted-foreground">Phone</dt>
+                      <dd className="mt-0.5 text-foreground">
+                        {job.contractor.phone}
+                      </dd>
+                    </div>
+                  )}
+                </dl>
+              </div>
+            ) : (
+              <div className="border border-border border-dashed bg-card p-5 rounded-lg">
+                <p className="text-sm text-muted-foreground">
+                  No contractor assigned. Use the dropdown above to assign one.
+                </p>
+              </div>
+            )}
+          </section>
+        </div>
+
+        {/* Description & Location */}
+        <div className="mt-10 grid gap-6 sm:grid-cols-2">
+          <section>
+            <h2 className="mb-3 border-l-4 border-border pl-3 text-lg font-semibold text-foreground">
+              Description
+            </h2>
+            <div className="border border-border bg-card p-5 rounded-lg">
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {job.description}
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="mb-3 border-l-4 border-border pl-3 text-lg font-semibold text-foreground">
+              Location
+            </h2>
+            <div className="border border-border bg-card p-5 rounded-lg">
+              <p className="text-sm text-muted-foreground">{job.address}</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {job.city}, {job.state} {job.zip_code}
+              </p>
+            </div>
+          </section>
+        </div>
+
+        {/* Schedule & Work details */}
+        <div className="mt-10 grid gap-6 sm:grid-cols-2">
+          <section>
+            <h2 className="mb-3 border-l-4 border-border pl-3 text-lg font-semibold text-foreground">
+              Schedule
+            </h2>
+            <div className="border border-border bg-card p-5 rounded-lg">
+              <dl className="space-y-2 text-sm">
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Date</dt>
+                  <dd className="text-foreground">
+                    {formatDate(job.scheduled_date)}
+                  </dd>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Time</dt>
+                  <dd className="text-foreground">
+                    {job.scheduled_time || "N/A"}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="mb-3 border-l-4 border-border pl-3 text-lg font-semibold text-foreground">
+              Work details
+            </h2>
+            <div className="border border-border bg-card p-5 rounded-lg">
+              <dl className="space-y-2 text-sm">
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Pay type</dt>
+                  <dd className="text-foreground">{job.pay_type || "N/A"}</dd>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Hours worked</dt>
+                  <dd className="text-foreground">
+                    {job.hours_worked ?? "N/A"}
+                  </dd>
+                </div>
+                {job.started_at && (
+                  <div className="flex justify-between gap-4">
+                    <dt className="text-muted-foreground">Started</dt>
+                    <dd className="text-foreground">
+                      {formatDateTime(job.started_at)}
+                    </dd>
+                  </div>
+                )}
+                {job.completed_at && (
+                  <div className="flex justify-between gap-4">
+                    <dt className="text-muted-foreground">Completed</dt>
+                    <dd className="text-foreground">
+                      {formatDateTime(job.completed_at)}
+                    </dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          </section>
+        </div>
+
+        {job.cancelled_at && (
+          <section className="mt-10">
+            <h2 className="mb-3 border-l-4 border-destructive pl-3 text-lg font-semibold text-destructive">
+              Cancellation
+            </h2>
+            <div className="border border-destructive/30 bg-card p-5 rounded-lg">
+              <dl className="space-y-2 text-sm">
+                <div className="flex justify-between gap-4">
+                  <dt className="font-medium text-muted-foreground">Cancelled at</dt>
+                  <dd className="text-foreground">{formatDateTime(job.cancelled_at)}</dd>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <dt className="font-medium text-muted-foreground">Cancelled by</dt>
+                  <dd className="text-foreground">{job.cancelled_by ?? "—"}</dd>
+                </div>
+                {job.cancellation_reason && (
+                  <div>
+                    <dt className="font-medium text-muted-foreground">Reason</dt>
+                    <dd className="mt-1 text-foreground">{job.cancellation_reason}</dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          </section>
+        )}
+
+        <footer className="mt-12 border-t border-border pt-6 text-xs text-muted-foreground">
+          <p>
+            Created {formatDateTime(job.created_at)} by {job.created_by}
+          </p>
+          <p className="mt-1">Last updated {formatDateTime(job.updated_at)}</p>
+        </footer>
       </div>
-
-      <header className="space-y-4">
-        <h1 className="text-5xl font-bold text-primary-900">{job.title}</h1>
-
-        <div className="flex flex-wrap gap-4 text-sm">
-          <span className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-1">
-            <span className="font-medium uppercase tracking-wide text-pacific-600">
-              ID:
-            </span>
-            <span className="font-semibold text-primary-900">{job.id}</span>
-          </span>
-          <span className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-1">
-            <span className="font-medium uppercase tracking-wide text-pacific-600">
-              Status:
-            </span>
-            <span className="font-semibold text-primary-900">{job.status}</span>
-          </span>
-
-          <span className="inline-flex items-center gap-2 rounded-md border border-olive-300 px-3 py-1">
-            <span className="font-medium uppercase tracking-wide text-olive-600">
-              Priority:
-            </span>
-            <span className="font-semibold text-primary-900">
-              {job.priority}
-            </span>
-          </span>
-        </div>
-      </header>
-
-      {job.customer && (
-        <section className="rounded-lg border border-pacific-300 bg-card p-6 shadow-sm">
-          <h2 className="mb-4 flex justify-between items-center text-xl font-semibold text-pacific-800">
-            <span>Customer Information</span>
-
-            <Link
-              href={`/admin/users/customers/${job.customer_id}`}
-              className=" text-primary-700 hover:underline"
-              aria-label="Go to customer details"
-            >
-              <Info className="h-6 w-6" />
-            </Link>
-          </h2>
-
-          <div className="space-y-2 text-sm text-pacific-700">
-            <p>
-              <span className="font-medium text-pacific-900">Name:</span>{" "}
-              {job.customer.first_name} {job.customer.last_name}
-            </p>
-            {job.customer.email && (
-              <p>
-                <span className="font-medium text-pacific-900">Email:</span>{" "}
-                {job.customer.email}
-              </p>
-            )}
-            {job.customer.phone && (
-              <p>
-                <span className="font-medium text-pacific-900">Phone:</span>{" "}
-                {job.customer.phone}
-              </p>
-            )}
-          </div>
-        </section>
-      )}
-
-      {job.contractor && (
-        <section className="rounded-lg border border-border bg-card p-6 shadow-sm">
-          <h2 className="mb-4 flex justify-between items-center text-xl font-semibold text-pacific-800">
-            <span>Contractor Information</span>
-
-            <Link
-              href={`/admin/contractors/${job.customer.id}`}
-              className=" text-primary-700 hover:underline"
-              aria-label="Go to customer details"
-            >
-              <Info className="h-6 w-6" />
-            </Link>
-          </h2>
-          <div className="space-y-2 text-sm text-primary-700">
-            <p>
-              <span className="font-medium text-primary-900">Name:</span>{" "}
-              {job.contractor.first_name} {job.contractor.last_name}
-            </p>
-            {job.contractor.company_name && (
-              <p>
-                <span className="font-medium text-primary-900">Company:</span>{" "}
-                {job.contractor.company_name}
-              </p>
-            )}
-            {job.contractor.email && (
-              <p>
-                <span className="font-medium text-primary-900">Email:</span>{" "}
-                {job.contractor.email}
-              </p>
-            )}
-            {job.contractor.phone && (
-              <p>
-                <span className="font-medium text-primary-900">Phone:</span>{" "}
-                {job.contractor.phone}
-              </p>
-            )}
-          </div>
-        </section>
-      )}
-
-      <section className="space-y-3">
-        <h2 className="border-b border-border pb-1 text-lg font-semibold text-foreground">
-          Description
-        </h2>
-        <p className="leading-relaxed text-muted-foreground">
-          {job.description}
-        </p>
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="border-b border-border pb-1 text-lg font-semibold text-foreground">
-          Location
-        </h2>
-        <p className="text-sm text-muted-foreground">{job.address}</p>
-        <p className="text-sm text-muted-foreground">
-          {job.city}, {job.state} {job.zip_code}
-        </p>
-      </section>
-
-      <section className="grid gap-8 sm:grid-cols-2">
-        <div className="space-y-3">
-          <h2 className="text-lg font-semibold text-foreground">Schedule</h2>
-          <div className="space-y-2 text-sm">
-            <p>
-              <span className="text-pacific-600">Date:</span>{" "}
-              {formatDate(job.scheduled_date)}
-            </p>
-            <p>
-              <span className="text-pacific-600">Time:</span>{" "}
-              {job.scheduled_time || "N/A"}
-            </p>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <h2 className="text-lg font-semibold text-foreground">
-            Work Details
-          </h2>
-          <div className="space-y-2 text-sm">
-            <p>
-              <span className="text-pacific-600">Pay Type:</span>{" "}
-              {job.pay_type || "N/A"}
-            </p>
-            <p>
-              <span className="text-pacific-600">Hours Worked:</span>{" "}
-              {job.hours_worked ?? "N/A"}
-            </p>
-            {job.started_at && (
-              <p>
-                <span className="text-pacific-600">Started:</span>{" "}
-                {formatDateTime(job.started_at)}
-              </p>
-            )}
-            {job.completed_at && (
-              <p>
-                <span className="text-pacific-600">Completed:</span>{" "}
-                {formatDateTime(job.completed_at)}
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {job.cancelled_at && (
-        <section className="rounded-lg border border-yarrow-300 bg-card p-6 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold text-yarrow-800">
-            Cancellation Details
-          </h2>
-          <div className="space-y-2 text-sm text-yarrow-700">
-            <p>
-              <span className="font-medium text-yarrow-900">Cancelled At:</span>{" "}
-              {formatDateTime(job.cancelled_at)}
-            </p>
-            <p>
-              <span className="font-medium text-yarrow-900">Cancelled By:</span>{" "}
-              {job.cancelled_by}
-            </p>
-            {job.cancellation_reason && (
-              <p>
-                <span className="font-medium text-yarrow-900">Reason:</span>{" "}
-                {job.cancellation_reason}
-              </p>
-            )}
-          </div>
-        </section>
-      )}
-
-      <footer className="space-y-1 border-t border-border pt-6 text-xs text-muted-foreground">
-        <p>
-          Created {formatDateTime(job.created_at)} by {job.created_by}
-        </p>
-        <p>Last updated {formatDateTime(job.updated_at)}</p>
-      </footer>
     </div>
   );
 };

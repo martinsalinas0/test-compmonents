@@ -1,22 +1,23 @@
 "use client";
 
 import TablesJobList from "@/components/forList/JobTable";
+import type { JobWithRelations } from "@/lib/types/jobsWithJoins";
 import Image from "next/image";
 import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const AdminJobsListPage = () => {
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState<JobWithRelations[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/v1/jobs/all`)
       .then((response) => {
         setJobs(response.data.data);
-        console.log(response.data.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -25,6 +26,27 @@ const AdminJobsListPage = () => {
         setLoading(false);
       });
   }, []);
+
+  const filteredJobs = useMemo(() => {
+    if (!searchQuery.trim()) return jobs;
+    const q = searchQuery.toLowerCase();
+    return jobs.filter((job) => {
+      const customerName = job.customer
+        ? `${job.customer.first_name} ${job.customer.last_name}`.toLowerCase()
+        : "";
+      const contractorName = job.contractor
+        ? `${job.contractor.first_name} ${job.contractor.last_name} ${job.contractor.company_name ?? ""}`.toLowerCase()
+        : "";
+      return (
+        job.title.toLowerCase().includes(q) ||
+        job.status.toLowerCase().includes(q) ||
+        (job.city ?? "").toLowerCase().includes(q) ||
+        job.id.toLowerCase().includes(q) ||
+        customerName.includes(q) ||
+        contractorName.includes(q)
+      );
+    });
+  }, [jobs, searchQuery]);
 
   if (loading) {
     return (
@@ -47,6 +69,8 @@ const AdminJobsListPage = () => {
             <input
               type="text"
               placeholder="Search jobs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-64 p-2 bg-transparent outline-none text-cerulean-800 placeholder:text-pacific-400"
             />
           </div>
@@ -58,7 +82,7 @@ const AdminJobsListPage = () => {
           </Link>
         </div>
       </div>
-      <TablesJobList data={jobs} />
+      <TablesJobList data={filteredJobs} />
     </div>
   );
 };
