@@ -19,9 +19,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export type ListPersonRow = {
   id: string;
@@ -56,7 +56,7 @@ function normalizeCustomer(c: Customer): ListPersonRow {
     phone: c.phone ?? null,
     roleOrType: "customer",
     is_active: c.is_active,
-    detailUrl: `/admin/customers/${c.id}`,
+    detailUrl: `/admin/users/customers/${c.id}`,
   };
 }
 
@@ -69,7 +69,7 @@ function normalizeContractor(c: Contractor): ListPersonRow {
     phone: c.phone ?? null,
     roleOrType: "contractor",
     is_active: c.is_active,
-    detailUrl: `/admin/contractors/${c.id}`,
+    detailUrl: `/admin/users/contractors/${c.id}`,
   };
 }
 
@@ -144,24 +144,25 @@ const UsersListPage = () => {
             className="md:w-64"
           />
           <div>
-          <DropdownMenu>
-  <DropdownMenuTrigger asChild>
-    <Button variant="outline">Open <ChevronDown /> </Button>
-  </DropdownMenuTrigger>
-  <DropdownMenuContent>
-    <DropdownMenuGroup>
-      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-      <DropdownMenuItem>Profile</DropdownMenuItem>
-      <DropdownMenuItem>Billing</DropdownMenuItem>
-    </DropdownMenuGroup>
-    <DropdownMenuGroup>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem>Team</DropdownMenuItem>
-      <DropdownMenuItem>Subscription</DropdownMenuItem>
-    </DropdownMenuGroup>
-  </DropdownMenuContent>
-</DropdownMenu>
-      
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  Open <ChevronDown />{" "}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>Billing</DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Team</DropdownMenuItem>
+                  <DropdownMenuItem>Subscription</DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <QuickActionBar />
 

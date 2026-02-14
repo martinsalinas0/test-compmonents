@@ -108,22 +108,22 @@ const SingleJobPage = () => {
         setJob((prev) =>
           prev && contractor
             ? {
-              ...prev,
-              contractor_id: contractorId,
-              contractor: {
-                id: contractor.id,
-                first_name: contractor.first_name,
-                last_name: contractor.last_name,
-                email: contractor.email,
-                phone: contractor.phone ?? null,
-                company_name: contractor.company_name ?? "",
-              },
-            }
-            : prev
+                ...prev,
+                contractor_id: contractorId,
+                contractor: {
+                  id: contractor.id,
+                  first_name: contractor.first_name,
+                  last_name: contractor.last_name,
+                  email: contractor.email,
+                  phone: contractor.phone ?? null,
+                  company_name: contractor.company_name ?? "",
+                },
+              }
+            : prev,
         );
       } else {
         setJob((prev) =>
-          prev ? { ...prev, contractor_id: null, contractor: null } : null
+          prev ? { ...prev, contractor_id: null, contractor: null } : null,
         );
       }
     } catch (err) {
@@ -156,7 +156,9 @@ const SingleJobPage = () => {
   if (!job) {
     return (
       <div className="flex min-h-[40vh] items-center justify-center bg-muted/30 px-4">
-        <p className="text-lg font-medium text-muted-foreground">Job not found</p>
+        <p className="text-lg font-medium text-muted-foreground">
+          Job not found
+        </p>
       </div>
     );
   }
@@ -170,10 +172,8 @@ const SingleJobPage = () => {
   return (
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
-        {/* Sticky toolbar */}
         <div className="sticky top-0 z-10 -mx-4 border-b border-border bg-card px-4 py-3 shadow-sm sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            {/* Left side - Breadcrumb */}
             <div className="flex items-center gap-3">
               <Link
                 href="/admin/list/jobs"
@@ -191,19 +191,19 @@ const SingleJobPage = () => {
               </button>
 
               <span className="text-muted-foreground">/</span>
-              <span className="text-sm text-foreground font-medium">{job.title}</span>
+              <span className="text-sm text-foreground font-medium">
+                {job.title}
+              </span>
             </div>
 
-            {/* Right side - Actions */}
             <div className="flex flex-wrap items-center gap-2">
-              {/* Status Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
                     size="sm"
                     disabled={updating}
-                    className="min-w-[9rem] justify-between font-medium"
+                    className="min-w-36tify-between font-medium"
                   >
                     <span className="capitalize">
                       {job.status.replace(/_/g, " ")}
@@ -234,7 +234,7 @@ const SingleJobPage = () => {
                     variant="outline"
                     size="sm"
                     disabled={updating}
-                    className="min-w-[9rem] justify-between font-medium"
+                    className="min-w-36 justify-between font-medium"
                   >
                     {job.contractor ? (
                       <span className="truncate">
@@ -251,11 +251,13 @@ const SingleJobPage = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  className="max-h-[18rem] min-w-[14rem] overflow-y-auto"
+                  className="max-h-72 min-w-56 overflow-y-auto"
                 >
                   <DropdownMenuLabel>Assign contractor</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => handleContractorChange(null)}>
+                  <DropdownMenuItem
+                    onClick={() => handleContractorChange(null)}
+                  >
                     <span className="text-muted-foreground">Unassign</span>
                   </DropdownMenuItem>
                   {contractors.map((c) => (
@@ -272,7 +274,6 @@ const SingleJobPage = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              {/* Edit Button */}
               <Link
                 href={`/admin/jobs/${jobId}/edit`}
                 className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
@@ -284,7 +285,6 @@ const SingleJobPage = () => {
           </div>
         </div>
 
-        {/* Title and meta */}
         <header className="mt-8 space-y-4">
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             {job.title}
@@ -294,7 +294,9 @@ const SingleJobPage = () => {
               <span className="font-medium uppercase tracking-wider text-muted-foreground">
                 ID
               </span>
-              <span className="font-mono text-foreground">{job.id.slice(-8)}</span>
+              <span className="font-mono text-foreground">
+                {job.id.slice(-8)}
+              </span>
             </span>
             <span className="inline-flex items-center gap-2 border border-border bg-card px-3 py-1.5 rounded">
               <span className="font-medium uppercase tracking-wider text-muted-foreground">
@@ -313,7 +315,6 @@ const SingleJobPage = () => {
           </div>
         </header>
 
-        {/* Customer & Contractor side by side */}
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
           <section>
             <h2 className="mb-3 border-l-4 border-pacific-500 pl-3 text-lg font-semibold text-foreground">
@@ -321,7 +322,7 @@ const SingleJobPage = () => {
             </h2>
             <div className="border border-border bg-card p-5 rounded-lg relative">
               <Link
-                href={`/admin/customers/${job.customer_id}`}
+                href={`/admin/users/customers/${job.customer_id}`}
                 className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-foreground"
                 aria-label="Go to customer details"
               >
@@ -337,7 +338,9 @@ const SingleJobPage = () => {
                 {job.customer.email && (
                   <div>
                     <dt className="font-medium text-muted-foreground">Email</dt>
-                    <dd className="mt-0.5 text-foreground">{job.customer.email}</dd>
+                    <dd className="mt-0.5 text-foreground">
+                      {job.customer.email}
+                    </dd>
                   </div>
                 )}
                 <div>
@@ -349,8 +352,8 @@ const SingleJobPage = () => {
                 <div>
                   <dt className="font-medium text-muted-foreground">Address</dt>
                   <dd className="mt-0.5 text-foreground">
-                    {job.customer.address}, {job.customer.city}, {job.customer.state}{" "}
-                    {job.customer.zip_code}
+                    {job.customer.address}, {job.customer.city},{" "}
+                    {job.customer.state} {job.customer.zip_code}
                   </dd>
                 </div>
               </dl>
@@ -364,7 +367,7 @@ const SingleJobPage = () => {
             {job.contractor ? (
               <div className="border border-border bg-card p-5 rounded-lg relative">
                 <Link
-                  href={`/admin/contractors/${job.contractor.id}`}
+                  href={`/admin/users/contractors/${job.contractor.id}`}
                   className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-foreground"
                   aria-label="Go to contractor details"
                 >
@@ -379,7 +382,9 @@ const SingleJobPage = () => {
                   </div>
                   {job.contractor.company_name && (
                     <div>
-                      <dt className="font-medium text-muted-foreground">Company</dt>
+                      <dt className="font-medium text-muted-foreground">
+                        Company
+                      </dt>
                       <dd className="mt-0.5 text-foreground">
                         {job.contractor.company_name}
                       </dd>
@@ -387,7 +392,9 @@ const SingleJobPage = () => {
                   )}
                   {job.contractor.email && (
                     <div>
-                      <dt className="font-medium text-muted-foreground">Email</dt>
+                      <dt className="font-medium text-muted-foreground">
+                        Email
+                      </dt>
                       <dd className="mt-0.5 text-foreground">
                         {job.contractor.email}
                       </dd>
@@ -395,7 +402,9 @@ const SingleJobPage = () => {
                   )}
                   {job.contractor.phone && (
                     <div>
-                      <dt className="font-medium text-muted-foreground">Phone</dt>
+                      <dt className="font-medium text-muted-foreground">
+                        Phone
+                      </dt>
                       <dd className="mt-0.5 text-foreground">
                         {job.contractor.phone}
                       </dd>
@@ -508,17 +517,27 @@ const SingleJobPage = () => {
             <div className="border border-destructive/30 bg-card p-5 rounded-lg">
               <dl className="space-y-2 text-sm">
                 <div className="flex justify-between gap-4">
-                  <dt className="font-medium text-muted-foreground">Cancelled at</dt>
-                  <dd className="text-foreground">{formatDateTime(job.cancelled_at)}</dd>
+                  <dt className="font-medium text-muted-foreground">
+                    Cancelled at
+                  </dt>
+                  <dd className="text-foreground">
+                    {formatDateTime(job.cancelled_at)}
+                  </dd>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <dt className="font-medium text-muted-foreground">Cancelled by</dt>
+                  <dt className="font-medium text-muted-foreground">
+                    Cancelled by
+                  </dt>
                   <dd className="text-foreground">{job.cancelled_by ?? "—"}</dd>
                 </div>
                 {job.cancellation_reason && (
                   <div>
-                    <dt className="font-medium text-muted-foreground">Reason</dt>
-                    <dd className="mt-1 text-foreground">{job.cancellation_reason}</dd>
+                    <dt className="font-medium text-muted-foreground">
+                      Reason
+                    </dt>
+                    <dd className="mt-1 text-foreground">
+                      {job.cancellation_reason}
+                    </dd>
                   </div>
                 )}
               </dl>

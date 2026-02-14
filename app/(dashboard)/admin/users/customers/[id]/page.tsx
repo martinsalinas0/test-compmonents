@@ -9,7 +9,6 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type CustomerWithExtras = Customer & {
-  activities?: string[];
   transactions?: {
     id: string;
     product: string;
@@ -62,46 +61,24 @@ const SingleCustomerPage = () => {
   return (
     <div className="max-w-7xl mx-auto p-6 grid gap-8 md:grid-cols-3">
       <div className="space-y-6">
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
+        <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
           <div className="flex flex-col items-center space-y-4">
-            <Image
-              src={avatarUrl}
-              height={150}
-              width={150}
-              alt="profile pic"
-              className="rounded-full"
-            />
-            <h2 className="text-xl font-bold">
-              {customer.first_name} {customer.last_name}
-            </h2>
-            <span className="text-sm text-muted-foreground">
-              {customer.city}, {customer.state}
-            </span>
-
-            <div className="mt-4 flex justify-between w-full text-center text-sm font-medium">
-              <div>
-                <p>{customer.id}</p>
-                <span className="text-muted-foreground">ID</span>
-              </div>
-              <div>
-                <p>{customer.address}</p>
-                <span className="text-muted-foreground">Address</span>
-              </div>
-              <div>
-                <p>{customer.state}</p>
-                <span className="text-muted-foreground">State</span>
-              </div>
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-foreground">
+                {customer.first_name} {customer.last_name}
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">Customer</p>
             </div>
 
-            <div className="mt-4 space-y-1 text-sm text-muted-foreground">
-              <p>{customer.email}</p>
-              <p>{customer.phone ?? "—"}</p>
-              <a
-                href={customer.phone ? `tel:${customer.phone}` : "#"}
-                className="text-cerulean-700 hover:underline block"
-              >
-                Call {customer.first_name}
-              </a>
+            <div className="w-full pt-4 border-t border-border">
+              <div className="flex justify-between items-center text-sm">
+                <span className="font-medium text-muted-foreground">
+                  Customer ID
+                </span>
+                <span className="font-mono text-foreground">
+                  {customer.id.slice(-8)}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -121,18 +98,41 @@ const SingleCustomerPage = () => {
       </div>
 
       <div className="md:col-span-2 space-y-6">
-        {/* Latest Activity */}
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-cerulean-900">
-            Latest Activity
-          </h3>
-          <ul className="space-y-2">
-            {customer.activities && customer.activities.length > 0 ? (
-              customer.activities.map((act, i) => <li key={i}>{act}</li>)
-            ) : (
-              <li>No activities yet.</li>
-            )}
-          </ul>
+        <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
+          <h2 className="mb-6 text-2xl font-semibold text-cerulean-900">
+            Customer Info
+          </h2>
+
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-base text-foreground mb-1">
+                Address
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                {customer.address}
+                <br />
+                {customer.city}, {customer.state} {customer.zip_code}
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-base text-foreground mb-1">
+                Billing Address
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                {customer.billing_address}
+                <br />
+                {customer.billing_city}, {customer.billing_state}{" "}
+                {customer.billing_zip}
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-base text-foreground mb-1">
+                Phone Number:
+              </h4>
+              <p className="text-sm text-muted-foreground">{customer.phone}</p>
+            </div>
+          </div>
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm">
