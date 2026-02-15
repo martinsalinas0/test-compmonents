@@ -30,7 +30,7 @@ const CustomerTableList: React.FC<CustomerTableListProps> = ({ data }) => {
               <tr key={c.id} className="hover:bg-muted/50 text-center">
                 <td className="border-b border-border px-6 py-4 text-sm text-foreground ">
                   <Link
-                    href={`/admin/customers/${c.id}`}
+                    href={`/admin/users/customers/${c.id}`}
                     className="hover:text-primary"
                   >
                     {c.first_name} {c.last_name}
