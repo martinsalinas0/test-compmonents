@@ -73,7 +73,7 @@ const ContractorInvoicesList = () => {
       accessor: "contractor_id",
       render: (v, invoice) => (
         <Link
-          href={`/admin/contractors/${invoice.contractor_id}`}
+          href={`/admin/users/contractors/${invoice.contractor_id}`}
           className="hover:text-primary"
         >
           F{getLastSix(v as string)}

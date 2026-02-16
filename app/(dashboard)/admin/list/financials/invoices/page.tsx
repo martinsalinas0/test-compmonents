@@ -1,7 +1,5 @@
-import React from "react";
+import { redirect } from "next/navigation";
 
-const InvoicesListPAge = () => {
-  return <div>InvoicesListPAge</div>;
-};
-
-export default InvoicesListPAge;
+export default function InvoicesListPage() {
+  redirect("/admin/list/financials/invoices/customers");
+}

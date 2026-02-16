@@ -1,5 +1,5 @@
-import React from "react";
+import { redirect } from "next/navigation";
 
 export default function CustomerInvoicesPage() {
-  return <div>CustomerInvoicesPage</div>;
+  redirect("/admin/list/financials/invoices/customers");
 }

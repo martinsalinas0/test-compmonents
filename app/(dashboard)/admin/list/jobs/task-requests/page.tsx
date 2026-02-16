@@ -83,7 +83,7 @@ const TaskRequestListPage = () => {
       accessor: "customer_id",
       render: (v, request) => (
         <Link
-          href={`/admin/customers/${request.customer_id}`}
+          href={`/admin/users/customers/${request.customer_id}`}
           className="hover:text-primary"
         >
           C-{getLastSix(String(v))}

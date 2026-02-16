@@ -1,7 +1,5 @@
-import React from "react";
+import { redirect } from "next/navigation";
 
-const TransactionsPage = () => {
-  return <div>TransactionsPage</div>;
-};
-
-export default TransactionsPage;
+export default function TransactionsPage() {
+  redirect("/admin/list/financials/payments");
+}

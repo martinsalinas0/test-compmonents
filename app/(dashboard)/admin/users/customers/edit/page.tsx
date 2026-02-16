@@ -1,7 +1,5 @@
-import React from "react";
+import { redirect } from "next/navigation";
 
-const EditCustomerPage = () => {
-  return <div>EditCustomerPage</div>;
-};
-
-export default EditCustomerPage;
+export default function EditCustomerPage() {
+  redirect("/admin/list/customers");
+}

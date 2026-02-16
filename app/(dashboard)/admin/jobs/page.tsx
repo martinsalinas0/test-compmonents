@@ -3,10 +3,11 @@
 "use client";
 
 import JobCardComp from "@/components/cards/JobCard";
-import { useEffect, useState } from "react";
+import { clientConfig } from "@/lib/config";
+import { Job } from "@/lib/types/jobs";
 import axios from "axios";
 import Link from "next/link";
-import { Job } from "@/lib/types/jobs";
+import { useEffect, useState } from "react";
 
 const AdminJobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -15,9 +16,9 @@ const AdminJobsPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/v1/jobs/all")
+      .get(`${clientConfig.apiUrl}/jobs/all`)
       .then((response) => {
-        setJobs(response.data.data);
+        setJobs(response.data.data ?? []);
         setLoading(false);
       })
       .catch((err) => {

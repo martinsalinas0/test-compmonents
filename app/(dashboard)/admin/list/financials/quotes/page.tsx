@@ -2,10 +2,11 @@
 
 import GenericTable, { Column } from "@/components/forList/GenericTable";
 import SearchBar from "@/components/SearchBar";
+import { Button } from "@/components/ui/button";
 import { clientConfig } from "@/lib/config";
 import { Quote } from "@/lib/types/all";
 import axios from "axios";
-import { AlertCircle, Plus } from "lucide-react";
+import { AlertCircle, Loader2, Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -23,9 +24,7 @@ const QuotesListPage = () => {
         setIsLoading(true);
         setError(null);
         const response = await axios.get(`${clientConfig.apiUrl}/quotes`);
-        setQuotes(response.data.data);
-        console.log(response.data.data);
-        console.log(Object.keys(response.data)[0]);
+        setQuotes(response.data.data ?? []);
       } catch (error) {
         console.error(error);
         setError("Failed to load quotes");
@@ -55,48 +54,48 @@ const QuotesListPage = () => {
     {
       header: "ID",
       accessor: "id",
-      render: (v) => `C-${getLastSix(v as string)}`,
+      render: (v) => `Q-${getLastSix(v as string)}`,
     },
     {
-      header: "Job ID",
+      header: "Job",
       accessor: "job_id",
       render: (v, quote) => (
         <Link
           href={`/admin/jobs/${quote.job_id}`}
-          className="hover:text-primary"
+          className="hover:text-primary font-medium"
         >
-          F-{getLastSix(v as string)}
+          {getLastSix(v as string)}
         </Link>
       ),
     },
     {
-      header: "Customer ID",
+      header: "Customer",
       accessor: "customer_id",
       render: (v, quote) => (
         <Link
-          href={`/admin/customers/${quote.customer_id}`}
-          className="hover:text-primary"
+          href={`/admin/users/customers/${quote.customer_id}`}
+          className="hover:text-primary font-medium"
         >
-          C-{getLastSix(v as string)}
+          {getLastSix(v as string)}
         </Link>
       ),
     },
     {
-      header: "quote Number",
+      header: "Quote number",
       accessor: "quote_number",
       render: (v, quote) => (
         <Link
-          href={`/admin/financials/quotes/${quote.quote_number}`}
-          className="hover:text-primary"
+          href={`/admin/list/financials/quotes/${quote.id}`}
+          className="hover:text-primary font-medium"
         >
-          QT-20{String(v).slice(-7)}
+          {String(v)}
         </Link>
       ),
     },
     {
       header: "Total",
       accessor: "total",
-      render: (v) => `$${v}`,
+      render: (v) => `$${Number(v).toFixed(2)}`,
     },
     {
       header: "Status",
@@ -104,17 +103,18 @@ const QuotesListPage = () => {
       render: (v) => String(v).toUpperCase(),
     },
     {
-      header: "Date Sent",
+      header: "Date sent",
       accessor: "sent_at",
-      render: (v) => new Date(v as string).toLocaleDateString(),
+      render: (v) =>
+        v ? new Date(v as string).toLocaleDateString() : "—",
     },
   ];
 
   return (
     <div className="p-6">
       <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <h1 className="text-3xl font-bold text-cerulean mb-2 md:mb-0">
-          Customer quotes List
+        <h1 className="text-3xl font-bold text-foreground mb-2 md:mb-0">
+          Quotes
         </h1>
 
         <div className="flex items-center justify-between w-full md:w-auto gap-4">
@@ -124,13 +124,11 @@ const QuotesListPage = () => {
             placeholder="Search quotes..."
           />
 
-          <Link
-            href="/admin/financials/quotes/new"
-            className="bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-          >
-            <div className="flex items-center gap-2">
-              Create quote <Plus size={18} />
-            </div>
+          <Link href="/admin/list/financials/quotes/new">
+            <Button className="gap-2">
+              <Plus size={18} />
+              Create quote
+            </Button>
           </Link>
         </div>
       </div>
@@ -138,31 +136,32 @@ const QuotesListPage = () => {
       <div className="overflow-x-auto">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
           </div>
         ) : error ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
-              <AlertCircle className="mx-auto h-12 w-12 text-red-500 mb-4" />
-              <p className="text-red-600 font-medium">{error}</p>
-              <button
+              <AlertCircle className="mx-auto h-12 w-12 text-destructive mb-4" />
+              <p className="text-destructive font-medium">{error}</p>
+              <Button
                 onClick={() => window.location.reload()}
-                className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                className="mt-4"
+                variant="outline"
               >
                 Retry
-              </button>
+              </Button>
             </div>
           </div>
         ) : filteredQuotes.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">
-              No quotes found matching &quot;{searchQuery}&quot;
+              No quotes found{searchQuery.trim() ? ` matching "${searchQuery}"` : ""}.
             </p>
-            <Link
-              href="/admin/financials/quotes/new"
-              className="inline-flex items-center gap-2 bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-            >
-              Create Your First quote <Plus size={18} />
+            <Link href="/admin/list/financials/quotes/new">
+              <Button className="gap-2">
+                <Plus size={18} />
+                Create your first quote
+              </Button>
             </Link>
           </div>
         ) : (

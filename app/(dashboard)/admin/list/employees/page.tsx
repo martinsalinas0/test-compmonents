@@ -41,7 +41,7 @@ const UsersListPage = () => {
             className="md:w-64"
           />
           <QuickActionBar />
-          <Link href="/admin/customers/new/">
+          <Link href="/admin/users/customers/new">
             <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors w-full md:w-auto justify-center md:justify-start">
               <PlusCircle className="w-5 h-5" /> <span>Add Customer</span>
             </button>

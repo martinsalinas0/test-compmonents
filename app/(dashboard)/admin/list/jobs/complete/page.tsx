@@ -110,7 +110,7 @@ const JobsCompletedListPage = () => {
                 <td className="border-b border-border px-6 py-4 text-sm text-foreground">
                   {job.customer_id ? (
                     <Link
-                      href={`/admin/customers/${job.customer_id}`}
+                      href={`/admin/users/customers/${job.customer_id}`}
                       className="hover:text-primary hover:underline"
                     >
                       C-{job.customer_id.slice(-6)}
@@ -136,7 +136,7 @@ const JobsCompletedListPage = () => {
                 <td className="border-b border-border px-6 py-4 text-sm text-cerulean-700">
                   {job.contractor_id ? (
                     <Link
-                      href={`/admin/contractors/${job.contractor_id}`}
+                      href={`/admin/users/contractors/${job.contractor_id}`}
                       className="hover:text-primary hover:underline"
                     >
                       CT-{job.contractor_id.slice(-6)}

@@ -129,7 +129,7 @@ export default function SingleTaskRequestPage() {
               <p className="font-medium">
                 {request.customer_id ? (
                   <Link
-                    href={`/admin/customers/${request.customer_id}`}
+                    href={`/admin/users/customers/${request.customer_id}`}
                     className="text-cerulean hover:underline"
                   >
                     {request.customer_id.slice(-8)}

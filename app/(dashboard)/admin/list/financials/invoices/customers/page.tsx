@@ -75,7 +75,7 @@ const CustomerInvoicesListPage = () => {
       accessor: "customer_id",
       render: (v, invoice) => (
         <Link
-          href={`/admin/customers/${invoice.customer_id}`}
+          href={`/admin/users/customers/${invoice.customer_id}`}
           className="hover:text-primary"
         >
           F{getLastSix(v as string)}

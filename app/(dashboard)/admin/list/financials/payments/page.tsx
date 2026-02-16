@@ -85,7 +85,7 @@ const PaymentsListPage = () => {
       accessor: "customer_id",
       render: (v, payment) => (
         <Link
-          href={`/admin/customers/${payment.customer_id}`}
+          href={`/admin/users/customers/${payment.customer_id}`}
           className="hover:text-primary"
         >
           C-{getLastSix(String(v))}

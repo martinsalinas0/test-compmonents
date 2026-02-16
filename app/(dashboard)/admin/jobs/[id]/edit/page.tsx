@@ -265,7 +265,7 @@ const EditJobPage = () => {
                 {job.customer.first_name} {job.customer.last_name}
               </p>
               <Link
-                href={`/admin/customers/${job.customer.id}`}
+                href={`/admin/users/customers/${job.customer.id}`}
                 className="text-sm font-medium text-primary hover:underline"
               >
                 View customer

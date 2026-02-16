@@ -31,7 +31,7 @@ const TableForContractors: React.FC<TableForContractorsProps> = ({ data }) => {
               <tr key={c.id} className="hover:bg-olive-50 text-center">
                 <td className="border-b border-border px-6 py-4 text-sm text-foreground ">
                   <Link
-                    href={`/admin/contractors/${c.id}`}
+                    href={`/admin/users/contractors/${c.id}`}
                     className="hover:text-primary"
                   >
                     {c.first_name} {c.last_name}{" "}
