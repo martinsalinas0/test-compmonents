@@ -11,9 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { clientConfig } from "@/lib/config";
 import type { Contractor } from "@/lib/types/contractor";
+import type { CustomerInvoice, Payment, Quote } from "@/lib/types/all";
 import { JobStatus } from "@/lib/types/enums";
 import { JobWithRelations } from "@/lib/types/jobsWithJoins";
-import { ChevronDown, Info, Pencil, UserPlus } from "lucide-react";
+import { ChevronDown, DollarSign, FileText, Info, Pencil, UserPlus } from "lucide-react";
 import axios from "axios";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -38,6 +39,8 @@ const SingleJobPage = () => {
 
   const [job, setJob] = useState<JobWithRelations | null>(null);
   const [contractors, setContractors] = useState<Contractor[]>([]);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updating, setUpdating] = useState(false);
@@ -80,6 +83,31 @@ const SingleJobPage = () => {
     };
     fetchContractors();
   }, [apiBase]);
+
+  useEffect(() => {
+    if (!jobId) return;
+    const fetchQuotesAndPayments = async () => {
+      try {
+        const [quotesRes, invoicesRes, paymentsRes] = await Promise.all([
+          axios.get(`${apiBase}/quotes`).catch(() => ({ data: { data: [] } })),
+          axios.get(`${apiBase}/customer-invoices/`).catch(() => ({ data: { data: [] } })),
+          axios.get(`${apiBase}/payments/all`).catch(() => ({ data: { data: [] } })),
+        ]);
+        const allQuotes = (quotesRes.data?.data ?? []) as Quote[];
+        const allInvoices = (invoicesRes.data?.data ?? []) as CustomerInvoice[];
+        const allPayments = (paymentsRes.data?.data ?? []) as Payment[];
+        setQuotes(allQuotes.filter((q) => q.job_id === jobId));
+        const jobInvoiceIds = new Set(
+          allInvoices.filter((inv) => inv.job_id === jobId).map((inv) => inv.id)
+        );
+        setPayments(allPayments.filter((p) => jobInvoiceIds.has(p.customer_invoice_id)));
+      } catch {
+        setQuotes([]);
+        setPayments([]);
+      }
+    };
+    fetchQuotesAndPayments();
+  }, [jobId, apiBase]);
 
   const handleStatusChange = async (newStatus: JobStatus) => {
     if (!jobId || !job) return;
@@ -505,6 +533,99 @@ const SingleJobPage = () => {
                   </div>
                 )}
               </dl>
+            </div>
+          </section>
+        </div>
+
+        {/* Quotes & Payments */}
+        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          <section>
+            <h2 className="mb-3 border-l-4 border-pacific-500 pl-3 text-lg font-semibold text-foreground flex items-center justify-between flex-wrap gap-2">
+              <span className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Quotes
+              </span>
+              <Link
+                href="/admin/list/financials/quotes/new"
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                Create quote
+              </Link>
+            </h2>
+            <div className="border border-border bg-card p-5 rounded-lg">
+              {quotes.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No quotes for this job.
+                </p>
+              ) : (
+                <ul className="space-y-3">
+                  {quotes.map((q) => (
+                    <li key={q.id} className="flex items-center justify-between gap-2 text-sm">
+                      <Link
+                        href={`/admin/list/financials/quotes/${q.id}`}
+                        className="font-medium text-primary hover:underline"
+                      >
+                        {q.quote_number}
+                      </Link>
+                      <span className="text-muted-foreground capitalize">
+                        {String(q.status).replace(/_/g, " ")}
+                      </span>
+                      <span className="font-medium text-foreground">
+                        ${Number(q.total).toFixed(2)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {quotes.length > 0 && (
+                <Link
+                  href="/admin/list/financials/quotes"
+                  className="mt-3 inline-block text-sm font-medium text-primary hover:underline"
+                >
+                  View all quotes
+                </Link>
+              )}
+            </div>
+          </section>
+
+          <section>
+            <h2 className="mb-3 border-l-4 border-pacific-500 pl-3 text-lg font-semibold text-foreground flex items-center justify-between flex-wrap gap-2">
+              <span className="flex items-center gap-2">
+                <DollarSign className="h-5 w-5" />
+                Payments
+              </span>
+              <Link
+                href="/admin/list/financials/payments"
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                View all payments
+              </Link>
+            </h2>
+            <div className="border border-border bg-card p-5 rounded-lg">
+              {payments.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No payments for this job yet.
+                </p>
+              ) : (
+                <ul className="space-y-3">
+                  {payments.map((p) => (
+                    <li key={p.id} className="flex items-center justify-between gap-2 text-sm">
+                      <Link
+                        href={`/admin/financials/invoices/customers/${p.customer_invoice_id}`}
+                        className="font-medium text-primary hover:underline"
+                      >
+                        Invoice {String(p.customer_invoice_id).slice(-8)}
+                      </Link>
+                      <span className="text-muted-foreground capitalize">
+                        {String(p.status).replace(/_/g, " ")}
+                      </span>
+                      <span className="font-medium text-foreground">
+                        ${Number(p.amount).toFixed(2)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </section>
         </div>
