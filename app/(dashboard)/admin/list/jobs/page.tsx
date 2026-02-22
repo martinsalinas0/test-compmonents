@@ -2,6 +2,7 @@
 
 import TablesJobList from "@/components/forList/JobTable";
 import type { JobWithRelations } from "@/lib/types/jobsWithJoins";
+import { clientConfig } from "@/lib/config";
 import Image from "next/image";
 import axios from "axios";
 import Link from "next/link";
@@ -15,14 +16,13 @@ const AdminJobsListPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/v1/jobs/all`)
+      .get(`${clientConfig.apiUrl}/jobs/all`)
       .then((response) => {
         setJobs(response.data.data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error("Error fetching data: ", err);
-        setError(err.message);
+      .catch(() => {
+        setError("Failed to load jobs");
         setLoading(false);
       });
   }, []);

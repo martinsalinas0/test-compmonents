@@ -24,9 +24,7 @@ const PaymentsListPage = () => {
         setError(null);
         const response = await axios.get(`${clientConfig.apiUrl}/payments/all`);
         setPayments(response.data.data);
-        console.log(response.data.data);
-      } catch (error) {
-        console.error(error);
+      } catch {
         setError("Failed to load payments");
       } finally {
         setIsLoading(false);

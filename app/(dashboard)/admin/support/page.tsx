@@ -114,19 +114,19 @@ export default function SupportPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <a
-              href="#"
+              href="/admin"
               className="block p-3 rounded-lg border border-border hover:bg-accent text-primary font-medium transition-colors"
             >
               Getting started guide
             </a>
             <a
-              href="#"
+              href="/admin/list/jobs"
               className="block p-3 rounded-lg border border-border hover:bg-accent text-primary font-medium transition-colors"
             >
               Jobs and task requests
             </a>
             <a
-              href="#"
+              href="/admin/list/financials"
               className="block p-3 rounded-lg border border-border hover:bg-accent text-primary font-medium transition-colors"
             >
               Billing and invoices

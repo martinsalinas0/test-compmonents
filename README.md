@@ -82,7 +82,9 @@ prossfora-frontend/
 │   │       ├── page.tsx     # Dashboard home
 │   │       ├── users/       # User management pages
 │   │       ├── jobs/        # Job management pages
-│   │       ├── financial/   # Financial pages
+│   │       ├── list/        # List views (jobs, financials, users, etc.)
+│   │       ├── financials/  # Invoice/payment detail & new payment
+│   │       ├── customer-invoices/  # New customer invoice
 │   │       ├── analytics/   # Analytics pages
 │   │       ├── moderation/  # Content moderation
 │   │       ├── support/     # Support tickets
@@ -129,32 +131,43 @@ prossfora-frontend/
 - `/admin/users` - All users
 - `/admin/users/companies` - Company accounts
 - `/admin/users/contractors` - Contractor accounts
+- `/admin/users/customers` - Customer list (via list)
 - `/admin/users/pending` - Pending approvals
-- `/admin/jobs` - All jobs
-- `/admin/jobs/active` - Active jobs
-- `/admin/jobs/completed` - Completed jobs
-- `/admin/jobs/flagged` - Flagged jobs
-- `/admin/financial/*` - Financial management
+- `/admin/jobs` - Jobs overview
+- `/admin/list/jobs` - All jobs list
+- `/admin/list/jobs/complete` - Completed jobs
+- `/admin/list/jobs/task-requests` - Task requests
+- `/admin/list/financials` - Financial overview (invoices, payments, quotes, transactions)
+- `/admin/list/financials/invoices/customers` - Customer invoices
+- `/admin/list/financials/invoices/contractors` - Contractor invoices
+- `/admin/list/financials/payments` - Payments
+- `/admin/list/financials/quotes` - Quotes
+- `/admin/financials/invoices/[invoice_number]` - Invoice detail (by number)
+- `/admin/financials/invoices/customers/[id]` - Customer invoice detail
+- `/admin/financials/payments/new` - New payment (placeholder)
+- `/admin/customer-invoices/new` - New customer invoice (placeholder)
 - `/admin/analytics/*` - Analytics & reports
-- `/admin/moderation/*` - Content moderation
-- `/admin/support/*` - Support & logs
+- `/admin/support` - Support & help resources
 - `/admin/settings` - Platform settings
 
 ## 🔌 API Integration
 
-The frontend connects to the Prossfora backend API:
+The frontend connects to the Prossfora backend API using `NEXT_PUBLIC_API_URL` (e.g. `http://localhost:5000/api/v1`). Use `clientConfig.apiUrl` from `@/lib/config` for all API requests.
 
 ```typescript
-// Example API call
-axios.get("http://localhost:5000/api/users/all").then((response) => {
+import { clientConfig } from "@/lib/config";
+
+axios.get(`${clientConfig.apiUrl}/jobs/all`).then((response) => {
   // Handle response.data.data
 });
 ```
 
 ### API Endpoints Used
 
-- `GET /api/users/all` - Fetch all users
-- `GET /api/jobs/all` - Fetch all jobs
+- `GET /api/v1/users/all` - Fetch all users
+- `GET /api/v1/jobs/all` - Fetch all jobs
+- `GET /api/v1/customer-invoices/` - Customer invoices
+- `GET /api/v1/payments/all` - Payments
 - More endpoints as needed...
 
 ## 🚀 Build & Deploy

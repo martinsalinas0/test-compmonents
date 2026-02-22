@@ -26,8 +26,7 @@ const CustomerInvoicesListPage = () => {
           `${clientConfig.apiUrl}/customer-invoices/`
         );
         setInvoices(response.data.data ?? []);
-      } catch (err) {
-        console.error(err);
+      } catch {
         setError("Failed to load invoices");
       } finally {
         setIsLoading(false);

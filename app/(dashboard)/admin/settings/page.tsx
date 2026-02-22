@@ -10,10 +10,60 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Settings, Users, CreditCard, Shield } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const STORAGE_KEY = "prossfora_admin_settings";
+
+type GeneralSettings = {
+  companyName: string;
+  timeZone: string;
+};
+
+function loadGeneral(): GeneralSettings {
+  if (typeof window === "undefined")
+    return { companyName: "", timeZone: "America/Chicago" };
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { companyName: "Prossfora", timeZone: "America/Chicago" };
+    const parsed = JSON.parse(raw) as Partial<GeneralSettings>;
+    return {
+      companyName: parsed.companyName ?? "Prossfora",
+      timeZone: parsed.timeZone ?? "America/Chicago",
+    };
+  } catch {
+    return { companyName: "Prossfora", timeZone: "America/Chicago" };
+  }
+}
+
+function saveGeneral(settings: GeneralSettings) {
+  if (typeof window === "undefined") return;
+  try {
+    const existing = localStorage.getItem(STORAGE_KEY);
+    const merged = existing ? { ...JSON.parse(existing), ...settings } : settings;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+  } catch {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+  }
+}
 
 export default function SettingsPage() {
   const [saved, setSaved] = useState(false);
+  const [general, setGeneral] = useState<GeneralSettings>({
+    companyName: "",
+    timeZone: "America/Chicago",
+  });
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setGeneral(loadGeneral());
+    setHydrated(true);
+  }, []);
+
+  const handleSaveGeneral = () => {
+    saveGeneral(general);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
+  };
 
   return (
     <div className="p-6 max-w-4xl">
@@ -35,7 +85,7 @@ export default function SettingsPage() {
               General
             </CardTitle>
             <CardDescription>
-              Company name and default preferences
+              Company name and default preferences (saved in this browser)
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -46,6 +96,10 @@ export default function SettingsPage() {
               <Input
                 placeholder="Prossfora"
                 className="max-w-md border-border"
+                value={hydrated ? general.companyName : ""}
+                onChange={(e) =>
+                  setGeneral((prev) => ({ ...prev, companyName: e.target.value }))
+                }
               />
             </div>
             <div>
@@ -55,10 +109,14 @@ export default function SettingsPage() {
               <Input
                 placeholder="America/Chicago"
                 className="max-w-md border-border"
+                value={hydrated ? general.timeZone : ""}
+                onChange={(e) =>
+                  setGeneral((prev) => ({ ...prev, timeZone: e.target.value }))
+                }
               />
             </div>
             <Button
-              onClick={() => setSaved(true)}
+              onClick={handleSaveGeneral}
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               Save general

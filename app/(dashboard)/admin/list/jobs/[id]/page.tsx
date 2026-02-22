@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
+import { clientConfig } from "@/lib/config";
 import { Job } from "@/lib/types/jobs";
 import { Customer } from "@/lib/types/customers";
 
@@ -16,36 +17,28 @@ const JobDetailPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!jobId) {
-      console.log("No jobId found");
-      return;
-    }
-
-    console.log("Fetching job:", jobId);
+    if (!jobId) return;
 
     axios
-      .get(`http://localhost:5000/api/v1/jobs/${jobId}`)
+      .get(`${clientConfig.apiUrl}/jobs/${jobId}`)
       .then((response) => {
-        console.log("Job Response:", response.data);
         const jobData = response.data.data;
         setJob(jobData);
 
         if (jobData.customer_id) {
           return axios.get(
-            `http://localhost:5000/api/v1/customers/${jobData.customer_id}`,
+            `${clientConfig.apiUrl}/customers/${jobData.customer_id}`,
           );
         }
       })
       .then((customerResponse) => {
         if (customerResponse) {
-          console.log("Customer Response:", customerResponse.data);
           setCustomer(customerResponse.data.data);
         }
         setLoading(false);
       })
-      .catch((err) => {
-        console.error("Error fetching data:", err);
-        setError(err.message);
+      .catch(() => {
+        setError("Failed to load job");
         setLoading(false);
       });
   }, [jobId]);

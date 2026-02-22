@@ -37,7 +37,7 @@ const UsersListPage = () => {
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Seach employees..."
+            placeholder="Search employees..."
             className="md:w-64"
           />
           <QuickActionBar />
