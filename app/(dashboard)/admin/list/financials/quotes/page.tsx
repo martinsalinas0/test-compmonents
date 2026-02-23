@@ -3,9 +3,8 @@
 import GenericTable, { Column } from "@/components/forList/GenericTable";
 import SearchBar from "@/components/SearchBar";
 import { Button } from "@/components/ui/button";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { Quote } from "@/lib/types/all";
-import axios from "axios";
 import { AlertCircle, Loader2, Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -23,7 +22,7 @@ const QuotesListPage = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await axios.get(`${clientConfig.apiUrl}/quotes`);
+        const response = await api.get("quotes");
         setQuotes(response.data.data ?? []);
       } catch (error) {
         console.error(error);

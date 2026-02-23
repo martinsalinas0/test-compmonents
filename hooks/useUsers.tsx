@@ -1,6 +1,5 @@
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { User } from "@/lib/types/all";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 export const useUsers = () => {
@@ -12,7 +11,7 @@ export const useUsers = () => {
     let cancelled = false;
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${clientConfig.apiUrl}/users`);
+        const response = await api.get("users/getAllUsers");
         if (!cancelled) setUsers(response.data.data ?? []);
       } catch (err) {
         if (!cancelled) {

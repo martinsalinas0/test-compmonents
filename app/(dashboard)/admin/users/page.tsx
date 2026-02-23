@@ -1,9 +1,8 @@
 "use client";
 
 import UserCard from "@/components/cards/UserCards";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { User } from "@/lib/types/user";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 const AdminUsersPage = () => {
@@ -12,8 +11,8 @@ const AdminUsersPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios
-      .get(`${clientConfig.apiUrl}/users`)
+    api
+      .get("users/getAllUsers")
       .then((response) => {
         setUsers((response.data.data ?? []) as User[]);
         setLoading(false);

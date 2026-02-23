@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
-import { clientConfig } from "@/lib/config";
-import axios from "axios";
+import api from "@/lib/api";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -23,7 +22,7 @@ export default function ForgotPasswordPage() {
     }
     setIsLoading(true);
     try {
-      await axios.post(`${clientConfig.apiUrl}/auth/forgot-password`, {
+      await api.post("auth/forgot-password", {
         email: email.trim(),
       });
       setSent(true);

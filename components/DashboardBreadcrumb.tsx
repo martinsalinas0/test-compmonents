@@ -34,6 +34,7 @@ const segmentLabels: Record<string, string> = {
   settings: "Settings",
   update: "Edit",
   edit: "Edit",
+  home: "Home",
 };
 
 function formatSegment(segment: string): string {

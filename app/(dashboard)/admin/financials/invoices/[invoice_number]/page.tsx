@@ -8,8 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { clientConfig } from "@/lib/config";
-import axios from "axios";
+import api from "@/lib/api";
 import { ArrowLeft, FileText, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -40,9 +39,7 @@ export default function InvoiceDetailByNumberPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await axios.get(
-          `${clientConfig.apiUrl}/customer-invoices/`
-        );
+        const res = await api.get("customer-invoices/");
         const list = res.data?.data ?? [];
         const found = list.find(
           (inv: { invoice_number?: string }) =>

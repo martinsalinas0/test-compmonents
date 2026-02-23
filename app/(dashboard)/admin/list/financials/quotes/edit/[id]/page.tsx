@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type { Job, Quote } from "@/lib/types/all";
 import axios from "axios";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -19,8 +19,6 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-
-const api = clientConfig.apiUrl;
 
 const optionalNum = z.preprocess(
   (v) => (v === "" || v === undefined ? undefined : v),
@@ -91,8 +89,8 @@ export default function EditQuotePage() {
       setLoading(true);
       try {
         const [quoteRes, jobsRes] = await Promise.all([
-          axios.get(`${api}/quotes/${id}`).catch(() => null),
-          axios.get(`${api}/jobs/all`).catch(() => ({ data: { data: [] } })),
+          api.get(`quotes/${id}`).catch(() => null),
+          api.get("jobs/all").catch(() => ({ data: { data: [] } })),
         ]);
 
         setJobs((jobsRes.data?.data ?? []) as Job[]);
@@ -101,7 +99,7 @@ export default function EditQuotePage() {
         if (quoteRes?.data?.data) {
           quote = quoteRes.data.data;
         } else {
-          const listRes = await axios.get(`${api}/quotes`);
+          const listRes = await api.get("quotes");
           const list = (listRes.data?.data ?? []) as Quote[];
           quote = list.find((q) => q.id === id) ?? null;
         }
@@ -145,7 +143,7 @@ export default function EditQuotePage() {
         tax_amount: data.tax_amount ?? null,
         total: data.total,
       };
-      await axios.patch(`${api}/quotes/${id}`, payload);
+      await api.patch(`quotes/${id}`, payload);
       router.push(`/admin/list/financials/quotes/${id}`);
     } catch (err) {
       console.error("Error updating quote:", err);

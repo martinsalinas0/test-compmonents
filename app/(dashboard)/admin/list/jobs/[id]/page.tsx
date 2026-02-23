@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "@/lib/api";
 import { useParams } from "next/navigation";
-import { clientConfig } from "@/lib/config";
 import { Job } from "@/lib/types/jobs";
 import { Customer } from "@/lib/types/customers";
 
@@ -19,16 +18,14 @@ const JobDetailPage = () => {
   useEffect(() => {
     if (!jobId) return;
 
-    axios
-      .get(`${clientConfig.apiUrl}/jobs/${jobId}`)
+    api
+      .get(`jobs/${jobId}`)
       .then((response) => {
         const jobData = response.data.data;
         setJob(jobData);
 
         if (jobData.customer_id) {
-          return axios.get(
-            `${clientConfig.apiUrl}/customers/${jobData.customer_id}`,
-          );
+          return api.get(`customers/${jobData.customer_id}`);
         }
       })
       .then((customerResponse) => {

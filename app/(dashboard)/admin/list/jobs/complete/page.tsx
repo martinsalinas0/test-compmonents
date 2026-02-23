@@ -1,9 +1,8 @@
 "use client";
 
 import TableHeader from "@/components/forList/TableHeader";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { Job } from "@/lib/types/jobs";
-import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AlertCircle } from "lucide-react";
@@ -19,9 +18,7 @@ const JobsCompletedListPage = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.get(
-          `${clientConfig.apiUrl}/jobs/status/completed`
-        );
+        const response = await api.get("jobs/status/completed");
         setJobs(response.data.data);
         console.log(response.data.data);
       } catch (err) {

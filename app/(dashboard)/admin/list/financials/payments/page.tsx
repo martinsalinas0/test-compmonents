@@ -2,9 +2,8 @@
 
 import GenericTable, { Column } from "@/components/forList/GenericTable";
 import SearchBar from "@/components/SearchBar";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { Payment } from "@/lib/types/all";
-import axios from "axios";
 import { AlertCircle, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
@@ -22,7 +21,7 @@ const PaymentsListPage = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await axios.get(`${clientConfig.apiUrl}/payments/all`);
+        const response = await api.get("payments/all");
         setPayments(response.data.data);
       } catch {
         setError("Failed to load payments");

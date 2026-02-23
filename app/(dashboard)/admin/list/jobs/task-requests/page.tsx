@@ -2,9 +2,8 @@
 
 import GenericTable, { Column } from "@/components/forList/GenericTable";
 import SearchBar from "@/components/SearchBar";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { TaskRequest } from "@/lib/types/all";
-import axios from "axios";
 
 import { AlertCircle, Plus } from "lucide-react";
 import Link from "next/link";
@@ -23,9 +22,7 @@ const TaskRequestListPage = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await axios.get(
-          `${clientConfig.apiUrl}/task-requests/all`,
-        );
+        const response = await api.get("task-requests/all");
         setRequests(response.data.data ?? []);
       } catch (error) {
         console.error(error);

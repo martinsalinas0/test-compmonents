@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type { Contractor } from "@/lib/types/all";
 import axios from "axios";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -88,7 +88,7 @@ export default function EditContractorPage() {
     const fetchContractor = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`${clientConfig.apiUrl}/contractors/${id}`);
+        const res = await api.get(`contractors/${id}`);
         const data = res.data.data as Contractor;
         reset(toFormValue(data));
       } catch (err) {
@@ -129,7 +129,7 @@ export default function EditContractorPage() {
       if (data.password && data.password.trim()) {
         payload.password = data.password.trim();
       }
-      await axios.patch(`${clientConfig.apiUrl}/contractors/${id}`, payload);
+      await api.patch(`contractors/${id}`, payload);
       router.push(`/admin/users/contractors/${id}`);
     } catch (err) {
       console.error("Error updating contractor:", err);

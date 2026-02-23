@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import api from "@/lib/api";
 import axios from "axios";
-import { clientConfig } from "@/lib/config";
 import { useEffect, useState } from "react";
 import { User } from "@/lib/types/all";
 
@@ -54,9 +54,9 @@ const AddJobForm = () => {
         setIsLoadingDropdowns(true);
 
         const [customerRes, contractorRes, employeeRes] = await Promise.all([
-          axios.get(`${clientConfig.apiUrl}/customers`),
-          axios.get(`${clientConfig.apiUrl}/contractors`),
-          axios.get(`${clientConfig.apiUrl}/users/role/employee`),
+          api.get("customers/getAllCustomers"),
+          api.get("contractors/getAllContractors"),
+          api.get("users/role/employee"),
         ]);
 
         const customerData = customerRes.data.data;
@@ -113,10 +113,7 @@ const AddJobForm = () => {
     console.log("Sending to API:", jobData);
 
     try {
-      const response = await axios.post(
-        `${clientConfig.apiUrl}/jobs/new`,
-        jobData,
-      );
+      const response = await api.post("jobs/new", jobData);
       console.log("Success:", response.data);
       router.push("/admin/list/jobs");
     } catch (error) {

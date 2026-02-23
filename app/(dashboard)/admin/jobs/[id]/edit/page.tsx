@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type { JobWithRelations } from "@/lib/types/jobsWithJoins";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -62,8 +62,6 @@ const EditJobPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [sameAsCustomerAddress, setSameAsCustomerAddress] = useState(false);
 
-  const apiBase = clientConfig.apiUrl || clientConfig.apiUrl;
-
   const {
     register,
     handleSubmit,
@@ -94,7 +92,7 @@ const EditJobPage = () => {
           zip_code: c.zip_code ?? fallback.zip_code,
         };
       }
-      const res = await axios.get(`${apiBase}/customers/${cid}`);
+      const res = await api.get(`customers/${cid}`);
       const c = res.data.data as { address?: string; city?: string; state?: string; zip_code?: string };
       return {
         address: c.address ?? fallback.address,
@@ -129,9 +127,9 @@ const EditJobPage = () => {
       setError(null);
       try {
         const [jobRes, customersRes, contractorsRes] = await Promise.all([
-          axios.get(`${apiBase}/jobs/${jobId}`),
-          axios.get(`${apiBase}/customers`),
-          axios.get(`${apiBase}/contractors`),
+          api.get(`jobs/${jobId}`),
+          api.get("customers/getAllCustomers"),
+          api.get("contractors/getAllContractors"),
         ]);
 
         const jobData = jobRes.data.data as JobWithRelations;
@@ -181,7 +179,7 @@ const EditJobPage = () => {
   const onSubmit = async (data: EditJobFormData) => {
     if (!jobId) return;
     try {
-      await axios.patch(`${apiBase}/jobs/update/${jobId}`, {
+      await api.patch(`jobs/update/${jobId}`, {
         title: data.title,
         description: data.description,
         customer_id: data.customerId,

@@ -2,9 +2,8 @@
 
 import GenericTable, { Column } from "@/components/forList/GenericTable";
 import SearchBar from "@/components/SearchBar";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { CustomerInvoice } from "@/lib/types/all";
-import axios from "axios";
 import { Plus, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState, useMemo } from "react";
@@ -22,9 +21,7 @@ const CustomerInvoicesListPage = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await axios.get(
-          `${clientConfig.apiUrl}/customer-invoices/`
-        );
+        const response = await api.get("customer-invoices/");
         setInvoices(response.data.data ?? []);
       } catch {
         setError("Failed to load invoices");

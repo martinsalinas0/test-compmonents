@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type { Customer, Job } from "@/lib/types/all";
 import axios from "axios";
 import { format } from "date-fns";
@@ -64,8 +64,8 @@ const SingleCustomerPage = () => {
       setError(null);
       try {
         const [customerResponse, jobsResponse] = await Promise.all([
-          axios.get(`${clientConfig.apiUrl}/customers/${customerID}`),
-          axios.get(`${clientConfig.apiUrl}/jobs/all`)
+          api.get(`customers/${customerID}`),
+          api.get("jobs/all")
             .catch(() => ({ data: { data: [] } })),
         ]);
         setCustomer(customerResponse.data.data);

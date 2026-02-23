@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type {
   Contractor,
   Customer,
@@ -19,7 +19,6 @@ import type {
   Payment,
   TaskRequest,
 } from "@/lib/types/all";
-import axios from "axios";
 import {
   AlertCircle,
   ArrowRight,
@@ -38,8 +37,6 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-
-const api = clientConfig.apiUrl;
 
 const AdminDashboardPage = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -67,13 +64,13 @@ const AdminDashboardPage = () => {
           invoicesRes,
           allJobsRes,
         ] = await Promise.all([
-          axios.get(`${api}/customers`).catch(() => ({ data: { data: [] } })),
-          axios.get(`${api}/jobs/status/open`).catch(() => ({ data: { data: [] } })),
-          axios.get(`${api}/payments/successful`).catch(() => ({ data: { data: [] } })),
-          axios.get(`${api}/contractors`).catch(() => ({ data: { data: [] } })),
-          axios.get(`${api}/task-requests/all`).catch(() => ({ data: { data: [] } })),
-          axios.get(`${api}/customer-invoices/`).catch(() => ({ data: { data: [] } })),
-          axios.get(`${api}/jobs/all`).catch(() => ({ data: { data: [] } })),
+          api.get("customers/getAllCustomers").catch(() => ({ data: { data: [] } })),
+          api.get("jobs/status/open").catch(() => ({ data: { data: [] } })),
+          api.get("payments/successful").catch(() => ({ data: { data: [] } })),
+          api.get("contractors/getAllContractors").catch(() => ({ data: { data: [] } })),
+          api.get("task-requests/all").catch(() => ({ data: { data: [] } })),
+          api.get("customer-invoices/").catch(() => ({ data: { data: [] } })),
+          api.get("jobs/all").catch(() => ({ data: { data: [] } })),
         ]);
         setCustomers((customersRes.data?.data ?? []) as Customer[]);
         setJobs((openJobsRes.data?.data ?? []) as Job[]);

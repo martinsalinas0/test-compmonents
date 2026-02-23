@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type { Contractor } from "@/lib/types/contractor";
 import type { CustomerInvoice, Payment, Quote } from "@/lib/types/all";
 import { JobStatus } from "@/lib/types/enums";
@@ -45,12 +45,10 @@ const SingleJobPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [updating, setUpdating] = useState(false);
 
-  const apiBase = clientConfig.apiUrl;
-
   const fetchJob = useCallback(async () => {
     if (!jobId) return;
     try {
-      const res = await axios.get(`${apiBase}/jobs/${jobId}`);
+      const res = await api.get(`jobs/${jobId}`);
       setJob(res.data.data);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
@@ -63,7 +61,7 @@ const SingleJobPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [jobId, apiBase]);
+  }, [jobId]);
 
   useEffect(() => {
     if (!jobId) return;
@@ -75,23 +73,23 @@ const SingleJobPage = () => {
   useEffect(() => {
     const fetchContractors = async () => {
       try {
-        const res = await axios.get(`${apiBase}/contractors`);
+        const res = await api.get("contractors/getAllContractors");
         setContractors(res.data.data ?? []);
       } catch {
         setContractors([]);
       }
     };
     fetchContractors();
-  }, [apiBase]);
+  }, []);
 
   useEffect(() => {
     if (!jobId) return;
     const fetchQuotesAndPayments = async () => {
       try {
         const [quotesRes, invoicesRes, paymentsRes] = await Promise.all([
-          axios.get(`${apiBase}/quotes`).catch(() => ({ data: { data: [] } })),
-          axios.get(`${apiBase}/customer-invoices/`).catch(() => ({ data: { data: [] } })),
-          axios.get(`${apiBase}/payments/all`).catch(() => ({ data: { data: [] } })),
+          api.get("quotes").catch(() => ({ data: { data: [] } })),
+          api.get("customer-invoices/").catch(() => ({ data: { data: [] } })),
+          api.get("payments/all").catch(() => ({ data: { data: [] } })),
         ]);
         const allQuotes = (quotesRes.data?.data ?? []) as Quote[];
         const allInvoices = (invoicesRes.data?.data ?? []) as CustomerInvoice[];
@@ -107,13 +105,13 @@ const SingleJobPage = () => {
       }
     };
     fetchQuotesAndPayments();
-  }, [jobId, apiBase]);
+  }, [jobId]);
 
   const handleStatusChange = async (newStatus: JobStatus) => {
     if (!jobId || !job) return;
     setUpdating(true);
     try {
-      await axios.patch(`${clientConfig.apiUrl}/jobs/update/${jobId}`, {
+      await api.patch(`jobs/update/${jobId}`, {
         status: newStatus,
       });
       setJob((prev) => (prev ? { ...prev, status: newStatus } : null));
@@ -128,7 +126,7 @@ const SingleJobPage = () => {
     if (!jobId || !job) return;
     setUpdating(true);
     try {
-      await axios.patch(`${apiBase}/jobs/update/${jobId}`, {
+      await api.patch(`jobs/update/${jobId}`, {
         contractor_id: contractorId,
       });
       if (contractorId) {

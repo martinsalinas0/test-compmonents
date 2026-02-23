@@ -2,9 +2,8 @@
 
 import CustomerTableList from "@/components/forList/CustomerTableList";
 import SearchBar from "@/components/SearchBar";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { Customer } from "@/lib/types/customers";
-import axios from "axios";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -16,7 +15,7 @@ const CustomersListPage = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get(`${clientConfig.apiUrl}/customers`);
+        const response = await api.get("customers/getAllCustomers");
         setCustomers(response.data.data ?? []);
       } catch (error) {
         console.error(error);

@@ -3,9 +3,8 @@
 import TableForList from "@/components/forList/UserTable";
 import QuickActionBar from "@/components/layouts/QuickActionBar";
 import SearchBar from "@/components/SearchBar";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { User } from "@/lib/types/user";
-import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -17,9 +16,7 @@ const UsersListPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(
-          `${clientConfig.apiUrl}/users/role/employee`,
-        );
+        const response = await api.get("users/role/employee");
         setUsers(response.data.data);
       } catch (err) {
         console.error(err);

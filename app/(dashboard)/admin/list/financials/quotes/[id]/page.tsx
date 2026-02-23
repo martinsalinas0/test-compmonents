@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type { Quote } from "@/lib/types/all";
 import axios from "axios";
 import { format } from "date-fns";
@@ -16,8 +16,6 @@ import { ArrowLeft, FileText, Loader2, DollarSign, Pencil } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-const api = clientConfig.apiUrl;
 
 export default function QuoteDetailPage() {
   const params = useParams();
@@ -35,10 +33,10 @@ export default function QuoteDetailPage() {
       setError(null);
       try {
         try {
-          const res = await axios.get(`${api}/quotes/${id}`);
+          const res = await api.get(`quotes/${id}`);
           setQuote(res.data.data);
         } catch (singleErr) {
-          const listRes = await axios.get(`${api}/quotes`);
+          const listRes = await api.get("quotes");
           const list = (listRes.data?.data ?? []) as Quote[];
           const found = list.find((q) => q.id === id);
           if (found) setQuote(found);

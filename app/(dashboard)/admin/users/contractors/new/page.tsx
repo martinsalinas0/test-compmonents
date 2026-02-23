@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -50,10 +50,7 @@ const AddContractorPage = () => {
 
   const onSubmit = async (data: ContractorFormData) => {
     try {
-      const response = await axios.post(
-        `${clientConfig.apiUrl}/contractors/register`,
-        data,
-      );
+      const response = await api.post("contractors/register", data);
 
       console.log("Contractor created:", response.data);
       router.push("/admin/list/contractors");

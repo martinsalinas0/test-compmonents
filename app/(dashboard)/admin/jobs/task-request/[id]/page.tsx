@@ -1,6 +1,6 @@
 "use client";
 
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { TaskRequest } from "@/lib/types/all";
 import axios from "axios";
 import Link from "next/link";
@@ -20,9 +20,7 @@ export default function SingleTaskRequestPage() {
     if (!id) return;
     const fetchRequest = async () => {
       try {
-        const res = await axios.get(
-          `${clientConfig.apiUrl}/task-requests/${id}`,
-        );
+        const res = await api.get(`task-requests/${id}`);
         setRequest(res.data.data);
       } catch (err) {
         if (axios.isAxiosError(err)) {

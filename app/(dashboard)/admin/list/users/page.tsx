@@ -3,11 +3,10 @@
 import TableHeader from "@/components/forList/TableHeader";
 import QuickActionBar from "@/components/layouts/QuickActionBar";
 import SearchBar from "@/components/SearchBar";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type { Contractor } from "@/lib/types/contractor";
 import type { Customer } from "@/lib/types/customers";
 import type { User } from "@/lib/types/user";
-import axios from "axios";
 import { ChevronDown, Info, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState, useMemo } from "react";
@@ -84,11 +83,15 @@ const UsersListPage = () => {
       try {
         const [usersRes, employeesRes, customersRes, contractorsRes] =
           await Promise.all([
-            axios.get(`${clientConfig.apiUrl}/users`),
-            axios.get(`${clientConfig.apiUrl}/users/role/employee`),
-            axios.get(`${clientConfig.apiUrl}/customers`),
-            axios.get(`${clientConfig.apiUrl}/contractors`),
+            api.get("users/getAllUsers"),
+            api.get("users/role/employee"),
+            api.get("customers/getAllCustomers"),
+            api.get("contractors/getAllContractors"),
           ]);
+          console.log(usersRes.data.data);
+          console.log(employeesRes.data.data);
+          console.log(customersRes.data.data);
+          console.log(contractorsRes.data.data);  
 
         const users: User[] = usersRes.data.data ?? [];
         const employees: User[] = employeesRes.data.data ?? [];

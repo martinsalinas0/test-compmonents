@@ -1,12 +1,12 @@
 "use client";
 
+import api from "@/lib/api";
 import axios from "axios";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { clientConfig } from "@/lib/config";
 import { Input } from "@/components/ui/input";
 
 const userSchema = z.object({
@@ -37,7 +37,7 @@ const UserUpdatePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${clientConfig.apiUrl}/users/${id}`);
+        const response = await api.get(`users/${id}`);
         reset(response.data.data);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -54,10 +54,7 @@ const UserUpdatePage = () => {
 
   const onSubmit = async (data: UserFormData) => {
     try {
-      await axios.patch(
-        `${clientConfig.apiUrl}/users/${id}`,
-        data,
-      );
+      await api.patch(`users/${id}`, data);
       router.push("/admin/list/users");
     } catch (error) {
       console.error("Error updating user:", error);

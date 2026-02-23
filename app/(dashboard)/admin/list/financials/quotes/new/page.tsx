@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type { Job } from "@/lib/types/all";
 import axios from "axios";
 import { ArrowLeft } from "lucide-react";
@@ -71,7 +71,7 @@ export default function NewQuotePage() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get(`${clientConfig.apiUrl}/jobs/all`).catch(() => ({ data: { data: [] } }));
+        const res = await api.get("jobs/all").catch(() => ({ data: { data: [] } }));
         setJobs((res.data?.data ?? []) as Job[]);
       } catch {
         setJobs([]);
@@ -103,7 +103,7 @@ export default function NewQuotePage() {
         tax_amount: data.tax_amount ?? null,
         total: data.total,
       };
-      const res = await axios.post(`${clientConfig.apiUrl}/quotes`, payload);
+      const res = await api.post("quotes", payload);
       const created = res.data?.data;
       if (created?.id) {
         router.push(`/admin/list/financials/quotes/${created.id}`);

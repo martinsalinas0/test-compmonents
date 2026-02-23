@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type { Customer } from "@/lib/types/all";
 import axios from "axios";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -94,7 +94,7 @@ export default function EditCustomerPage() {
     const fetchCustomer = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`${clientConfig.apiUrl}/customers/${id}`);
+        const res = await api.get(`customers/${id}`);
         const data = res.data.data as Customer;
         reset(toFormValue(data));
       } catch (err) {
@@ -134,7 +134,7 @@ export default function EditCustomerPage() {
       if (data.password && data.password.trim()) {
         payload.password = data.password.trim();
       }
-      await axios.patch(`${clientConfig.apiUrl}/customers/${id}/update`, payload);
+      await api.patch(`customers/${id}/update`, payload);
       router.push(`/admin/users/customers/${id}`);
     } catch (err) {
       console.error("Error updating customer:", err);

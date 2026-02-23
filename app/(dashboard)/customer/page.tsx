@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { HelpCircle, FileText, CreditCard } from "lucide-react";
+import { FileText, CreditCard } from "lucide-react";
 import Link from "next/link";
 
 export default function CustomerDashboardPage() {
@@ -17,29 +17,10 @@ export default function CustomerDashboardPage() {
         Customer Dashboard
       </h1>
       <p className="text-pacific-600 mb-8">
-        Track your requests, jobs, and invoices.
+        View your invoices and payment history.
       </p>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <HelpCircle size={20} />
-              Task Requests
-            </CardTitle>
-            <CardDescription>
-              Submit and track task requests
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Link
-              href="/admin/list/jobs/task-requests"
-              className="text-cerulean font-medium hover:underline"
-            >
-              View requests →
-            </Link>
-          </CardContent>
-        </Card>
+      <div className="grid gap-4 md:grid-cols-2">
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
@@ -84,8 +65,12 @@ export default function CustomerDashboardPage() {
         <CardHeader>
           <CardTitle>Quick start</CardTitle>
           <CardDescription>
-            As a customer you can submit task requests, view job progress, and pay invoices.
-            Customer-specific flows (e.g. self-service portal) can be added here.
+            View your invoices and payment history above. For the full customer
+            experience, go to{" "}
+            <Link href="/home" className="text-cerulean font-medium hover:underline">
+              Home
+            </Link>
+            .
           </CardDescription>
         </CardHeader>
       </Card>

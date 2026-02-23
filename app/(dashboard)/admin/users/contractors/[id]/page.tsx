@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import type { Contractor, Job } from "@/lib/types/all";
 import axios from "axios";
 import { format } from "date-fns";
@@ -43,8 +43,8 @@ const SingleContractorPage = () => {
       setError(null);
       try {
         const [contractorRes, jobsRes] = await Promise.all([
-          axios.get(`${clientConfig.apiUrl}/contractors/${id}`),
-          axios.get(`${clientConfig.apiUrl}/jobs/all`).catch(() => ({ data: { data: [] } })),
+          api.get(`contractors/${id}`),
+          api.get("jobs/all").catch(() => ({ data: { data: [] } })),
         ]);
         setContractor(contractorRes.data.data);
         const allJobs = (jobsRes.data?.data ?? []) as Job[];

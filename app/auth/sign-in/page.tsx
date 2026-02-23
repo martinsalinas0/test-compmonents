@@ -2,6 +2,7 @@
 
 import FooterLink from "@/components/layouts/FooterLink";
 import { clientConfig } from "@/lib/config";
+import { setAccessToken, setRefreshToken } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -25,13 +26,17 @@ export default function SignInPage() {
     }
     setIsLoading(true);
     try {
-      const res = await axios.post(`${clientConfig.apiUrl}/auth/sign-in`, {
+      const res = await axios.post(`${clientConfig.apiUrl}/auth/login/user`, {
         email: email.trim(),
         password,
       });
-      if (res.data?.token || res.data?.data?.token) {
-        router.push("/admin");
-        return;
+      const token =
+        res.data?.data?.accessToken ?? res.data?.accessToken ?? res.data?.data?.token ?? res.data?.token;
+      if (token) {
+        setAccessToken(token);
+        const refresh =
+          res.data?.data?.refreshToken ?? res.data?.refreshToken;
+        if (refresh) setRefreshToken(refresh);
       }
       router.push("/admin");
     } catch (err) {

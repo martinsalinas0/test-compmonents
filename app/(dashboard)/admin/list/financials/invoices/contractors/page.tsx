@@ -2,9 +2,8 @@
 
 import GenericTable, { Column } from "@/components/forList/GenericTable";
 import SearchBar from "@/components/SearchBar";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { ContractorInvoice } from "@/lib/types/all";
-import axios from "axios";
 import { AlertCircle, Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -20,9 +19,7 @@ const ContractorInvoicesList = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(
-          `${clientConfig.apiUrl}/contractor-invoices/all`,
-        );
+        const response = await api.get("contractor-invoices/all");
         setInvoices(response.data.data);
       } catch (error) {
         console.error(error);

@@ -2,9 +2,8 @@
 
 import TableForContractors from "@/components/forList/ContractorTable";
 import SearchBar from "@/components/SearchBar";
-import { clientConfig } from "@/lib/config";
+import api from "@/lib/api";
 import { Contractor } from "@/lib/types/contractor";
-import axios from "axios";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -16,7 +15,7 @@ const ContractorsListPage = () => {
   useEffect(() => {
     const fetchContractors = async () => {
       try {
-        const response = await axios.get(`${clientConfig.apiUrl}/contractors`);
+        const response = await api.get("contractors/getAllContractors");
         setContractors(response.data.data ?? []);
       } catch (err) {
         console.error(err);

@@ -1,12 +1,12 @@
 "use client";
 
+import api from "@/lib/api";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { clientConfig } from "@/lib/config";
 
 const userSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
@@ -45,10 +45,7 @@ const AddUserForm = () => {
     console.log("Sending to api", data);
 
     try {
-      const response = await axios.post(
-        `${clientConfig.apiUrl}/users/new`,
-        data,
-      );
+      const response = await api.post("users/new", data);
       console.log("success: true", response.data);
       router.push("/admin/list/users");
     } catch (error) {

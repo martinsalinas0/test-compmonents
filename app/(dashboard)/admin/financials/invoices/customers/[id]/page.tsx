@@ -8,8 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { clientConfig } from "@/lib/config";
-import axios from "axios";
+import api from "@/lib/api";
 import { ArrowLeft, FileText, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -40,14 +39,10 @@ export default function CustomerInvoiceDetailPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await axios.get(
-          `${clientConfig.apiUrl}/customer-invoices/${id}`
-        );
+        const res = await api.get(`customer-invoices/${id}`);
         if (res.data?.data) setInvoice(res.data.data);
         else {
-          const listRes = await axios.get(
-            `${clientConfig.apiUrl}/customer-invoices/`
-          );
+          const listRes = await api.get("customer-invoices/");
           const list = listRes.data?.data ?? [];
           const found = list.find((inv: { id?: string }) => inv?.id === id);
           if (found) setInvoice(found);
@@ -55,9 +50,7 @@ export default function CustomerInvoiceDetailPage() {
         }
       } catch {
         try {
-          const listRes = await axios.get(
-            `${clientConfig.apiUrl}/customer-invoices/`
-          );
+          const listRes = await api.get("customer-invoices/");
           const list = listRes.data?.data ?? [];
           const found = list.find((inv: { id?: string }) => inv?.id === id);
           if (found) setInvoice(found);
